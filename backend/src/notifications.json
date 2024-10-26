@@ -1,0 +1,111 @@
+{
+  "principal": {
+    "p1": "Imposible procesar su solicitud",
+    "p2": "No se proporcionaron campos para actualizar",
+    "p3": "Token no encontrado, acceso denegado."
+  },
+  "login": {
+    "l1": "Usuario incorrecto",
+    "l2": "Contraseña incorrecta",
+    "l3": "Bienvenido",
+    "l4": "Sesión Cerrada"
+  },
+  "usuarios": {
+    "u1": "Error! Email ya Registrado",
+    "u2": "Usuario actualizado satisfactoriamente",
+    "u3": "Usuario desactivado satisfactoriamente",
+    "u4": "Usuario creado satisfactoriamente",
+    "u5": "Usuario no encontrado"
+  },
+  "roles": {
+    "r1": "Error! No se pudo registrar el rol",
+    "r2": "Rol actualizado satisfactoriamente",
+    "r3": "El rol cambio su estado satisfactoriamente",
+    "r4": "Rol creado satisfactoriamente",
+    "r5": "Rol no encontrado"
+  },
+  "permisos": {
+    "p1": "Error! No se pudo registrar el permiso",
+    "p2": "Permiso actualizado satisfactoriamente",
+    "p3": "Permiso desactivado satisfactoriamente",
+    "p4": "Permiso creado satisfactoriamente",
+    "p5": "Permiso no encontrado"
+  },
+  "cursos": {
+    "c1": "Error! No se pudo registrar el curso",
+    "c2": "Curso actualizado satisfactoriamente",
+    "c3": "Curso eliminado satisfactoriamente",
+    "c4": "Curso creado satisfactoriamente",
+    "c5": "Curso no encontrado"
+  },
+  "tema": {
+    "t1": "Error! No se pudo registrar el capítulo",
+    "t2": "Capítulo actualizado satisfactoriamente",
+    "t3": "Capítulo eliminado satisfactoriamente",
+    "t4": "Capítulo creado satisfactoriamente",
+    "t5": "Capítulo no encontrado",
+    "t6": "Nivel Mayor al Permitido"
+  },
+  "activo": {
+    "a1": "Error! No se pudo registrar el activo",
+    "a2": "Activo actualizado satisfactoriamente",
+    "a3": "Activo eliminado satisfactoriamente",
+    "a4": "Activo creado satisfactoriamente"
+  },
+  "modalidad": {
+    "m1": "Error! No se pudo registrar la modalidad",
+    "m2": "Modalidad actualizada satisfactoriamente",
+    "m3": "Modalidad eliminada satisfactoriamente",
+    "m4": "Modalidad creada satisfactoriamente",
+    "m5": "Modalidad no encontrada"
+  },
+  "certificado": {
+    "c1": "Error! No se pudo registrar el certificado",
+    "c2": "Certificado actualizado satisfactoriamente",
+    "c3": "Certificado eliminado satisfactoriamente",
+    "c4": "Certificado creado satisfactoriamente",
+    "c5": "Certificado no encontrado"
+  },
+  "info_utn": {
+    "iu1": "Error! No se pudo registrar Información UTN",
+    "iu2": "Información UTN actualizada satisfactoriamente",
+    "iu3": "Información UTN eliminada satisfactoriamente",
+    "iu4": "Información UTN creada satisfactoriamente",
+    "iu5": "Información UTN no encontrada"
+  },
+  "horario": {
+    "h1": "Error! No se pudo registrar el Horario",
+    "h2": "Horario actualizado satisfactoriamente",
+    "h3": "Horario eliminado satisfactoriamente",
+    "h4": "Horario creado satisfactoriamente",
+    "h5": "Horario no encontrado"
+  },
+  "detalle_valores": {
+    "dv1": "Error! No se pudo registrar el Detalle de Valores",
+    "dv2": "Detalle de Valores actualizado satisfactoriamente",
+    "dv3": "Detalle de Valores eliminado satisfactoriamente",
+    "dv4": "Detalle de Valores creado satisfactoriamente",
+    "dv5": "Detalle de Valores no encontrado"
+  },
+  "instructor": {
+    "i1": "Error! No se pudo registrar el Instructor",
+    "i2": "Instructor actualizado satisfactoriamente",
+    "i3": "Instructor eliminado satisfactoriamente",
+    "i4": "Instructor creado satisfactoriamente",
+    "i5": "Instructor no encontrado"
+  },
+  "tipo_pago": {
+    "tp1": "Error! No se pudo registrar el Tipo de Pago",
+    "tp2": "Tipo de Pago actualizado satisfactoriamente",
+    "tp3": "Tipo de Pago eliminado satisfactoriamente",
+    "tp4": "Tipo de Pago creado satisfactoriamente",
+    "tp5": "Tipo de Pago no encontrado"
+  },
+  "tipo_participante": {
+    "tp1": "Error! No se pudo registrar el Tipo de Participante",
+    "tp2": "Tipo de Participante actualizado satisfactoriamente",
+    "tp3": "Tipo de Participante eliminado satisfactoriamente",
+    "tp4": "Tipo de Participante creado satisfactoriamente",
+    "tp5": "Tipo de Participante no encontrado"
+  }
+}
