@@ -12,6 +12,9 @@ import { InfoUtnProvider } from "./context/InfoUtnContext";
 import { CourseProvider } from "./context/CourseContext";
 import { CertificateProvider } from "./context/CertificateContext";
 import { DetailValuesProvider } from "./context/DetailValuesContext";
+import { PaymentTypeProvider } from "./context/PaymentTypeContext";
+import { PaymentProvider } from "./context/PaymentContext";
+import { ParticipantProvider } from "./context/ParticipantContext";
 
 
 import LoginPage from "./pages/LoginPage";
@@ -33,6 +36,9 @@ import CoursePage from "./pages/Course/CoursePage";
 import PreviewCoursePage from "./pages/Course/PreviewCoursePage";
 import CertificatePage from "./pages/Certificate/CertificatePage";
 import DetailValuePage from "./pages/DetailValue/DetailValuePage";
+import PaymentTypePage from "./pages/Payment_Type/PaymentTypePage";
+import PaymentPage from "./pages/Payment/PaymentPage";
+import ParticipantPage from "./pages/participant/ParticipantPage";
 
 
 import Navbar from "./components/Navbar";
@@ -55,45 +61,55 @@ function App() {
                       <InfoUtnProvider>
                         <CertificateProvider>
                           <DetailValuesProvider>
+                            <PaymentTypeProvider>
+                              <PaymentProvider>
+                                <ParticipantProvider>
 
 
 
-                            <BrowserRouter>
-                              <Navbar />
-                              <Routes>
-                                <Route path="/" element={<HomePage />} />
-                                <Route path="/login" element={<LoginPage />} />
+                                  <BrowserRouter>
+                                    <Navbar />
+                                    <Routes>
+                                      <Route path="/" element={<HomePage />} />
+                                      <Route path="/login" element={<LoginPage />} />
 
 
-                                <Route element={<ProtectedRoute />}>
-                                  <Route path="/register" element={<RegisterPage />} />
-                                  <Route path="/permissions" element={<PermissionPage />} />
-                                  <Route path="/add-permission" element={<PermissionFormPage />} />
-                                  <Route path="/permission/:id" element={<h1>Update Permission</h1>} />
-                                  <Route path="/profile" element={<ProfilePage />} />
+                                      <Route element={<ProtectedRoute />}>
+                                        <Route path="/register" element={<RegisterPage />} />
+                                        <Route path="/permissions" element={<PermissionPage />} />
+                                        <Route path="/add-permission" element={<PermissionFormPage />} />
+                                        <Route path="/permission/:id" element={<h1>Update Permission</h1>} />
+                                        <Route path="/profile" element={<ProfilePage />} />
 
-                                  <Route path="/instructors" element={<InstructorPage />} />
-                                  <Route path="/modalities" element={<ModalityPage />} />
-                                  <Route path="/participant-types" element={<ParticipantTypePage />} />
-                                  <Route path="/roles" element={<RolePage />} />
-                                  <Route path="/chapters" element={<ChapterPage />} />
-                                  <Route path="/schedules" element={<SchedulePage />} />
-                                  <Route path="/infos_utn" element={<InfoUtnPage />} />
-                                  <Route path="/courses" element={<CoursePage />} />
-                                  <Route path="/preview-course/:id" element={<PreviewCoursePage />} />
-                                  <Route path="/certificates" element={<CertificatePage />} />
-                                  <Route path="/detail-values" element={<DetailValuePage />} />
+                                        <Route path="/instructors" element={<InstructorPage />} />
+                                        <Route path="/modalities" element={<ModalityPage />} />
+                                        <Route path="/participant-types" element={<ParticipantTypePage />} />
+                                        <Route path="/roles" element={<RolePage />} />
+                                        <Route path="/chapters" element={<ChapterPage />} />
+                                        <Route path="/schedules" element={<SchedulePage />} />
+                                        <Route path="/infos_utn" element={<InfoUtnPage />} />
+                                        <Route path="/courses" element={<CoursePage />} />
+                                        <Route path="/preview-course/:id" element={<PreviewCoursePage />} />
+                                        <Route path="/certificates" element={<CertificatePage />} />
+                                        <Route path="/detail-values" element={<DetailValuePage />} />
+                                        <Route path="/payment-types" element={<PaymentTypePage />} />
+                                        <Route path="/payments" element={<PaymentPage />} />
+                                        <Route path="/participants" element={<ParticipantPage />} />
 
 
 
-                                  {/* <Route path="/add-instructor" element={<PermissionFormPage />} /> */}
-                                  {/* <Route path="/instructor/:id" element={<h1>Update Permission</h1>} /> */}
-                                </Route>
+                                        {/* <Route path="/add-instructor" element={<PermissionFormPage />} /> */}
+                                        {/* <Route path="/instructor/:id" element={<h1>Update Permission</h1>} /> */}
+                                      </Route>
 
-                              </Routes>
+                                    </Routes>
 
-                            </BrowserRouter>
+                                  </BrowserRouter>
 
+
+                                </ParticipantProvider>
+                              </PaymentProvider>
+                            </PaymentTypeProvider>
                           </DetailValuesProvider>
                         </CertificateProvider>
                       </InfoUtnProvider>

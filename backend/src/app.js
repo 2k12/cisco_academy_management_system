@@ -16,6 +16,9 @@ import scheduleRoutes from "./routes/api_routes/schedule.routes.js";
 import infoUtnRoutes from "./routes/api_routes/infoUtn.routes.js";
 import certificateRoutes from "./routes/api_routes/certificate.routes.js";
 import detailValuesRoutes from "./routes/api_routes/detailValues.routes.js";
+import paymentTypeRoutes from "./routes/api_routes/paymentType.routes.js";
+import paymentRoutes from "./routes/api_routes/payment.routes.js";
+import participantRoutes from "./routes/api_routes/participant.routes.js";
 
 const app = express();
 
@@ -44,6 +47,10 @@ app.use("/api", scheduleRoutes);
 app.use("/api", infoUtnRoutes);
 app.use("/api", certificateRoutes);
 app.use("/api", detailValuesRoutes);
+app.use("/api", paymentTypeRoutes);
+app.use("/api", paymentRoutes);
+app.use("/api", participantRoutes);
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 export default app;

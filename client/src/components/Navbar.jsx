@@ -126,7 +126,7 @@ function Navbar() {
                                 <li><Link to="/courses" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faDiagramProject} className="mr-2" />Cursos</Link></li>
                                 <li><Link to="/chapters" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faBookOpen} className="mr-2" />Capítulos</Link></li>
                                 <li><Link to="#" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faSwatchbook} className="mr-2" />Detalle<span className="text-amber-400">( prox )</span></Link></li>
-                                <li><Link to="#" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faUser} className="mr-2" />Participante<span className="text-amber-400">( prox )</span></Link></li>
+                                <li><Link to="/participants" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faUser} className="mr-2" />Participante<span className="text-amber-400">( prox )</span></Link></li>
                                 <li><Link to="/participant-types" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faPerson} className="mr-2" />Tipos de Participante</Link></li>
                                 <li><Link to="/infos_utn" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faInfo} className="mr-2" />Info UTN</Link></li>
                                 <li><Link to="/instructors" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faUserAlt} className="mr-2" />Instructor</Link></li>
@@ -146,8 +146,8 @@ function Navbar() {
                         {expandedSections.detail && (
                             <ul className="pl-4">
 
-                                <li><Link to="#" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faMoneyBill} className="mr-2" />Pagos <span className="text-amber-400">( prox )</span></Link></li>
-                                <li><Link to="#" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faMoneyCheck} className="mr-2" />Tipo de Pagos <span className="text-amber-400">( prox )</span></Link></li>
+                                <li><Link to="/payments" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faMoneyBill} className="mr-2" />Pagos <span className="text-amber-400">( prox )</span></Link></li>
+                                <li><Link to="/payment-types" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faMoneyCheck} className="mr-2" />Tipo de Pagos </Link></li>
 
                                 <li><Link to="/certificates" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faCertificate} className="mr-2" />Certificados</Link></li>
                                 <li><Link to="/schedules" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faHourglass} className="mr-2" />Horarios</Link></li>

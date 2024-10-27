@@ -31,7 +31,7 @@ export const getDetailValues = async (req, res) => {
         [Op.or]: [
           { total_amount: { [Op.like]: `%${search}%` } },
           { instructor_payment: { [Op.like]: `%${search}%` } },
-          { balance: { [Op.like]: `%${search}%` } },
+          // { balance: { [Op.like]: `%${search}%` } },
           // Puedes agregar más columnas aquí si es necesario
         ],
       },

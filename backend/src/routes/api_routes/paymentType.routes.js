@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { addPaymentType,getPaymentType,getPaymentTypeById,getPaymetnTypesDropdown,updatePaymentType } from "../../controllers/api_controllers/payment_type.controller.js";
+import { addPaymentType,deletePaymentType,getPaymentTypes,getPaymentTypeById,getPaymetnTypesDropdown,updatePaymentType } from "../../controllers/api_controllers/payment_type.controller.js";
 const router = Router();
 
-router.get('/payment_type/:id', getPaymentTypeById);
+router.get('/payment-type/:id', getPaymentTypeById);
+router.post('/payment-types', getPaymentTypes);
 router.get('/payment-type-dropdown', getPaymetnTypesDropdown);
-router.post('/payment_types', getPaymentType);
-router.post('/payment_type', addPaymentType);
-router.put('/payment_type/:id', updatePaymentType);
-// router.delete('/user', register);
+router.post('/payment-type', addPaymentType);
+router.put('/payment-type/:id', updatePaymentType);
+router.delete('/payment-type/:id', deletePaymentType);
 
 export default router;

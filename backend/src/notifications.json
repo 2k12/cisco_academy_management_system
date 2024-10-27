@@ -95,11 +95,18 @@
     "i5": "Instructor no encontrado"
   },
   "tipo_pago": {
-    "tp1": "Error! No se pudo registrar el Tipo de Pago",
+    "tp1": "Error! Tipo de Pago ya Registrado",
     "tp2": "Tipo de Pago actualizado satisfactoriamente",
     "tp3": "Tipo de Pago eliminado satisfactoriamente",
     "tp4": "Tipo de Pago creado satisfactoriamente",
     "tp5": "Tipo de Pago no encontrado"
+  },
+  "pago": {
+    "p1": "Error! Pago ya Registrado",
+    "p2": "Pago actualizado satisfactoriamente",
+    "p3": "Pago eliminado satisfactoriamente",
+    "p4": "Pago creado satisfactoriamente",
+    "p5": "Pago no encontrado"
   },
   "tipo_participante": {
     "tp1": "Error! No se pudo registrar el Tipo de Participante",

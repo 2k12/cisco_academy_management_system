@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useDetailValues } from "../../context/DetailValuesContext";
-// import RegisterChapterModal from "../Chapter/RegisterChapterModal";
-import RegisterDetailValueModal from "../DetailValue/RegisterDetailValueModal";
+import { faEdit, faTrash, faUser} from "@fortawesome/free-solid-svg-icons";
+import { useParticipant } from "../../context/ParticipantContext";
+import RegisterParticipantModal from "../participant/RegisterParticipantModal";
 import ReportsModalityModal from "../Reports/ReportsModalityModal";
 
-function ChapterPage() {
+function ParticipantPage() {
 
-    const { getDetailValues, detailvalues, totalPages, currentPage, setCurrentPage, deleteDetailValues } = useDetailValues();
+    const { participants, getParticipants, totalPages, currentPage, setCurrentPage } = useParticipant();
     const [searchTerm, setSearchTerm] = useState('');
     const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
     const [isReportsModalOpen, setIsReportsModalOpen] = useState(false);
-    const [selectedDetailValue, setSelectedDetailValue] = useState(null);
+    const [selectedParticipant, setSelectedParticipant] = useState(null);
 
     useEffect(() => {
-        getDetailValues({ search: searchTerm, page: currentPage });
+        getParticipants({ search: searchTerm, page: currentPage });
     }, [searchTerm, currentPage]);
+
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
@@ -29,14 +29,14 @@ function ChapterPage() {
         }
     };
 
-    const handleEdit = (detailValue) => {
-        setSelectedDetailValue(detailValue);
+    const handleEdit = (participant) => {
+        setSelectedParticipant(participant);
         setIsRegisterModalOpen(true);
     };
 
-    const handleDelete = (detailValueId) => {
-        deleteDetailValues(detailValueId); // Llama a la función de eliminación
-        // }
+    const handleDelete = (participantId) => {
+        console.log(participantId);
+        // deleteCertificates(participantId); // Llama a la función de eliminación
     };
 
     return (
@@ -44,7 +44,7 @@ function ChapterPage() {
             <div className="flex justify-between mb-6">
                 <input
                     type="text"
-                    placeholder="Buscar Detalle de Valores"
+                    placeholder="Buscar participantes..."
                     value={searchTerm}
                     onChange={handleSearchChange}
                     className="w-full md:w-1/3 p-2 rounded-lg border border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -52,12 +52,12 @@ function ChapterPage() {
                 <div className="flex space-x-4">
                     <button
                         onClick={() => {
-                            setSelectedDetailValue(null);
+                            setSelectedParticipant(null);
                             setIsRegisterModalOpen(true);
                         }}
                         className="px-4 py-2 rounded-lg text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
                     >
-                        Registrar Detalle de Valores
+                        Registrar Participante
                     </button>
                     <button
                         onClick={() => setIsReportsModalOpen(true)}
@@ -73,29 +73,46 @@ function ChapterPage() {
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 sticky top-0">
                         <tr>
                             <th scope="col" className="px-6 py-3">ID</th>
-                            <th scope="col" className="px-6 py-3">Total Recaudado</th>
-                            <th scope="col" className="px-6 py-3">Pago Instructor</th>
-                            <th scope="col" className="px-6 py-3">Saldo a Favor</th>
-                            <th scope="col" className="px-6 py-3">Acciones</th>
+                            <th scope="col" className="px-6 py-3">Nombre</th>
+                            <th scope="col" className="px-6 py-3">Edad</th>
+                            <th scope="col" className="px-6 py-3">CI</th>
+                            <th scope="col" className="px-6 py-3">Teléfono</th>
+                            <th scope="col" className="px-6 py-3">Dirección</th>
+                            <th scope="col" className="px-6 py-3">Institución</th>
+                            <th scope="col" className="px-6 py-3">Tipo</th>
+                            <th scope="col" className="px-6 py-3">Registrado</th>
+                            <th scope="col" className="px-6 py-3">Matriculado</th>
+                            <th scope="col" className="px-6 py-3">Aprobado</th>
+                            <th scope="col" className="px-6 py-3">Pago T.</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {detailvalues.map((detailvalue) => (
-                            <tr key={detailvalue.detail_value_id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700">
+                        {participants.map((participant) => (
+                            <tr key={participant.participant_id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700">
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {detailvalue.detail_value_id}
+                                    {participant.participant_id}
                                 </th>
-                                <td className="px-6 py-4">{detailvalue.total_amount}</td>
-                                <td className="px-6 py-4">{detailvalue.instructor_payment}</td>
-                                <td className="px-6 py-4"> {(detailvalue.total_amount - detailvalue.instructor_payment).toFixed(2)}</td>
+                                <td className="px-6 py-4">{participant.name}</td>
+                                <td className="px-6 py-4">{participant.age}</td>
+                                <td className="px-6 py-4">{participant.cid}</td>
+                                <td className="px-6 py-4">{participant.phone}</td>
+                                <td className="px-6 py-4">{participant.address}</td>
+                                <td className="px-6 py-4">{participant.institution}</td>
+                                <td className="px-6 py-4">{participant.ParticipantType != "" || participant.ParticipantType != null ? participant.ParticipantType.name : ""}</td>
+                                <td className="px-6 py-4">{participant.registered == 1 ? "Registrado" : "Pendiente"}</td>
+                                <td className="px-6 py-4">{participant.enrolled == 1 ? "Matriculado" : "Pendiente"}</td>
+                                <td className="px-6 py-4">{participant.approval == 1 ? "Aprobado" : "Pendiente"}</td>
+                                {/* <td className="px-6 py-4">{participant.is_international == false ? "NO" : "SI"}</td> */}
+                                {/* <td className="px-6 py-4">{certificate.file_url}</td> */}
+
                                 <td className="px-6 py-4 flex space-x-4">
                                     <button className="text-blue-500 hover:text-blue-700">
-                                        <FontAwesomeIcon icon={faEye} />
+                                        <FontAwesomeIcon icon={faUser} />
                                     </button>
-                                    <button className="text-yellow-500 hover:text-yellow-700" onClick={() => handleEdit(detailvalue)}>
+                                    <button className="text-yellow-500 hover:text-yellow-700" onClick={() => handleEdit(participant)}>
                                         <FontAwesomeIcon icon={faEdit} />
                                     </button>
-                                    <button className="text-red-500 hover:text-red-700" onClick={() => handleDelete(detailvalue.detail_value_id)}>
+                                    <button className="text-red-500 hover:text-red-700" onClick={() => handleDelete(participant.participant_id)}>
                                         <FontAwesomeIcon icon={faTrash} />
                                     </button>
                                 </td>
@@ -124,10 +141,10 @@ function ChapterPage() {
                 </button>
             </div>
 
-            <RegisterDetailValueModal isOpen={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)} detail_value={selectedDetailValue} />
+            <RegisterParticipantModal isOpen={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)} participant={selectedParticipant} />
             <ReportsModalityModal isOpen={isReportsModalOpen} onClose={() => setIsReportsModalOpen(false)} />
         </div >
     );
 }
 
-export default ChapterPage;
+export default ParticipantPage;

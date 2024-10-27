@@ -1,5 +1,7 @@
 import PaymentType from "../../models/PaymentType.js";
 import notifications from "../../notifications.json" assert { type: "json" };
+import { Op } from "sequelize";
+
 
 export const addPaymentType = async (req, res) => {
   try {
@@ -11,7 +13,7 @@ export const addPaymentType = async (req, res) => {
     }
 
     const newPaymentType = await PaymentType.create({
-      name,
+      name
     });
 
     return res
@@ -22,12 +24,34 @@ export const addPaymentType = async (req, res) => {
   }
 };
 
-export const getPaymentType = async (req, res) => {
+
+export const getPaymentTypes = async (req, res) => {
   try {
-    const payment_type = await PaymentType.findAll();
-    return res.status(200).json(payment_type);
+    const { search = "", limit = 10, page = 1 } = req.body; // Recibiendo search, limit y page
+    const offset = (page - 1) * limit; // Cálculo de offset para paginación
+
+    const payment_types = await PaymentType.findAndCountAll({
+      where: {
+        [Op.or]: [
+          { name: { [Op.like]: `%${search}%` } },
+          // { status: { [Op.like]: `%${search}%` } },
+          // Puedes agregar más columnas aquí si es necesario
+        ],
+      },
+      limit: limit, // Tamaño de la página
+      offset: offset, // Desplazamiento para la paginación
+    });
+
+    return res.status(200).json({
+      total: payment_types.count, // Total de resultados
+      totalPages: Math.ceil(payment_types.count / limit), // Total de páginas
+      payment_types: payment_types.rows, // Resultados de permisos
+    });
   } catch (error) {
-    return res.status(500).json({ message: notifications.principal.p1, error });
+    console.log(error);
+    return res
+      .status(500)
+      .json({ message: notifications.principal.p1, error });
   }
 };
 
@@ -45,25 +69,23 @@ export const getPaymentTypeById = async (req, res) => {
   }
 };
 
-// export const inactiveRole = async (req, res) => {
-//   try {
-//     const { id } = req.params;
+export const deletePaymentType = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-//     // Buscar y eliminar el usuario
-//     const user = await User.findByPk(id);
-//     if (!user) {
-//       return res.status(404).json({ message: "Usuario no encontrado" });
-//     }
+    const payment_type = await PaymentType.findByPk(id);
+    if (!payment_type) {
+      return res.status(404).json({ message: notifications.tipo_pago.tp1 });
+    }
 
-//     await user.destroy();
+    await payment_type.destroy();
 
-//     return res.status(200).json({ message: "Usuario eliminado exitosamente" });
-//   } catch (error) {
-//     return res
-//       .status(500)
-//       .json({ message: "Error al eliminar el usuario", error });
-//   }
-// };
+    return res.status(200).json({ message: notifications.tipo_pago.tp3 });
+  } catch (error) {
+    return res.status(500).json({ message: notifications.principal.p1, error });
+  }
+};
+
 
 export const updatePaymentType = async (req, res) => {
   try {
@@ -104,10 +126,10 @@ export const updatePaymentType = async (req, res) => {
 
 export const getPaymetnTypesDropdown = async (req, res) => {
   try {
-    const payment_type = await User.findAll({
+    const payment_types = await PaymentType.findAll({
       attributes: ["payment_type_id", "name"],
     });
-    res.json({ payment_type: payment_type });
+    res.json({ payment_types: payment_types });
   } catch (error) {
     res.status(500).json({ message: notifications.principal.p1 });
   }
