@@ -83,7 +83,7 @@ function Navbar() {
                     )}
                     <Link to={'/'}>
                         {/* <h1 className="text-2xl font-bold ml-2">UTN Cisco Academy Management System</h1> */}
-                        <h1 className="text-2xl font-bold ml-2"> UTN CAMS </h1>
+                        <h1 className="text-2xl font-semibold ml-2"> UTN CMS <span className="text-sm">v 0.0.2</span> </h1>
                     </Link>
                 </div>
                 <ul className="flex gap-x-4">
