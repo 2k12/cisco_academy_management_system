@@ -26,7 +26,7 @@ import {
     faInfo
 } from '@fortawesome/free-solid-svg-icons';
 
-import profilePicture from '../assets/usuario.webp';
+import profilePicture from '../assets/user_n.webp';
 
 function Navbar() {
     const { logout, isAuthenticated, user } = useAuth();
@@ -83,7 +83,7 @@ function Navbar() {
                     )}
                     <Link to={'/'}>
                         {/* <h1 className="text-2xl font-bold ml-2">UTN Cisco Academy Management System</h1> */}
-                        <h1 className="text-2xl font-semibold ml-2"> UTN CMS <span className="text-sm">v 0.0.2</span> </h1>
+                        <h1 className="text-2xl font-semibold ml-2"> UTN CMS <span className="text-sm">v 0.0.3</span> </h1>
                     </Link>
                 </div>
                 <ul className="flex gap-x-4">
@@ -91,7 +91,7 @@ function Navbar() {
                         <>
                             <li className="pt-1">
                                 <button type="button" className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
-                                    <img className="w-5 h-5 rounded-full " src={profilePicture} alt="Profile Image" />
+                                    <img className="w-6 h-6 rounded-full " src={profilePicture} alt="Profile Image" />
                                     <span className="pl-3">{user.userExists.name}</span>
                                 </button>
                             </li>
@@ -105,6 +105,30 @@ function Navbar() {
                         </li>
                     )}
                 </ul>
+                {/* <ul className="flex gap-x-4">
+                    {isAuthenticated ? (
+                        <>
+                            <li className="pt-1">
+                                <button type="button" className="flex items-center text-white bg-gray-800 hover:bg-gray-700 rounded-full px-4 py-2 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 transition">
+                                    <img className="w-6 h-6 rounded-full" src={profilePicture} alt="Profile Image" />
+                                    <span className="pl-3">{user.userExists.name}</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button onClick={handleLogout} className="px-4 py-2 bg-red-500 text-white rounded-md font-semibold hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300 transition">
+                                    Cerrar Sesión
+                                </button>
+                            </li>
+                        </>
+                    ) : (
+                        <li>
+                            <Link to="/login" className="px-4 py-2 bg-indigo-500 text-white rounded-md font-semibold hover:bg-indigo-600 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition">
+                                Iniciar Sesión
+                            </Link>
+                        </li>
+                    )}
+                </ul> */}
+
             </nav>
 
             {isAuthenticated && (
@@ -123,14 +147,14 @@ function Navbar() {
                         </button>
                         {expandedSections.cursos && (
                             <ul className="pl-4">
-                                <li><Link to="/courses" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faDiagramProject} className="mr-2" />Cursos</Link></li>
-                                <li><Link to="/chapters" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faBookOpen} className="mr-2" />Capítulos</Link></li>
-                                <li><Link to="/details" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faSwatchbook} className="mr-2" />Detalle</Link></li>
-                                <li><Link to="/participants" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faUser} className="mr-2" />Participante</Link></li>
-                                <li><Link to="/participant-types" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faPerson} className="mr-2" />Tipos de Participante</Link></li>
-                                <li><Link to="/infos_utn" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faInfo} className="mr-2" />Info UTN</Link></li>
-                                <li><Link to="/instructors" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faUserAlt} className="mr-2" />Instructor</Link></li>
-                                <li><Link to="/detail-values" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faMoneyBill1Wave} className="mr-2" />Detalle de Valores</Link></li>
+                                <li><Link to="/courses" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faDiagramProject} className="mr-2" />Cursos</Link></li>
+                                <li><Link to="/chapters" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faBookOpen} className="mr-2" />Capítulos</Link></li>
+                                <li><Link to="/details" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faSwatchbook} className="mr-2" />Detalle</Link></li>
+                                <li><Link to="/participants" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faUser} className="mr-2" />Participante</Link></li>
+                                <li><Link to="/participant-types" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faPerson} className="mr-2" />Tipos de Participante</Link></li>
+                                <li><Link to="/infos_utn" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faInfo} className="mr-2" />Info UTN</Link></li>
+                                <li><Link to="/instructors" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faUserAlt} className="mr-2" />Instructor</Link></li>
+                                <li><Link to="/detail-values" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faMoneyBill1Wave} className="mr-2" />Detalle de Valores</Link></li>
 
                             </ul>
                         )}
@@ -146,12 +170,12 @@ function Navbar() {
                         {expandedSections.detail && (
                             <ul className="pl-4">
 
-                                <li><Link to="/payments" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faMoneyBill} className="mr-2" />Pagos <span className="text-amber-400">( prox )</span></Link></li>
-                                <li><Link to="/payment-types" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faMoneyCheck} className="mr-2" />Tipo de Pagos </Link></li>
+                                <li><Link to="/payments" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faMoneyBill} className="mr-2" />Pagos </Link></li>
+                                <li><Link to="/payment-types" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faMoneyCheck} className="mr-2" />Tipo de Pagos </Link></li>
 
-                                <li><Link to="/certificates" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faCertificate} className="mr-2" />Certificados</Link></li>
-                                <li><Link to="/schedules" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faHourglass} className="mr-2" />Horarios</Link></li>
-                                <li><Link to="/modalities" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faCogs} className="mr-2" />Modalidades</Link></li>
+                                <li><Link to="/certificates" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faCertificate} className="mr-2" />Certificados</Link></li>
+                                <li><Link to="/schedules" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faHourglass} className="mr-2" />Horarios</Link></li>
+                                <li><Link to="/modalities" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faCogs} className="mr-2" />Modalidades</Link></li>
 
 
                             </ul>
@@ -167,9 +191,9 @@ function Navbar() {
                         </button>
                         {expandedSections.usuarios && (
                             <ul className="pl-4">
-                                <li><Link to="/#" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faUser} className="mr-2" />Usuarios <span className="text-amber-400">( prox )</span></Link></li>
-                                <li><Link to="/roles" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faBuildingUser} className="mr-2" />Roles</Link></li>
-                                <li><Link to="/permissions" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faBan} className="mr-2" />Permisos</Link></li>
+                                <li><Link to="/#" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faUser} className="mr-2" />Usuarios <span className="text-amber-400">( prox )</span></Link></li>
+                                <li><Link to="/roles" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faBuildingUser} className="mr-2" />Roles</Link></li>
+                                <li><Link to="/permissions" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faBan} className="mr-2" />Permisos</Link></li>
                             </ul>
                         )}
                     </div>
@@ -184,9 +208,9 @@ function Navbar() {
                         </button>
                         {expandedSections.adicional && (
                             <ul className="pl-4">
-                                <li><Link to="#" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faBookOpenReader} className="mr-2" />Convenios <span className="text-amber-400">( prox )</span></Link></li>
-                                <li><Link to="#" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faComputer} className="mr-2" />Activos <span className="text-amber-400">( prox )</span></Link></li>
-                                <li><Link to="#" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faScaleBalanced} className="mr-2" />Auditoria <span className="text-amber-400">( prox )</span></Link></li>
+                                <li><Link to="#" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faBookOpenReader} className="mr-2" />Convenios <span className="text-amber-400">( prox )</span></Link></li>
+                                <li><Link to="#" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faComputer} className="mr-2" />Activos <span className="text-amber-400">( prox )</span></Link></li>
+                                <li><Link to="#" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faScaleBalanced} className="mr-2" />Auditoria <span className="text-amber-400">( prox )</span></Link></li>
                             </ul>
                         )}
                     </div>

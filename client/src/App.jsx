@@ -23,6 +23,7 @@ import PaymentPage from "./pages/Payment/PaymentPage";
 import ParticipantPage from "./pages/participant/ParticipantPage";
 import DetailPage from "./pages/Detail/DetailPage";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
@@ -56,6 +57,8 @@ function App() {
             <Route path="/details" element={<DetailPage />} />
           </Route>
         </Routes>
+        <Footer />
+
       </BrowserRouter>
     </GlobalProvider>
   );

@@ -31,9 +31,7 @@ export const addDetail = async (req, res) => {
 
     const course = await Course.findOne({ where: { course_id } });
     if (!course) {
-      return res
-        .status(400)
-        .json({ message: "El curso especificado no existe." });
+      return res.status(400).json({ message: notifications.cursos.c5 });
     }
 
     if (course.detail_id) {
@@ -67,62 +65,65 @@ export const addDetail = async (req, res) => {
   }
 };
 
-// export const updateParticipant = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { course_id } = req.body;
+export const updateDetail = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { course_id, ...fieldsToUpdate } = req.body;
 
-//     const participant = await Participant.findByPk(id);
+    // Buscar el detalle a actualizar
+    const detail = await Detail.findByPk(id);
 
-//     if (!participant) {
-//       return res.status(404).json({ message: notifications.participante.p5 });
-//     }
+    if (!detail) {
+      return res.status(404).json({ message: notifications.detalle.d5 });
+    }
 
-//     if (Object.keys(req.body).length === 0) {
-//       return res.status(400).json({ message: notifications.principal.p2 });
-//     }
+    // Verificar si el cuerpo de la solicitud está vacío
+    if (Object.keys(fieldsToUpdate).length === 0 && !course_id) {
+      return res.status(400).json({ message: notifications.principal.p2 });
+    }
 
-//     const updatedFields = {};
+    const updatedFields = {};
 
-//     for (const field in req.body) {
-//       if (Participant.rawAttributes[field]) {
-//         updatedFields[field] = req.body[field];
-//       }
-//     }
+    // Filtrar solo los campos que existen en el modelo Detail
+    for (const field in fieldsToUpdate) {
+      if (Detail.rawAttributes[field]) {
+        updatedFields[field] = fieldsToUpdate[field];
+      }
+    }
 
-//     if (Object.keys(updatedFields).length > 0) {
-//       await participant.update(updatedFields);
-//     }
+    // Preparar las promesas de actualización
+    const updatePromises = [];
 
-//     if (course_id) {
-//       const existingRelation = await CourseParticipant.findOne({
-//         where: {
-//           course_id: course_id,
-//           participant_id: participant.participant_id,
-//         },
-//       });
+    // Actualizar los campos de Detail si hay campos válidos
+    if (Object.keys(updatedFields).length > 0) {
+      updatePromises.push(detail.update(updatedFields));
+    }
 
-//       if (existingRelation) {
-//         await existingRelation.update({
-//           course_id,
-//           participant_id: participant.participant_id,
-//         });
-//       } else {
-//         await CourseParticipant.create({
-//           course_id,
-//           participant_id: participant.participant_id,
-//         });
-//       }
-//     }
+    // Verificar y actualizar el course_id si existe
+    if (course_id) {
+      const course = await Course.findOne({ where: { course_id } });
 
-//     return res
-//       .status(200)
-//       .json({ message: notifications.participante.p2, participant });
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).json({ message: notifications.principal.p1, error });
-//   }
-// };
+      if (!course) {
+        return res.status(400).json({ message: notifications.cursos.c5 });
+      }
+
+      if (course.detail_id) {
+        return res.status(400).json({ message: notifications.principal.p5 });
+      } else {
+        // Actualizar course_id en Course
+        updatePromises.push(course.update({ detail_id: detail.detail_id }));
+      }
+    }
+
+    // Ejecutar todas las actualizaciones en paralelo
+    await Promise.all(updatePromises);
+
+    return res.status(200).json({ message: notifications.detalle.d2, detail });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: notifications.principal.p1, error });
+  }
+};
 
 export const getDetails = async (req, res) => {
   try {
@@ -144,7 +145,7 @@ export const getDetails = async (req, res) => {
       include: [
         {
           model: Course,
-          where: { detail_id: { [Op.col]: 'Detail.detail_id' } }, // Incluye solo el curso relacionado con este detalle
+          where: { detail_id: { [Op.col]: "Detail.detail_id" } }, // Incluye solo el curso relacionado con este detalle
         },
         { model: DetailValues },
         {
@@ -179,7 +180,6 @@ export const getDetails = async (req, res) => {
     return res.status(500).json({ message: notifications.principal.p1, error });
   }
 };
-
 
 // export const getPaymentById = async (req, res) => {
 //   try {

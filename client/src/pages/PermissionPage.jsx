@@ -93,10 +93,7 @@ function PermissionPage() {
                 </td>
 
                 <td className="px-6 py-4">{permission.description}</td>
-                <td className="px-6 py-4 flex space-x-4"> {/* Cambié space-x-2 por space-x-4 */}
-                  <button className="text-blue-500 hover:text-blue-700">
-                    <FontAwesomeIcon icon={faEye} />
-                  </button>
+                <td className="px-6 py-4 flex space-x-4">
                   <button className="text-yellow-500 hover:text-yellow-700" onClick={() => handleEdit(permission)}>
                     <FontAwesomeIcon icon={faEdit} />
                   </button>

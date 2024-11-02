@@ -4,7 +4,7 @@
     "p2": "No se proporcionaron campos para actualizar",
     "p3": "Token no encontrado, acceso denegado.",
     "p4": "Cédula Ingresada, Incorrecta.",
-    "p5": "Error! Relaciones existentes"
+    "p5": "Error! Datos Ya Asignados"
 
   },
   "login": {

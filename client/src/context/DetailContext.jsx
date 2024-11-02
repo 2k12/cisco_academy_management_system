@@ -3,7 +3,9 @@ import Swal from "sweetalert2"; // Importa SweetAlert
 import {
     createDetailRequest,
     deleteDetailRequest,
-    getDetailsRequest
+    getDetailsRequest,
+    updateDetailRequest
+
 } from "../api/detail";
 
 const DetailContext = createContext();
@@ -24,16 +26,25 @@ export function DetailProvider({ children }) {
     const [currentPage, setCurrentPage] = useState(1);
 
     const createDetail = async (detail) => {
-        const res = await createDetailRequest(detail);
-        console.log(res);
-        Swal.fire({
-            icon: 'success',
-            title: 'Éxito',
-            text: res.data.message,
-        });
-        // Aquí puedes actualizar el estado si lo deseas
-        getDetails({ page: currentPage }); // Obtener la lista actualizada
+        try {
+            const res = await createDetailRequest(detail);
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: res.data.message,
+            });
+
+            getDetails({ page: currentPage });
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response?.data?.message || 'Ha ocurrido un error',
+            });
+            console.error(error);
+        }
     };
+
 
     const getDetails = async ({ search = '', page = 1, limit = 15 }) => {
         try {
@@ -41,6 +52,11 @@ export function DetailProvider({ children }) {
             setDetails(res.data.details);
             setTotalPages(res.data.totalPages);
         } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response?.data?.message || 'Ha ocurrido un error',
+            });
             console.log(error);
         }
     };
@@ -53,30 +69,39 @@ export function DetailProvider({ children }) {
                 title: 'Éxito',
                 text: res.data.message,
             });
-            getDetails({ page: currentPage }); 
+            getDetails({ page: currentPage });
         } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response?.data?.message || 'Ha ocurrido un error',
+            });
             console.log(error);
         }
     };
 
-    
-    //   const updateDetailValue = async (detail_value) => {
-    //     try {
-    //       const res = await updateDetailValuesRequest(detail_value);
-    //       Swal.fire({ // Muestra el mensaje de éxito
-    //         icon: 'success',
-    //         title: 'Éxito',
-    //         text: res.data.message,
-    //       });
-    //       console.log(res);
-    //       // Aquí puedes actualizar el estado si lo deseas
-    //       getDetailValues({ page: currentPage }); // Obtener la lista actualizada
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-    //   };
 
-    
+    const updateDetail = async (detail) => {
+        try {
+            const res = await updateDetailRequest(detail);
+            Swal.fire({ // Muestra el mensaje de éxito
+                icon: 'success',
+                title: 'Éxito',
+                text: res.data.message,
+            });
+            console.log(res);
+            getDetails({ page: currentPage }); // Obtener la lista actualizada
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response?.data?.message || 'Ha ocurrido un error',
+            });
+            console.log(error);
+        }
+    };
+
+
     // const getAllDetailValues = async ({ search = '', page = 1, limit = 1000 }) => {
     //     try {
     //         const res = await getAllDetailValuesRequest({ search, page, limit });
@@ -95,6 +120,7 @@ export function DetailProvider({ children }) {
                 createDetail,
                 getDetails,
                 deleteDetails,
+                updateDetail,
                 // updateDetailValue,
                 // getAllDetailValues,
                 // alldetailvaluesforreport,
