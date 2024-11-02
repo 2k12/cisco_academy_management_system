@@ -85,7 +85,7 @@ function CertificateForm({ onClose, certificate }) {
                         handleSelected(e.target.value);
                     }}
                 >
-                    <option value="">Seleccionar Curso</option>
+                    <option value="">Seleccionar Instrutor</option>
                     {instructors.map((instructor) => (
                         <option key={instructor.instructor_id} value={instructor.instructor_id}>
                             {instructor.name}

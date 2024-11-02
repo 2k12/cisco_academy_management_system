@@ -11,29 +11,29 @@ function ReportsModal({ isOpen, onClose }) {
     if (!isOpen) return null;
 
     const handleGeneratePDF = () => {
-        getAllPermissions({ search: "", page: 1 });
+        getAllPermissions({ search: '', page: 1, limit: 1000 });
         console.log(allpermissionsforreport);
         const pdf = new jsPDF();
         pdf.text("Reporte de Permisos", 10, 10);
-    
+
         // Encabezados
         pdf.setFont("helvetica", "bold");
         pdf.text("ID", 10, 20);
         pdf.text("Nombre", 40, 20);
         pdf.text("Estado", 100, 20);
         pdf.setFont("helvetica", "normal");
-    
+
         // Datos
         allpermissionsforreport.forEach((perm, index) => {
-          pdf.text(`${perm.permission_id}`, 10, 30 + index * 10);
-          pdf.text(`${perm.name}`, 40, 30 + index * 10);
-          pdf.text(`${perm.status}`, 100, 30 + index * 10);
+            pdf.text(`${perm.permission_id}`, 10, 30 + index * 10);
+            pdf.text(`${perm.name}`, 40, 30 + index * 10);
+            pdf.text(`${perm.status}`, 100, 30 + index * 10);
         });
-    
+
         pdf.save("reporte.pdf");
         // setGenerateType(null); // Restablecer el tipo de generación
         onClose(); // Cierra el modal después de generar el reporte
-    
+
     };
 
     const handleGenerateExcel = () => {

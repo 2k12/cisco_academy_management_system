@@ -139,3 +139,14 @@ export const updateParticipantType = async (req, res) => {
     return res.status(500).json({ message: notifications.principal.p1, error });
   }
 };
+
+export const getParticipantTypesDropdown = async (req, res) => {
+  try {
+    const participant_types = await ParticipantType.findAll({
+      attributes: ["participant_type_id", "name"],
+    });
+    res.json({ participant_types: participant_types });
+  } catch (error) {
+    res.status(500).json({ message: notifications.principal.p1 });
+  }
+};

@@ -44,7 +44,7 @@ export const getAllCourses = async (req, res) => {
           model: Participant,
           include: [
             { model: ParticipantType },
-            { model: InfoUtn },
+            { model: InfoUtn, through: { attributes: [] } },
             {
               model: Payment,
               through: { attributes: [] }, // Excluye los campos de la tabla intermedia
@@ -160,7 +160,7 @@ export const getCourseById = async (req, res) => {
           model: Participant,
           include: [
             { model: ParticipantType },
-            { model: InfoUtn },
+            { model: InfoUtn, through: { attributes: [] } },
             {
               model: Payment,
               through: { attributes: [] }, // Excluye los campos de la tabla intermedia
@@ -202,7 +202,7 @@ export const getCourseById = async (req, res) => {
       return res.status(404).json({ message: notifications.cursos.c5 });
     }
 
-    return res.status(200).json(course);
+    return res.status(200).json({ course: course });
   } catch (error) {
     return res.status(500).json({ message: notifications.principal.p1, error });
   }
@@ -243,7 +243,7 @@ export const updateCourse = async (req, res) => {
           model: Participant,
           include: [
             { model: ParticipantType },
-            { model: InfoUtn },
+            { model: InfoUtn, through: { attributes: [] } },
             {
               model: Payment,
               through: { attributes: [] }, // Excluye los campos de la tabla intermedia

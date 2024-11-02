@@ -2,7 +2,10 @@
   "principal": {
     "p1": "Imposible procesar su solicitud",
     "p2": "No se proporcionaron campos para actualizar",
-    "p3": "Token no encontrado, acceso denegado."
+    "p3": "Token no encontrado, acceso denegado.",
+    "p4": "Cédula Ingresada, Incorrecta.",
+    "p5": "Error! Relaciones existentes"
+
   },
   "login": {
     "l1": "Usuario incorrecto",
@@ -16,6 +19,13 @@
     "u3": "Usuario desactivado satisfactoriamente",
     "u4": "Usuario creado satisfactoriamente",
     "u5": "Usuario no encontrado"
+  },
+  "participante": {
+    "p1": "Error! Participante ya Registrado",
+    "p2": "Participante actualizado satisfactoriamente",
+    "p3": "Participante desactivado satisfactoriamente",
+    "p4": "Participante creado satisfactoriamente",
+    "p5": "Participante no encontrado"
   },
   "roles": {
     "r1": "Error! No se pudo registrar el rol",
@@ -86,6 +96,13 @@
     "dv3": "Detalle de Valores eliminado satisfactoriamente",
     "dv4": "Detalle de Valores creado satisfactoriamente",
     "dv5": "Detalle de Valores no encontrado"
+  },
+  "detalle": {
+    "d1": "Error! No se pudo registrar el Detalle",
+    "d2": "Detalle actualizado satisfactoriamente",
+    "d3": "Detalle eliminado satisfactoriamente",
+    "d4": "Detalle creado satisfactoriamente",
+    "d5": "Detalle no encontrado"
   },
   "instructor": {
     "i1": "Error! No se pudo registrar el Instructor",

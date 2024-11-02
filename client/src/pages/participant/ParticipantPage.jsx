@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash, faUser} from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useParticipant } from "../../context/ParticipantContext";
 import RegisterParticipantModal from "../participant/RegisterParticipantModal";
 import ReportsModalityModal from "../Reports/ReportsModalityModal";
@@ -68,7 +68,7 @@ function ParticipantPage() {
                 </div>
             </div>
 
-            <div className="scroll-hidden relative overflow-x-auto shadow-md sm:rounded-lg max-h-[600px] min-h-[600px]">
+            <div className="scroll-hidden dark:bg-gray-800 relative overflow-x-auto shadow-md sm:rounded-lg max-h-[600px] min-h-[600px]">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 sticky top-0">
                         <tr>
@@ -83,7 +83,7 @@ function ParticipantPage() {
                             <th scope="col" className="px-6 py-3">Registrado</th>
                             <th scope="col" className="px-6 py-3">Matriculado</th>
                             <th scope="col" className="px-6 py-3">Aprobado</th>
-                            <th scope="col" className="px-6 py-3">Pago T.</th>
+                            <th scope="col" className="px-6 py-3">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -98,7 +98,10 @@ function ParticipantPage() {
                                 <td className="px-6 py-4">{participant.phone}</td>
                                 <td className="px-6 py-4">{participant.address}</td>
                                 <td className="px-6 py-4">{participant.institution}</td>
-                                <td className="px-6 py-4">{participant.ParticipantType != "" || participant.ParticipantType != null ? participant.ParticipantType.name : ""}</td>
+                                {/* <td className="px-6 py-4">{participant.ParticipantType != "" || participant.ParticipantType != null ? participant.ParticipantType.name : ""}</td> */}
+                                <td className="px-6 py-4">
+                                    {participant.ParticipantType ? participant.ParticipantType.name : ""}
+                                </td>
                                 <td className="px-6 py-4">{participant.registered == 1 ? "Registrado" : "Pendiente"}</td>
                                 <td className="px-6 py-4">{participant.enrolled == 1 ? "Matriculado" : "Pendiente"}</td>
                                 <td className="px-6 py-4">{participant.approval == 1 ? "Aprobado" : "Pendiente"}</td>

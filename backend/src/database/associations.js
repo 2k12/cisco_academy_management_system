@@ -5,28 +5,27 @@ import RolePermission from "../models/RolePermission.js";
 import Course from "../models/Course.js";
 import Chapter from "../models/Chapter.js";
 import CourseChapter from "../models/CourseChapter.js";
-import CourseParticipant from "../models/CourseParticipant.js"; 
-// import CourseDetail from "../models/CourseDetail.js"; 
-import Participant from "../models/Participant.js"; 
-import InfoUtn from "../models/InfoUtn.js"; 
-import ParticipantType from "../models/ParticipantType.js"; 
-import ParticipantPayment from "../models/ParticipantPayment.js"; 
-import Payment from "../models/Payment.js"; 
-import PaymentType from "../models/PaymentType.js"; 
-import Detail from "../models/Detail.js";           
-import Modality from "../models/Modality.js";       
-import Instructor from "../models/Instructor.js";   
-import Schedule from "../models/Schedule.js";       
-import DetailSchedule from "../models/DetailSchedule.js"; 
-import DetailModality from "../models/DetailModality.js"; 
-import InstructorCertificate from "../models/InstructorCertificate.js"; 
-import Certificate from "../models/Certificate.js"; 
+import CourseParticipant from "../models/CourseParticipant.js";
+import Participant from "../models/Participant.js";
+import InfoUtn from "../models/InfoUtn.js";
+import ParticipantType from "../models/ParticipantType.js";
+import ParticipantPayment from "../models/ParticipantPayment.js";
+import Payment from "../models/Payment.js";
+import PaymentType from "../models/PaymentType.js";
+import Detail from "../models/Detail.js";
+import Modality from "../models/Modality.js";
+import Instructor from "../models/Instructor.js";
+import Schedule from "../models/Schedule.js";
+import DetailSchedule from "../models/DetailSchedule.js";
+import DetailModality from "../models/DetailModality.js";
+import InstructorCertificate from "../models/InstructorCertificate.js";
+import Certificate from "../models/Certificate.js";
 import DetailValues from "../models/DetailValues.js";
+import ParticipantInfoUtn from "../models/ParticipantInfo.js";
 
 export function associateModels() {
-
-  User.belongsTo(Role, { foreignKey: "role_id" }); 
-  Role.hasMany(User, { foreignKey: "role_id" }); 
+  User.belongsTo(Role, { foreignKey: "role_id" });
+  Role.hasMany(User, { foreignKey: "role_id" });
 
   Role.belongsToMany(Permission, {
     through: RolePermission,
@@ -51,8 +50,11 @@ export function associateModels() {
 
   // * bloque 2
 
-  Course.belongsTo(Detail, { foreignKey: "detail_id" }); 
-  Detail.hasMany(Course, { foreignKey: "detail_id" }); 
+  Course.belongsTo(Detail, { foreignKey: "detail_id" });
+  Detail.hasMany(Course, { foreignKey: "detail_id" });
+
+  // Course.belongsTo(Detail, { foreignKey: "detail_id" });
+  // Detail.hasOne(Course, { foreignKey: "detail_id" });
 
   Course.belongsToMany(Participant, {
     through: CourseParticipant,
@@ -67,8 +69,15 @@ export function associateModels() {
   Participant.belongsTo(ParticipantType, { foreignKey: "participant_type_id" });
   ParticipantType.hasMany(Participant, { foreignKey: "participant_type_id" });
 
-  Participant.belongsTo(InfoUtn, { foreignKey: "info_utn_id" });
-  InfoUtn.hasMany(Participant, { foreignKey: "info_utn_id" });
+  Participant.belongsToMany(InfoUtn, {
+    through: ParticipantInfoUtn,
+    foreignKey: "participant_id",
+  });
+
+  InfoUtn.belongsToMany(Participant, {
+    through: ParticipantInfoUtn,
+    foreignKey: "info_utn_id",
+  });
 
   Participant.belongsToMany(Payment, {
     through: ParticipantPayment,
@@ -86,15 +95,6 @@ export function associateModels() {
   // ******************
 
   // * bloque 3
-  // Course.belongsToMany(Detail, {
-  //   through: CourseDetail,
-  //   foreignKey: "course_id",
-  // });
-
-  // Detail.belongsToMany(Course, {
-  //   through: CourseDetail,
-  //   foreignKey: "detail_id",
-  // });
 
   Detail.belongsTo(Instructor, { foreignKey: "instructor_id" });
   Instructor.hasMany(Detail, { foreignKey: "instructor_id" });
@@ -138,7 +138,7 @@ export function associateModels() {
   Course.belongsTo(User, { foreignKey: "created_by" });
   CourseChapter.belongsTo(User, { foreignKey: "created_by" });
   CourseParticipant.belongsTo(User, { foreignKey: "created_by" });
-    // CourseDetail.belongsTo(User, { foreignKey: "created_by" });
+  // CourseDetail.belongsTo(User, { foreignKey: "created_by" });
   Detail.belongsTo(User, { foreignKey: "created_by" });
   DetailModality.belongsTo(User, { foreignKey: "created_by" });
   DetailSchedule.belongsTo(User, { foreignKey: "created_by" });

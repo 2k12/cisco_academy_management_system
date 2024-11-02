@@ -125,8 +125,8 @@ function Navbar() {
                             <ul className="pl-4">
                                 <li><Link to="/courses" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faDiagramProject} className="mr-2" />Cursos</Link></li>
                                 <li><Link to="/chapters" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faBookOpen} className="mr-2" />Capítulos</Link></li>
-                                <li><Link to="#" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faSwatchbook} className="mr-2" />Detalle<span className="text-amber-400">( prox )</span></Link></li>
-                                <li><Link to="/participants" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faUser} className="mr-2" />Participante<span className="text-amber-400">( prox )</span></Link></li>
+                                <li><Link to="/details" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faSwatchbook} className="mr-2" />Detalle</Link></li>
+                                <li><Link to="/participants" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faUser} className="mr-2" />Participante</Link></li>
                                 <li><Link to="/participant-types" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faPerson} className="mr-2" />Tipos de Participante</Link></li>
                                 <li><Link to="/infos_utn" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faInfo} className="mr-2" />Info UTN</Link></li>
                                 <li><Link to="/instructors" className="block py-1 text-gray-500" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faUserAlt} className="mr-2" />Instructor</Link></li>

@@ -1,11 +1,12 @@
 import { createContext, useContext, useState } from "react";
 import Swal from "sweetalert2"; // Importa SweetAlert
 import {
-    createParticipantTypesRequest,
-    deleteParticipantTypesRequest,
-    getAllParticipantTypesRequest,
-    getParticipantTypesRequest,
-    updateParticipantTypesRequest
+  createParticipantTypesRequest,
+  deleteParticipantTypesRequest,
+  getAllParticipantTypesRequest,
+  getParticipantTypesRequest,
+  updateParticipantTypesRequest,
+  getParticipantTypesDropdownRequest
 } from "../api/participant_type";
 
 const ParticipantTypeContext = createContext();
@@ -20,8 +21,8 @@ export const useParticipantType = () => {
 };
 
 export function ParticipantTypeProvider({ children }) {
-  const [ participant_types, setParticipantTypes] = useState([]);
-  const [ allparticipant_typesforreport, setAllParticipantTypesForReport] = useState([]);
+  const [participant_types, setParticipantTypes] = useState([]);
+  const [allparticipant_typesforreport, setAllParticipantTypesForReport] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -77,15 +78,24 @@ export function ParticipantTypeProvider({ children }) {
     }
   };
 
+  const getParticipantTypesDropdown = async () => {
+    try {
+      const res = await getParticipantTypesDropdownRequest();
+      setParticipantTypes(res.data.participant_types);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <ParticipantTypeContext.Provider
       value={{
         participant_types,
         createParticipantType,
-        updateParticipantType, 
+        updateParticipantType,
         getParticipantTypes,
         getAllParticipantTypes,
         deleteParticipantType,
+        getParticipantTypesDropdown,
         allparticipant_typesforreport,
         totalPages,
         currentPage,

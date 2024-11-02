@@ -1,15 +1,24 @@
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
+import CourseReportModal from "./CourseReportModal";
+
 
 const PreviewCoursePage = () => {
     const location = useLocation();
     const { course } = location.state || {}; // Obtiene el curso del estado pasado
+
+    // const [selectedCourse, setSelectedCourse] = useState(null);
+    // const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+  const [isReportsModalOpen, setIsReportsModalOpen] = useState(false);
+
 
     // Si no hay curso, puedes manejar el caso adecuadamente
     if (!course) {
         return <div>No se encontró información del curso.</div>;
     }
 
+
+    console.log(course);
 
     const getStatusStyles = (status) => {
         switch (status) {
@@ -91,7 +100,8 @@ const PreviewCoursePage = () => {
 
                     {/* Botón de descargar reporte */}
                     <button
-                        onClick={() => { /* Aquí pondremos la lógica de descarga después */ }}
+                        // onClick={() => { /* Aquí pondremos la lógica de descarga después */ }}
+                        onClick={() => setIsReportsModalOpen(true)}
                         className="flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-200"
                     >
                         <svg
@@ -108,7 +118,7 @@ const PreviewCoursePage = () => {
                                 d="M12 4v16m8-8H4"
                             />
                         </svg>
-                        Descargar Planificación
+                        Descargar Anexos
                     </button>
                 </div>
 
@@ -172,32 +182,32 @@ const PreviewCoursePage = () => {
                     {course.Details && course.Details != [] ? (
                         <div className="space-y-6">
                             {/* {course.Details.map((detail) => ( */}
-                                <div key={course.Detail.detail_id} className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-inner">
-                                    <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                        <strong>Descripción:</strong> {course.Detail.course_description}
-                                    </p>
-                                    <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                        <strong>Costo:</strong> <span className="text-black dark:text-white">${course.Detail.cost}</span>
-                                    </p>
-                                    <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                        <strong>Horas:</strong> {course.Detail.total_hours}
-                                    </p>
-                                    <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                        <strong>Modalidad/es:</strong>
-                                        {course.Detail.Modalities && course.Detail.Modalities.length > 0 ? (
-                                            course.Detail.Modalities.map((modality, index) => (
-                                                <span key={index} className="inline-block bg-trnasparent text-blue-700 px-3 py-1  font-medium mr-2">
-                                                    {modality.name}
-                                                </span>
-                                            ))
-                                        ) : (
-                                            <span>No disponible</span>
-                                        )}
-                                    </p>
-                                    <p className="text-lg font-semibold text-red-500 dark:text-red-400">
-                                        <strong>Requerimiento Participantes:</strong> {course.Detail.participant_requeriment}
-                                    </p>
-                                </div>
+                            <div key={course.Detail.detail_id} className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-inner">
+                                <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                                    <strong>Descripción:</strong> {course.Detail.course_description}
+                                </p>
+                                <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                                    <strong>Costo:</strong> <span className="text-black dark:text-white">${course.Detail.cost}</span>
+                                </p>
+                                <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                                    <strong>Horas:</strong> {course.Detail.total_hours}
+                                </p>
+                                <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                                    <strong>Modalidad/es:</strong>
+                                    {course.Detail.Modalities && course.Detail.Modalities.length > 0 ? (
+                                        course.Detail.Modalities.map((modality, index) => (
+                                            <span key={index} className="inline-block bg-trnasparent text-blue-700 px-3 py-1  font-medium mr-2">
+                                                {modality.name}
+                                            </span>
+                                        ))
+                                    ) : (
+                                        <span>No disponible</span>
+                                    )}
+                                </p>
+                                <p className="text-lg font-semibold text-red-500 dark:text-red-400">
+                                    <strong>Requerimiento Participantes:</strong> {course.Detail.participant_requeriment}
+                                </p>
+                            </div>
                             {/* ))} */}
                         </div>
                     ) : (
@@ -212,30 +222,30 @@ const PreviewCoursePage = () => {
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         {course.Detail && course.Detail != [] ? (
                             // course.Details.map((detail) => (
-                                <div key={course.Detail.detail_id} className="bg-white shadow-lg rounded-lg overflow-hidden dark:bg-gray-800 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300">
-                                    <div className="p-6">
-                                        {course.Detail.Schedules && course.Detail.Schedules.length > 0 ? (
-                                            course.Detail.Schedules.map((schedule, index) => (
-                                                <div key={index} className="flex items-center space-x-4 bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2 shadow-inner">
-                                                    <div className="flex-shrink-0">
-                                                        <div className="bg-blue-500 text-white p-3 rounded-full">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 0v4M3 9h18M5 21h14a2 2 0 002-2V9H3v10a2 2 0 002 2z" />
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <p className="font-semibold text-gray-800 dark:text-white">Días: {parseDays(schedule.days)}</p>
-                                                        <p className="text-gray-600 dark:text-gray-300"><strong>Hora Inicio:</strong> {schedule.start_time}</p>
-                                                        <p className="text-gray-600 dark:text-gray-300"><strong>Hora Fin:</strong> {schedule.end_time}</p>
+                            <div key={course.Detail.detail_id} className="bg-white shadow-lg rounded-lg overflow-hidden dark:bg-gray-800 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300">
+                                <div className="p-6">
+                                    {course.Detail.Schedules && course.Detail.Schedules.length > 0 ? (
+                                        course.Detail.Schedules.map((schedule, index) => (
+                                            <div key={index} className="flex items-center space-x-4 bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2 shadow-inner">
+                                                <div className="flex-shrink-0">
+                                                    <div className="bg-blue-500 text-white p-3 rounded-full">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 0v4M3 9h18M5 21h14a2 2 0 002-2V9H3v10a2 2 0 002 2z" />
+                                                        </svg>
                                                     </div>
                                                 </div>
-                                            ))
-                                        ) : (
-                                            <p className="text-gray-500 dark:text-gray-400">No hay horarios disponibles</p>
-                                        )}
-                                    </div>
+                                                <div>
+                                                    <p className="font-semibold text-gray-800 dark:text-white">Días: {parseDays(schedule.days)}</p>
+                                                    <p className="text-gray-600 dark:text-gray-300"><strong>Hora Inicio:</strong> {schedule.start_time}</p>
+                                                    <p className="text-gray-600 dark:text-gray-300"><strong>Hora Fin:</strong> {schedule.end_time}</p>
+                                                </div>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p className="text-gray-500 dark:text-gray-400">No hay horarios disponibles</p>
+                                    )}
                                 </div>
+                            </div>
                             // ))
                         ) : (
                             <span className="text-gray-500 dark:text-gray-400">información no disponible</span>
@@ -247,73 +257,73 @@ const PreviewCoursePage = () => {
                     {/* Detalles del Curso */}
                     <h3 className='uppercase text-xl mb-4'>DETALLES</h3>
 
-                    {course.Detail && course.Detail != []> 0 ? (
+                    {course.Detail && course.Detail != [] > 0 ? (
                         // course.Details.map((detail) => (
-                            <div key={course.Detail.detail_id} className="bg-white shadow-lg rounded-lg overflow-hidden dark:bg-gray-800 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300 mb-8">
-                                <div className="p-6">
-                                    {/* Información Financiera */}
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        {/* <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-inner"> */}
-                                        <div className="bg-transparent p-4 rounded-lg shadow-inner">
-                                            <h4 className="text-xl font-bold text-gray-700 dark:text-gray-200 mb-3">
-                                                <i className="fas fa-money-bill-wave text-green-500"></i> Información Financiera
-                                            </h4>
-                                            <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                                <strong>Total Recaudado:</strong> ${course.Detail.DetailValue.total_amount}
-                                            </p>
-                                            <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                                <strong>Pago Instructor:</strong> ${course.Detail.DetailValue.instructor_payment}
-                                            </p>
+                        <div key={course.Detail.detail_id} className="bg-white shadow-lg rounded-lg overflow-hidden dark:bg-gray-800 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300 mb-8">
+                            <div className="p-6">
+                                {/* Información Financiera */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {/* <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-inner"> */}
+                                    <div className="bg-transparent p-4 rounded-lg shadow-inner">
+                                        <h4 className="text-xl font-bold text-gray-700 dark:text-gray-200 mb-3">
+                                            <i className="fas fa-money-bill-wave text-green-500"></i> Información Financiera
+                                        </h4>
+                                        <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                                            <strong>Total Recaudado:</strong> ${course.Detail.DetailValue.total_amount}
+                                        </p>
+                                        <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                                            <strong>Pago Instructor:</strong> ${course.Detail.DetailValue.instructor_payment}
+                                        </p>
 
-                                            <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                                <strong>Total Balance:</strong> ${course.Detail.DetailValue.total_amount - course.Detail.DetailValue.instructor_payment}
-                                            </p>
-                                        </div>
+                                        <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                                            <strong>Total Balance:</strong> ${course.Detail.DetailValue.total_amount - course.Detail.DetailValue.instructor_payment}
+                                        </p>
+                                    </div>
 
-                                        {/* Información del Instructor */}
-                                        {/* <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-inner"> */}
-                                        <div className="bg-transparent p-4 rounded-lg shadow-inner">
-                                            <h4 className="text-xl font-bold text-gray-700 dark:text-gray-200 mb-3">
-                                                <i className="fas fa-chalkboard-teacher text-blue-500"></i> Información del Instructor
-                                            </h4>
-                                            <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                                <strong>Nombre:</strong> {course.Detail.Instructor.name}
-                                            </p>
-                                            <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                                <strong>Email:</strong> {course.Detail.Instructor.email}
-                                            </p>
-                                            <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                                <strong>Teléfono:</strong> {course.Detail.Instructor.phone}
-                                            </p>
-                                            <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                                <strong>Cédula:</strong> {course.Detail.Instructor.identification_number}
-                                            </p>
-                                            <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                                <strong>RUC:</strong> {course.Detail.Instructor.ruc_number}
-                                            </p>
+                                    {/* Información del Instructor */}
+                                    {/* <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-inner"> */}
+                                    <div className="bg-transparent p-4 rounded-lg shadow-inner">
+                                        <h4 className="text-xl font-bold text-gray-700 dark:text-gray-200 mb-3">
+                                            <i className="fas fa-chalkboard-teacher text-blue-500"></i> Información del Instructor
+                                        </h4>
+                                        <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                                            <strong>Nombre:</strong> {course.Detail.Instructor.name}
+                                        </p>
+                                        <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                                            <strong>Email:</strong> {course.Detail.Instructor.email}
+                                        </p>
+                                        <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                                            <strong>Teléfono:</strong> {course.Detail.Instructor.phone}
+                                        </p>
+                                        <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                                            <strong>Cédula:</strong> {course.Detail.Instructor.identification_number}
+                                        </p>
+                                        <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                                            <strong>RUC:</strong> {course.Detail.Instructor.ruc_number}
+                                        </p>
 
-                                            {/* Certificados del Instructor */}
-                                            <div className="mt-4">
-                                                <h5 className="text-lg font-bold text-gray-600 dark:text-gray-300 mb-2">
-                                                    <i className="fas fa-certificate text-yellow-500"></i> Certificados
-                                                </h5>
-                                                {course.Detail.Instructor.Certificates && course.Detail.Instructor.Certificates.length > 0 ? (
-                                                    course.Detail.Instructor.Certificates.map((certificate, index) => (
-                                                        <div key={index} className="flex items-center bg-gray-200 dark:bg-gray-600 p-3 rounded-lg mb-2 shadow">
-                                                            <i className="fas fa-file-alt text-gray-600 dark:text-gray-300 mr-3"></i>
-                                                            <a href={certificate.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-300 hover:underline">
-                                                                Ver Certificado {index + 1}
-                                                            </a>
-                                                        </div>
-                                                    ))
-                                                ) : (
-                                                    <p className="text-gray-500 dark:text-gray-300">No hay certificados disponibles</p>
-                                                )}
-                                            </div>
+                                        {/* Certificados del Instructor */}
+                                        <div className="mt-4">
+                                            <h5 className="text-lg font-bold text-gray-600 dark:text-gray-300 mb-2">
+                                                <i className="fas fa-certificate text-yellow-500"></i> Certificados
+                                            </h5>
+                                            {course.Detail.Instructor.Certificates && course.Detail.Instructor.Certificates.length > 0 ? (
+                                                course.Detail.Instructor.Certificates.map((certificate, index) => (
+                                                    <div key={index} className="flex items-center bg-gray-200 dark:bg-gray-600 p-3 rounded-lg mb-2 shadow">
+                                                        <i className="fas fa-file-alt text-gray-600 dark:text-gray-300 mr-3"></i>
+                                                        <a href={certificate.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-300 hover:underline">
+                                                            Ver Certificado {index + 1}
+                                                        </a>
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <p className="text-gray-500 dark:text-gray-300">No hay certificados disponibles</p>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         // ))
                     ) : (
                         <span className="text-gray-500 dark:text-gray-400">Información no disponible</span>
@@ -370,8 +380,9 @@ const PreviewCoursePage = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {course.Participants.map((participant, index) => (
-                                            <tr key={participant.id} className={`border-b ${index % 2 === 0 ? 'bg-gray-50 dark:bg-gray-800' : 'bg-gray-100 dark:bg-gray-900'}`}>
+                                        {course.Participants.map((participant) => (
+                                            // <tr key={participant.id} className={`border-b ${index % 2 === 0 ? 'bg-gray-50 dark:bg-gray-800' : 'bg-gray-100 dark:bg-gray-900'}`}>
+                                            <tr key={participant.id} className={`border-b bg-gray-100 dark:bg-gray-900`}>
                                                 <td className="px-4 py-2 text-gray-700 dark:text-white">{participant.name}</td>
                                                 <td className="px-4 py-2 text-gray-700 dark:text-white">
                                                     {participant.ParticipantType ? participant.ParticipantType.name : 'Tipo no disponible'}
@@ -407,6 +418,7 @@ const PreviewCoursePage = () => {
                 </div>
             </div>
 
+            <CourseReportModal isOpen={isReportsModalOpen} onClose={() => setIsReportsModalOpen(false)} course={course} />
 
         </div>
     );

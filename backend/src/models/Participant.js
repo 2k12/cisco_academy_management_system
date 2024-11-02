@@ -51,11 +51,11 @@ const Participant = sequelize.define(
     approval: {
       type: DataTypes.BOOLEAN,
     },
-    info_utn_id: {
-      type: DataTypes.INTEGER,
-    },
     total_payment: {
       type: DataTypes.DECIMAL(10, 2),
+    },
+    active: {
+      type: DataTypes.BOOLEAN,
     },
     createdAt: {
       type: DataTypes.DATE,

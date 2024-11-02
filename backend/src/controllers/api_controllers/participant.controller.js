@@ -1,38 +1,190 @@
 import Payment from "../../models/Payment.js";
 import Participant from "../../models/Participant.js";
 import PaymentType from "../../models/PaymentType.js";
-import notifications from "../../notifications.json" assert { type: "json" };
-import { Op } from "sequelize";
 import ParticipantType from "../../models/ParticipantType.js";
 import InfoUtn from "../../models/InfoUtn.js";
+import CourseParticipant from "../../models/CourseParticipant.js";
+import Detail from "../../models/Detail.js";
+import DetailValues from "../../models/DetailValues.js";
+import Instructor from "../../models/Instructor.js";
+import Certificate from "../../models/Certificate.js";
+import Modality from "../../models/Modality.js";
+import Schedule from "../../models/Schedule.js";
+import Course from "../../models/Course.js";
 
-// export const addPayment = async (req, res) => {
-//   try {
-//     const { description, amount, payment_type_id, participant_id } = req.body;
+import notifications from "../../notifications.json" assert { type: "json" };
+import { Op } from "sequelize";
 
-//     const paymentTypeExists = await PaymentType.findOne({ where: { name } });
-//     if (paymentTypeExists) {
-//       return res.status(400).json({ message: notifications.tipo_pago.tp1 });
-//     }
+export const addParticipant = async (req, res) => {
+  try {
+    const {
+      name,
+      age,
+      cid,
+      phone,
+      address,
+      institution,
+      participant_type_id,
+      certificate_required,
+      file_url,
+      registered,
+      enrolled,
+      approval,
+      total_payment,
+      course_id,
+    } = req.body;
 
-//     const newPayment = await Payment.create({
-//       description,
-//       amount,
-//       payment_type_id,
-//     });
+    if (validateCid(cid) == 1) {
+      const participantExists = await Participant.findOne({ where: { cid } });
+      if (participantExists) {
+        return res.status(400).json({ message: notifications.participante.p1 });
+      }
+      const newParticipant = await Participant.create({
+        name,
+        age,
+        cid,
+        phone,
+        address,
+        institution,
+        participant_type_id,
+        certificate_required,
+        file_url,
+        registered,
+        enrolled,
+        approval,
+        total_payment,
+        active: 1,
+      });
 
-//     await ParticipantPayment.create({
-//       participant_id: participant_id,
-//       payment_id: newPayment.payment_id,
-//     });
+      const courseExist = await Course.findOne({
+        where: { course_id },
+        include: [
+          {
+            model: Detail,
+            include: [
+              { model: DetailValues },
+              {
+                model: Instructor,
+                include: [
+                  {
+                    model: Certificate,
+                    through: { attributes: [] },
+                  },
+                ],
+              },
+              { model: Modality, through: { attributes: [] } },
+              { model: Schedule, through: { attributes: [] } },
+            ],
+          },
+        ],
+      });
 
-//     return res
-//       .status(201)
-//       .json({ message: notifications.pago.p4, payment: newPayment });
-//   } catch (error) {
-//     return res.status(500).json({ message: notifications.principal.p1, error });
-//   }
-// };
+      if (courseExist) {
+        console.log("curso encontrado");
+        const detailToUpdate = courseExist.Detail; // Supongo que hay un detalle asociado
+        console.log(detailToUpdate);
+        // Actualizar campos en `Detail` según los valores de `Participant`
+        // if (approval === 1) {
+        //   await detailToUpdate.update({ approval: updateAttribute(detailToUpdate.approval) });
+        // }
+
+        if (enrolled) {
+          console.log("matriculado");
+          await detailToUpdate.update({
+            num_enrolled: updateAttribute(detailToUpdate.num_enrolled, 1),
+          });
+        }
+
+        if (registered) {
+          console.log("registrado");
+          await detailToUpdate.update({
+            num_registered: updateAttribute(detailToUpdate.num_registered, 1),
+          });
+        }
+      }
+
+      await CourseParticipant.create({
+        course_id,
+        participant_id: newParticipant.participant_id,
+      });
+
+      return res.status(201).json({
+        message: notifications.participante.p4,
+        participant: newParticipant,
+      });
+    } else {
+      return res.status(400).json({ message: notifications.participante.p5 });
+    }
+  } catch (error) {
+    console.log(`error ${error}`);
+    return res.status(500).json({ message: notifications.principal.p1, error });
+  }
+};
+
+export const updateParticipant = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { course_id } = req.body;
+
+    const participant = await Participant.findByPk(id);
+
+    if (!participant) {
+      return res.status(404).json({ message: notifications.participante.p5 });
+    }
+
+    if (Object.keys(req.body).length === 0) {
+      return res.status(400).json({ message: notifications.principal.p2 });
+    }
+
+    const updatedFields = {};
+
+    for (const field in req.body) {
+      if (Participant.rawAttributes[field]) {
+        updatedFields[field] = req.body[field];
+      }
+    }
+
+    if (Object.keys(updatedFields).length > 0) {
+      await participant.update(updatedFields);
+    }
+
+    if (course_id) {
+      const existingRelation = await CourseParticipant.findOne({
+        where: {
+          course_id: course_id,
+          participant_id: participant.participant_id,
+        },
+      });
+
+      if (existingRelation) {
+        await existingRelation.update({
+          course_id,
+          participant_id: participant.participant_id,
+        });
+      } else {
+        await CourseParticipant.create({
+          course_id,
+          participant_id: participant.participant_id,
+        });
+      }
+    }
+
+    return res
+      .status(200)
+      .json({ message: notifications.participante.p2, participant });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: notifications.principal.p1, error });
+  }
+};
+
+// Función para incrementar el atributo dado
+function updateAttribute(attribute, operation) {
+  if (operation == 0) {
+    return attribute - 1;
+  }
+  return attribute + 1;
+}
 
 export const getParticipants = async (req, res) => {
   try {
@@ -51,8 +203,12 @@ export const getParticipants = async (req, res) => {
         ],
       },
       include: [
+        {
+          model: Course,
+          through: { attributes: [] },
+        },
         { model: ParticipantType },
-        { model: InfoUtn },
+        { model: InfoUtn, through: { attributes: [] } },
         {
           model: Payment,
           through: { attributes: [] }, // Excluye los campos de la tabla intermedia
@@ -92,7 +248,7 @@ export const getParticipants = async (req, res) => {
 //   }
 // };
 
-// ! hay que agregar la logica para eliminar la relacion porque 
+// ! hay que agregar la logica para eliminar la relacion porque
 // export const deletePayment = async (req, res) => {
 //   try {
 //     const { id } = req.params;
@@ -110,63 +266,6 @@ export const getParticipants = async (req, res) => {
 //   }
 // };
 
-// export const updatePayment = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { participant_id, payment_type_id } = req.body;
-
-//     const payment = await Payment.findByPk(id);
-
-//     if (!payment) {
-//       return res.status(404).json({ message: notifications.pago.p5 });
-//     }
-
-//     if (Object.keys(req.body).length === 0) {
-//       return res.status(400).json({ message: notifications.principal.p2 });
-//     }
-
-//     const updatedFields = {};
-
-//     // Actualizar solo los campos válidos del modelo Payment
-//     for (const field in req.body) {
-//       if (Payment.rawAttributes[field]) {
-//         updatedFields[field] = req.body[field];
-//       }
-//     }
-
-//     // Si hay campos para actualizar, ejecuta la actualización en Payment
-//     if (Object.keys(updatedFields).length > 0) {
-//       await payment.update(updatedFields);
-//     }
-
-//     // Actualizar la relación en ParticipantPayment si se proporcionan `participant_id` y `payment_type_id`
-//     if (participant_id && payment_type_id) {
-//       const existingRelation = await ParticipantPayment.findOne({
-//         where: {
-//           participant_id: participant_id,
-//           payment_type_id: payment_type_id,
-//         },
-//       });
-
-//       if (existingRelation) {
-//         // Actualiza la relación existente
-//         await existingRelation.update({ participant_id, payment_type_id });
-//       } else {
-//         // Crea una nueva relación si no existe
-//         await ParticipantPayment.create({
-//           participant_id: participant_id,
-//           payment_type_id: payment_type_id,
-//         });
-//       }
-//     }
-
-//     return res.status(200).json({ message: notifications.tema.t2, payment });
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).json({ message: notifications.principal.p1, error });
-//   }
-// };
-
 export const getParticipantsDropdown = async (req, res) => {
   try {
     const participants = await Participant.findAll({
@@ -177,3 +276,71 @@ export const getParticipantsDropdown = async (req, res) => {
     res.status(500).json({ message: notifications.principal.p1 });
   }
 };
+
+function validateCid(cid) {
+  if (cid.length == 10) {
+    var digito_region = cid.substring(0, 2);
+
+    if (digito_region >= 1 && digito_region <= 24) {
+      var ultimo_digito = cid.substring(9, 10);
+
+      var pares =
+        parseInt(cid.substring(1, 2)) +
+        parseInt(cid.substring(3, 4)) +
+        parseInt(cid.substring(5, 6)) +
+        parseInt(cid.substring(7, 8));
+
+      var numero1 = cid.substring(0, 1);
+      var numero1 = numero1 * 2;
+      if (numero1 > 9) {
+        var numero1 = numero1 - 9;
+      }
+
+      var numero3 = cid.substring(2, 3);
+      var numero3 = numero3 * 2;
+      if (numero3 > 9) {
+        var numero3 = numero3 - 9;
+      }
+
+      var numero5 = cid.substring(4, 5);
+      var numero5 = numero5 * 2;
+      if (numero5 > 9) {
+        var numero5 = numero5 - 9;
+      }
+
+      var numero7 = cid.substring(6, 7);
+      var numero7 = numero7 * 2;
+      if (numero7 > 9) {
+        var numero7 = numero7 - 9;
+      }
+
+      var numero9 = cid.substring(8, 9);
+      var numero9 = numero9 * 2;
+      if (numero9 > 9) {
+        var numero9 = numero9 - 9;
+      }
+
+      var impares = numero1 + numero3 + numero5 + numero7 + numero9;
+
+      var suma_total = pares + impares;
+
+      var primer_digito_suma = String(suma_total).substring(0, 1);
+
+      var decena = (parseInt(primer_digito_suma) + 1) * 10;
+
+      var digito_validador = decena - suma_total;
+
+      if (digito_validador == 10) var digito_validador = 0;
+
+      if (digito_validador == ultimo_digito) {
+        return 1;
+      } else {
+        return 0;
+      }
+    } else {
+      return 2;
+    }
+  } else {
+    return 3;
+  }
+}
