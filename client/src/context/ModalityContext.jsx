@@ -5,7 +5,8 @@ import {
   getModalitiesRequest,
   getAllModalitiesRequest,
   updateModalitiesRequest,  // Importa la función de actualización
-  deleteModalitiesRequest
+  deleteModalitiesRequest,
+  getModalitiesDropdownRequest
 } from "../api/modality";
 
 const ModalityContext = createContext();
@@ -24,6 +25,15 @@ export function ModalityProvider({ children }) {
   const [allmodalitiesforreport, setAllModalitiesForReport] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
+  
+  const getModalitiesDropdown = async () => {
+    try {
+      const res = await getModalitiesDropdownRequest();
+      setModalities(res.data.modalities);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const createModality = async (modalities) => {
     const res = await createModalitiesRequest(modalities);
@@ -86,6 +96,7 @@ export function ModalityProvider({ children }) {
         getModalities,
         getAllModalities,
         deleteModality,
+        getModalitiesDropdown,
         allmodalitiesforreport,
         totalPages,
         currentPage,

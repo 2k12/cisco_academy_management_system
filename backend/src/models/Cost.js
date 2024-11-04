@@ -4,39 +4,21 @@ import db from "../database/db.js"; // Importa todo el objeto
 
 const { sequelize } = db; // Extrae sequelize del objeto
 
-const Course = sequelize.define(
-  "Course",
+const Cost = sequelize.define(
+  "Cost",
   {
-    course_id: {
+    cost_id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
-      field: "course_id",
+      field: "cost_id",
     },
-    course_name: {
+    amount: {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
-    start_registration_date: {
-      type: DataTypes.DATE,
-    },
-    end_registration_date: {
-      type: DataTypes.DATE,
-    },
-    start_enrollment_date: {
-      type: DataTypes.DATE,
-    },
-    end_enrollment_date: {
-      type: DataTypes.DATE,
-    },
-    start_date: {
-      type: DataTypes.DATE,
-    },
-    end_date: {
-      type: DataTypes.DATE,
-    },
-    status: {
-      type: DataTypes.STRING(100),
+    description: {
+      type: DataTypes.STRING(600),
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -57,19 +39,11 @@ const Course = sequelize.define(
       },
       field: "created_by",
     },
-    detail_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "Detail",
-        key: "detail_id",
-      },
-      field: "detail_id",
-    },
   },
   {
-    tableName: "course",
+    tableName: "cost",
     timestamps: false,
   }
 );
 
-export default Course;
+export default Cost;

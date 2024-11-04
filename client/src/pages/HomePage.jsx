@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function HomePage() {
   return (
     <div className="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100 font-sans">
@@ -6,15 +8,14 @@ function HomePage() {
         <div className="bg-black bg-opacity-60 p-8 rounded-lg text-center max-w-xl">
           <h2 className="text-4xl font-extrabold text-white mb-4">Bienvenidos a la Plataforma de Gestión de Cursos Cisco</h2>
           <p className="text-gray-300 mb-6">
-            Accede a cursos certificados y herramientas de aprendizaje de la Academia Cisco, diseñada especialmente para estudiantes de la Facultad de Ingeniería en Ciencias Aplicadas de la UTN.
+            Diseñada especialmente para la gestión de los Cursos dictados por la Academia de la Facultad de Ingeniería en Ciencias Aplicadas de la UTN.
           </p>
-          <button className="px-6 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition mr-4">Iniciar Sesión</button>
-          <button className="px-6 py-3 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition">Más Información</button>
+          <Link to={"/login"}  className="px-6 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition mr-4">Iniciar Sesión</Link>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-16 bg-gray-50 dark:bg-gray-800">
+      {/* <section id="features" className="py-16 bg-gray-50 dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-10 text-gray-800 dark:text-white">Características</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -38,10 +39,10 @@ function HomePage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Gallery Section */}
-      <section id="gallery" className="py-16 bg-white dark:bg-gray-900">
+      {/* <section id="gallery" className="py-16 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-10 text-gray-800 dark:text-white">Galería</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -52,10 +53,10 @@ function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Call to Action Section */}
-      <section className="py-16 bg-indigo-600 text-white">
+      {/* <section className="py-16 bg-indigo-600 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">¿Listo para mejorar tus habilidades?</h2>
           <p className="mb-6">
@@ -63,7 +64,7 @@ function HomePage() {
           </p>
           <button className="px-6 py-3 bg-white text-indigo-600 rounded-md hover:bg-gray-200 transition">Inscribirse Ahora</button>
         </div>
-      </section>
+      </section> */}
 
       
     </div>

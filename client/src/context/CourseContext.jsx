@@ -1,12 +1,12 @@
 import { createContext, useContext, useState } from "react";
 import Swal from "sweetalert2"; // Importa SweetAlert
 import {
-    getCoursesDropdownRequest,
-    createCourseRequest,
-    deleteCourseRequest,
-    getAllCoursesRequest,
-    getCoursesRequest,
-    updateCourseRequest
+  getCoursesDropdownRequest,
+  createCourseRequest,
+  deleteCourseRequest,
+  getAllCoursesRequest,
+  getCoursesRequest,
+  updateCourseRequest
 } from "../api/course";
 
 const CourseContext = createContext();
@@ -27,12 +27,25 @@ export function CourseProvider({ children }) {
   const [currentPage, setCurrentPage] = useState(1);
 
   const createCourse = async (course) => {
-    const res = await createCourseRequest(course);
-    console.log(res);
-    // Aquí puedes actualizar el estado si lo deseas
-    getCourses({ page: currentPage }); // Obtener la lista actualizada
-  };
+    try {
+      const res = await createCourseRequest(course);
+      // Aquí puedes actualizar el estado si lo deseas
+      Swal.fire({
+        icon: 'success',
+        title: 'Éxito',
+        text: res.data.message,
+      });
+      getCourses({ page: currentPage }); // Obtener la lista actualizada
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.response?.data?.message || 'Ha ocurrido un error',
+      });
+      console.error(error);
+    }
 
+  };
   const updateCourse = async (course) => {
     try {
       const res = await updateCourseRequest(course);
@@ -47,7 +60,6 @@ export function CourseProvider({ children }) {
       console.log(error);
     }
   };
-
   const getCourses = async ({ search = '', page = 1, limit = 15 }) => {
     try {
       const res = await getCoursesRequest({ search, page, limit });
@@ -58,7 +70,6 @@ export function CourseProvider({ children }) {
       console.log(error);
     }
   };
-
   const getAllCourses = async ({ search = '', page = 1, limit = 1000 }) => {
     try {
       const res = await getAllCoursesRequest({ search, page, limit });
@@ -75,7 +86,6 @@ export function CourseProvider({ children }) {
       console.log(error);
     }
   };
-  
   const deleteCourses = async (id) => {
     try {
       await deleteCourseRequest(id);

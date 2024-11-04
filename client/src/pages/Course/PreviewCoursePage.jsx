@@ -12,6 +12,8 @@ const PreviewCoursePage = () => {
     const [isReportsModalOpen, setIsReportsModalOpen] = useState(false);
 
 
+    console.log(course);
+
     // Si no hay curso, puedes manejar el caso adecuadamente
     if (!course) {
         return <div>No se encontró información del curso.</div>;
@@ -35,9 +37,8 @@ const PreviewCoursePage = () => {
     };
 
     const formatDateForInput = (dateString) => {
-        if (!dateString) return "";
+        if (!dateString) return "...";
         const date = new Date(dateString);
-        // Formato: YYYY-MM-DDTHH:MM
         return date.toISOString().slice(0, 16);
     };
 
@@ -128,23 +129,23 @@ const PreviewCoursePage = () => {
                     </span>
                 </div>
                 <div className="flex justify-between items-center mb-5">
-                    <h2>{formatDateForInput(course.Detail.createdAt)}</h2>
+                    <h2>{formatDateForInput(course.createdAt)}</h2>
                 </div>
-
                 <div className="grid grid-cols-3 gap-10 mb-5">
                     <div className="flex flex-col items-center bg-gray-800 rounded-lg p-5">
-                        <span className="text-5xl font-bold">{course.Detail.num_enrolled}</span>
+                        <span className="text-5xl font-bold">{course.Detail?.num_enrolled ?? "..."}</span>
                         <span className="text-sm uppercase mt-2">Inscritos</span>
                     </div>
                     <div className="flex flex-col items-center bg-gray-800 rounded-lg p-5">
-                        <span className="text-5xl font-bold">{course.Detail.num_registered}</span>
+                        <span className="text-5xl font-bold">{course.Detail?.num_registered ?? "..."}</span>
                         <span className="text-sm uppercase mt-2">Matriculados</span>
                     </div>
                     <div className="flex flex-col items-center bg-gray-800 rounded-lg p-5">
-                        <span className="text-5xl font-bold">{course.Detail.num_failed}</span>
-                        <span className="text-sm uppercase mt-2">REPROBADOS</span>
+                        <span className="text-5xl font-bold">{course.Detail?.num_failed ?? "..."}</span>
+                        <span className="text-sm uppercase mt-2">Reprobados</span>
                     </div>
                 </div>
+
                 {/* Fechas del curso */}
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
                     <h3 className='uppercase text-xl mb-4'>Fechas Importantes</h3>
@@ -152,12 +153,14 @@ const PreviewCoursePage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-inner">
                             <p className="text-lg font-normal text-gray-700 dark:text-gray-200">
-                                <strong>Fecha Inscripciones: </strong> {course.registration_date ? new Date(course.registration_date).toLocaleDateString() : "No Asignado"}
+                                <strong>Fechas Inscripciones: </strong> {course.start_registration_date ? new Date(course.start_registration_date).toLocaleDateString() : "No Asignado"}
+                                <strong> - </strong> {course.end_registration_date ? new Date(course.end_registration_date).toLocaleDateString() : "No Asignado"}
                             </p>
                         </div>
                         <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-inner">
                             <p className="text-lg font-normal text-gray-700 dark:text-gray-200">
-                                <strong>Fecha Matrículas: </strong> {course.enrollment_date ? new Date(course.enrollment_date).toLocaleDateString() : "No Asignado"}
+                                <strong>Fecha Matrículas: </strong> {course.start_enrollment_date ? new Date(course.start_enrollment_date).toLocaleDateString() : "No Asignado"}
+                                <strong> - </strong> {course.end_enrollment_date ? new Date(course.end_enrollment_date).toLocaleDateString() : "No Asignado"}
                             </p>
                         </div>
                         <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-inner">
@@ -180,13 +183,34 @@ const PreviewCoursePage = () => {
                         <div className="space-y-6">
                             <div key={course.Detail.detail_id} className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-inner">
                                 <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                    <strong>Descripción:</strong> {course.Detail.course_description || "No Asignado"}
+                                    {course.Detail.course_description || "No Asignado"}
                                 </p>
-                                <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                                    <strong>Costo:</strong> <span className="text-black dark:text-white">${course.Detail.cost || "No Asignado"}</span>
-                                </p>
+                                {/* Display each related cost */}
+                                {/* <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"> */}
+
+                                    {course.Detail?.Costs && course.Detail.Costs.length > 0 && (
+                                        <div className="mt-5">
+                                            <h3 className="uppercase">Costos </h3>
+                                            <div className="p-2 border-b border-gray-200 dark:border-gray-600">
+                                                {course.Detail.Costs.map((cost) => (
+                                                    <div key={cost.cost_id} className="p-2 mb-2 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                                                        <p><strong>Amount:</strong> ${cost.amount}</p>
+                                                        <p><strong>Description:</strong> {cost.description}</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                {/* </div> */}
+
                                 <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
                                     <strong>Horas:</strong> {course.Detail.total_hours || "No Asignado"}
+                                </p>
+                                <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                                    <strong>Horas Instructor:</strong> {course.Detail.instructor_hours || "No Asignado"}
+                                </p>
+                                <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                                    <strong>Horas  Actividades:</strong> {course.Detail.activities_hours || "No Asignado"}
                                 </p>
                                 <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
                                     <strong>Modalidad/es:</strong>
@@ -267,8 +291,8 @@ const PreviewCoursePage = () => {
                             {course?.Chapters?.length > 0 ? (
                                 course.Chapters.map((chapter) => (
                                     <div key={chapter.chapter_id} className="p-2">
-                                        <p><strong>Capítulo:</strong> {chapter.chapter_name}</p>
-                                        <p><strong>Horas:</strong> {chapter.hours} horas</p>
+                                        <p><strong> - </strong> {chapter.chapter_name}</p>
+                                        <p><strong>Duración:</strong> {chapter.hours} horas</p>
                                     </div>
                                 ))
                             ) : (

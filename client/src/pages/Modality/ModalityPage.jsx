@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useModality } from "../../context/ModalityContext";
 import RegisterModalityModal from "../Modality/RegisterModalityModal";
 import ReportsModalityModal from "../Reports/ReportsModalityModal";
@@ -88,9 +88,6 @@ function ModalityPage() {
                 <td className="px-6 py-4">{modality.name}</td>
                 <td className="px-6 py-4">{modality.description}</td>
                 <td className="px-6 py-4 flex space-x-4"> {/* Cambié space-x-2 por space-x-4 */}
-                  <button className="text-blue-500 hover:text-blue-700">
-                    <FontAwesomeIcon icon={faEye} />
-                  </button>
                   <button className="text-yellow-500 hover:text-yellow-700" onClick={() => handleEdit(modality)}>
                     <FontAwesomeIcon icon={faEdit} />
                   </button>

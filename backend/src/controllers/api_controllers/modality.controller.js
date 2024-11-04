@@ -121,3 +121,13 @@ export const deleteModality = async (req, res) => {
   }
 };
 
+export const getModalitiesDropdown = async (req, res) => {
+  try {
+    const modalities = await Modality.findAll({
+      attributes: ["modality_id", "name"],
+    });
+    res.json({ modalities: modalities });
+  } catch (error) {
+    res.status(500).json({ message: notifications.principal.p1 });
+  }
+};

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useCourse } from "../../context/CourseContext";
-import RegisterChapterModal from "../Chapter/RegisterChapterModal";
+import RegisterCourseModal from "../Course/RegisterCourseModal";
 import ReportsModalityModal from "../Reports/ReportsModalityModal";
 import CoursePreviewModal from "./CoursePreviewModal";
 
@@ -78,10 +78,12 @@ function CoursePage() {
                         <tr>
                             <th scope="col" className="px-6 py-3">ID</th>
                             <th scope="col" className="px-6 py-3">Nombre</th>
-                            <th scope="col" className="px-6 py-3">Fecha Inscipciones</th>
-                            <th scope="col" className="px-6 py-3">Fecha Matriculas</th>
-                            <th scope="col" className="px-6 py-3">Fecha Inicio</th>
-                            <th scope="col" className="px-6 py-3">Fecha Fin</th>
+                            <th scope="col" className="px-6 py-3">Fecha Inicio Inscipciones</th>
+                            <th scope="col" className="px-6 py-3">Fecha Fin Inscipciones</th>
+                            <th scope="col" className="px-6 py-3">Fecha Inicio Matriculas</th>
+                            <th scope="col" className="px-6 py-3">Fecha Fin Matriculas</th>
+                            <th scope="col" className="px-6 py-3">Fecha Inicio Curso</th>
+                            <th scope="col" className="px-6 py-3">Fecha Fin Curso</th>
                             <th scope="col" className="px-6 py-3">Estado</th>
                             <th scope="col" className="px-6 py-3">Acciones</th>
                         </tr>
@@ -93,8 +95,10 @@ function CoursePage() {
                                     {course.course_id}
                                 </th>
                                 <td className="px-6 py-4">{course.course_name}</td>
-                                <td className="px-6 py-4">{new Date(course.registration_date).toLocaleDateString()}</td>
-                                <td className="px-6 py-4">{new Date(course.enrollment_date).toLocaleDateString()}</td>
+                                <td className="px-6 py-4">{new Date(course.start_registration_date).toLocaleDateString()}</td>
+                                <td className="px-6 py-4">{new Date(course.end_registration_date).toLocaleDateString()}</td>
+                                <td className="px-6 py-4">{new Date(course.start_enrollment_date).toLocaleDateString()}</td>
+                                <td className="px-6 py-4">{new Date(course.end_enrollment_date).toLocaleDateString()}</td>
                                 <td className="px-6 py-4">{new Date(course.start_date).toLocaleDateString()}</td>
                                 <td className="px-6 py-4">{new Date(course.end_date).toLocaleDateString()}</td>
                                 <td className="px-6 py-4">{course.status}</td>
@@ -135,7 +139,7 @@ function CoursePage() {
                 </button>
             </div>
 
-            <RegisterChapterModal isOpen={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)} chapter={selectedCourse} />
+            <RegisterCourseModal isOpen={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)} course={selectedCourse} />
             <ReportsModalityModal isOpen={isReportsModalOpen} onClose={() => setIsReportsModalOpen(false)} />
             <CoursePreviewModal isOpen={isDetailsModalOpen} onClose={() => setIsDetailsModalOpen(false)} course={selectedCourse} />
         </div >

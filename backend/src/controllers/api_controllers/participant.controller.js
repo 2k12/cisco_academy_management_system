@@ -178,12 +178,113 @@ export const updateParticipant = async (req, res) => {
   }
 };
 
-// Función para incrementar el atributo dado
+// export const updateParticipant = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const { course_id, enrolled, registered} = req.body;
+
+//     const participant = await Participant.findByPk(id);
+//     if (!participant) {
+//       return res.status(404).json({ message: notifications.participante.p5 });
+//     }
+
+//     if (Object.keys(req.body).length === 0) {
+//       return res.status(400).json({ message: notifications.principal.p2 });
+//     }
+
+//     // Recuperar el curso anterior si existe
+//     const previousCourseRelation = await CourseParticipant.findOne({
+//       where: { participant_id: id },
+//     });
+
+//     if (
+//       previousCourseRelation &&
+//       previousCourseRelation.course_id !== course_id
+//     ) {
+//       // Buscar el curso anterior y actualizar sus contadores
+//       const previousCourse = await Course.findOne({
+//         where: { course_id: previousCourseRelation.course_id },
+//         include: [{ model: Detail }],
+//       });
+
+//       if (previousCourse) {
+//         const detailToUpdate = previousCourse.Detail;
+
+//         if (enrolled) {
+//           await detailToUpdate.update({
+//             num_enrolled: updateAttribute(detailToUpdate.num_enrolled, 0),
+//           });
+//         }
+//         if (registered) {
+//           await detailToUpdate.update({
+//             num_registered: updateAttribute(detailToUpdate.num_registered, 0),
+//           });
+//         }
+//       }
+//     }
+
+//     // Actualizar campos del participante
+//     const updatedFields = {};
+//     for (const field in req.body) {
+//       if (Participant.rawAttributes[field]) {
+//         updatedFields[field] = req.body[field];
+//       }
+//     }
+
+//     if (Object.keys(updatedFields).length > 0) {
+//       await participant.update(updatedFields);
+//     }
+
+//     // Crear o actualizar la relación con el nuevo curso
+//     if (course_id) {
+//       const existingRelation = await CourseParticipant.findOne({
+//         where: {
+//           course_id,
+//           participant_id: participant.participant_id,
+//         },
+//       });
+
+//       if (!existingRelation) {
+//         await CourseParticipant.create({
+//           course_id,
+//           participant_id: participant.participant_id,
+//         });
+//       }
+//     }
+
+//     // Sumar contadores en el nuevo curso
+//     const newCourse = await Course.findOne({
+//       where: { course_id },
+//       include: [{ model: Detail }],
+//     });
+
+//     if (newCourse) {
+//       const detailToUpdate = newCourse.Detail;
+
+//       if (enrolled) {
+//         await detailToUpdate.update({
+//           num_enrolled: updateAttribute(detailToUpdate.num_enrolled, 1),
+//         });
+//       }
+
+//       if (registered) {
+//         await detailToUpdate.update({
+//           num_registered: updateAttribute(detailToUpdate.num_registered, 1),
+//         });
+//       }
+//     }
+
+//     return res
+//       .status(200)
+//       .json({ message: notifications.participante.p2, participant });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({ message: notifications.principal.p1, error });
+//   }
+// };
+
 function updateAttribute(attribute, operation) {
-  if (operation == 0) {
-    return attribute - 1;
-  }
-  return attribute + 1;
+  return operation === 0 ? attribute - 1 : attribute + 1;
 }
 
 export const getParticipants = async (req, res) => {

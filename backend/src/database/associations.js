@@ -22,6 +22,8 @@ import InstructorCertificate from "../models/InstructorCertificate.js";
 import Certificate from "../models/Certificate.js";
 import DetailValues from "../models/DetailValues.js";
 import ParticipantInfoUtn from "../models/ParticipantInfo.js";
+import Cost from "../models/Cost.js";
+import DetailCost from "../models/DetailCost.js";
 
 export function associateModels() {
   User.belongsTo(Role, { foreignKey: "role_id" });
@@ -122,6 +124,16 @@ export function associateModels() {
     foreignKey: "modality_id",
   });
 
+  Detail.belongsToMany(Cost, {
+    through: DetailCost,
+    foreignKey: "detail_id",
+  });
+
+  Cost.belongsToMany(Detail, {
+    through: DetailCost,
+    foreignKey: "cost_id",
+  });
+
   Detail.belongsToMany(Schedule, {
     through: DetailSchedule,
     foreignKey: "detail_id",
@@ -156,4 +168,6 @@ export function associateModels() {
   Role.belongsTo(User, { foreignKey: "created_by" });
   RolePermission.belongsTo(User, { foreignKey: "created_by" });
   Schedule.belongsTo(User, { foreignKey: "created_by" });
+  Cost.belongsTo(User, { foreignKey: "created_by" });
+  DetailCost.belongsTo(User, { foreignKey: "created_by" });
 }

@@ -41,7 +41,7 @@ function PaymentForm({ onClose, payment }) {
 
     const onSubmit = handleSubmit((data) => {
         if (payment) {
-            // updatePayment({ ...data, id: payment.payment_id, payment_type_id: selectedPaymentType, participant_id: selectedParticipant });
+            updatePayment({ ...data, id: payment.payment_id, participant_id: selectedParticipant });
         } else {
             createPayment({ ...data, payment_type_id: selectedPaymentType , participant_id: selectedParticipant });
         }

@@ -104,7 +104,7 @@ function CourseReportModal({ isOpen, onClose, course }) {
                 `${participant.cid}` || "",
                 participant.name || "",
                 participant.phone || "",
-                participant.address || "", 
+                participant.address || "",
                 participantType || "",
                 faculty || "",
                 degree || "",
@@ -118,9 +118,9 @@ function CourseReportModal({ isOpen, onClose, course }) {
                 const cellWidth = idx === 0 ? 10 : idx === 7 ? 30 : idx === 5 || idx === 6 ? 17 : idx === 9 ? 24 : 20;
 
                 pdf.rect(xPosition, yPosition, cellWidth, rowHeight); // Use fixed row height
-                const cellContent = pdf.splitTextToSize(data, cellWidth - cellPadding  * 2);
+                const cellContent = pdf.splitTextToSize(data, cellWidth - cellPadding * 2);
                 cellContent.forEach((line, lineIndex) => {
-                    pdf.text(line, xPosition + cellPadding , (yPosition)  + rowHeight / 3 + lineIndex * 2);
+                    pdf.text(line, xPosition + cellPadding, (yPosition) + rowHeight / 3 + lineIndex * 2);
                 });
 
                 xPosition += cellWidth;
@@ -137,12 +137,148 @@ function CourseReportModal({ isOpen, onClose, course }) {
         const totalValueXPosition = margin + 175; // Ajusta según el ancho acumulado de las columnas previas
 
         // Agrega el texto del total
-        pdf.text("Total Valor Recaudado:", totalLabelXPosition, yPosition );
-        pdf.text(`${totalRevenue.toFixed(2)} USD`, totalValueXPosition, yPosition );
+        pdf.text("Total Valor Recaudado:", totalLabelXPosition, yPosition);
+        pdf.text(`${totalRevenue.toFixed(2)} USD`, totalValueXPosition, yPosition);
 
         pdf.save("reporte_curso.pdf");
         onClose();
     };
+
+    const handleGenerateEstimationTablePDF = () => {
+        const pdf = new jsPDF();
+        const margin = 30;
+        const cellPadding = 2;
+        const lineHeight = 4.5;
+    
+        pdf.setFont("helvetica", "normal");
+        pdf.setFontSize(8);
+    
+        const detailCost = parseFloat(course.Detail.cost) || 0;
+    
+        // Datos calculados para cada número de participantes
+        const rows = [
+            { participants: 10, cost: 60 },
+            { participants: 15, cost: 60 },
+            { participants: 20, cost: 60 }
+        ];
+    
+        rows.forEach(row => {
+            row.totalRevenue = row.cost * row.participants;
+            row.remainingBalance = row.totalRevenue - 624 < 0 ? 0 : row.totalRevenue - 624;
+            row.operationalCost = row.remainingBalance * 0.10;
+            row.universityBalance = row.operationalCost - row.ciscoPayment;
+            row.ciscoPayment = row.remainingBalance - row.operationalCost;
+            row.totalExpenses = row.operationalCost;
+        });
+    
+        // Título del documento
+        pdf.setFont("helvetica", "bold");
+        pdf.text("Estimación de Costos del Curso", pdf.internal.pageSize.width / 2, 15, { align: "center" });
+    
+        // Encabezados de la tabla
+        const headers = [
+            "Concepto",
+            "10 Participantes",
+            "15 Participantes",
+            "20 Participantes"
+        ];
+    
+        // Datos de la tabla, incluyendo cálculos
+        const data = [
+            ["Número Participantes", "10", "15", "20"],
+            ["Costo Mínimo del Curso", `$${rows[0].cost.toFixed(2)}`, `$${rows[1].cost.toFixed(2)}`, `$${rows[2].cost.toFixed(2)}`],
+            ["Total Ingresos", `$${rows[0].totalRevenue.toFixed(2)}`, `$${rows[1].totalRevenue.toFixed(2)}`, `$${rows[2].totalRevenue.toFixed(2)}`],
+            ["Número Horas Instructor", "48", "48", "48"],
+            ["Costo Hora Instructor", "$13.00", "$13.00", "$13.00"],
+            ["Total Hora Instructor", "$624.00", "$624.00", "$624.00"],
+            ["Coordinación Académica", "$0.00", "$0.00", "$0.00"],
+            ["Computadoras lab. FICA", "$0.00", "$0.00", "$0.00"],
+            ["Internet Lab. FICA", "$0.00", "$0.00", "$0.00"],
+            ["Material Didáctico Lab. FICA", "$0.00", "$0.00", "$0.00"],
+            ["Capacitación Instructores", "$0.00", "$0.00", "$0.00"],
+            ["Inscripciones, Publicidad en Redes Sociales, Radio y TV-UTN", "$0.00", "$0.00", "$0.00"],
+            ["Total Egresos", "$624.00", "$624.00", "$624.00"],
+            // ["Total Egresos", `$${rows[0].totalExpenses.toFixed(2)}`, `$${rows[1].totalExpenses.toFixed(2)}`, `$${rows[2].totalExpenses.toFixed(2)}`],
+            ["Saldo a Favor", `$${rows[0].remainingBalance.toFixed(2)}`, `$${rows[1].remainingBalance.toFixed(2)}`, `$${rows[2].remainingBalance.toFixed(2)}`],
+            ["Costo Operacional (10%)", `$${rows[0].operationalCost.toFixed(2)}`, `$${rows[1].operationalCost.toFixed(2)}`, `$${rows[2].operationalCost.toFixed(2)}`],
+            ["Saldo a Favor Academia CISCO", `$${rows[0].ciscoPayment.toFixed(2)}`, `$${rows[1].ciscoPayment.toFixed(2)}`, `$${rows[2].ciscoPayment.toFixed(2)}`]
+        ];
+    
+        const colWidths = [60, 30, 30, 30];
+        let startY = 25;
+        const defaultCellHeight = 10;
+    
+        // Dibujar encabezados con bordes
+        pdf.setFont("helvetica", "normal");
+        let xPosition = margin;
+    
+        headers.forEach((header, i) => {
+            pdf.rect(xPosition, startY, colWidths[i], defaultCellHeight); // Dibuja borde de celda
+            pdf.text(header, xPosition + cellPadding, startY + defaultCellHeight / 2 + 2); // Texto dentro de la celda
+            xPosition += colWidths[i];
+        });
+    
+        startY += defaultCellHeight;
+    
+        // Colores de fondo para las filas
+        const rowColors = [
+            [0, 240, 255], // celeste
+            [0, 240, 255], // celeste
+            [255, 255, 0],   // amarillo
+            [173, 216, 230], // celeste super bajito
+            [173, 216, 230],
+            [173, 216, 230],
+            [173, 216, 230],
+            [255, 192, 203], // color bajito
+            [255, 192, 203],
+            [255, 192, 203],
+            [255, 192, 203],
+            [0, 128, 0],     // verde
+            [255, 0, 0],     // rojo normal
+            [128, 0, 128],   // morado bajito
+            [128, 0, 128],
+            [128, 0, 128]
+        ];
+    
+        // Dibujar filas con datos y bordes
+        data.forEach((row, index) => {
+            xPosition = margin;
+            
+            // Determina la altura de la fila basado en el contenido más alto de cada celda
+            const rowHeight = Math.max(...row.map(cell => {
+                const cellLines = pdf.splitTextToSize(cell, colWidths[0] - 2 * cellPadding);
+                return cellLines.length * lineHeight + cellPadding;
+            }));
+    
+            // Establecer el color de fondo
+            const bgColor = rowColors[index] || [255, 255, 255]; // blanco si no hay color especificado
+            pdf.setFillColor(...bgColor);
+            pdf.rect(margin, startY, colWidths.reduce((a, b) => a + b, 0), rowHeight, 'F'); // Dibuja el fondo de la fila
+    
+            // Dibujar cada columna de la fila
+            row.forEach((cell, colIndex) => {
+                const cellWidth = colWidths[colIndex];
+    
+                // Dibuja el borde de la celda
+                pdf.rect(xPosition, startY, cellWidth, rowHeight);
+    
+                // Ajuste de texto en varias líneas para celdas largas
+                const cellLines = pdf.splitTextToSize(cell, cellWidth - 2 * cellPadding);
+                cellLines.forEach((line, lineIndex) => {
+                    pdf.text(line, xPosition + cellPadding, startY + 3 + lineIndex * lineHeight + cellPadding);
+                });
+    
+                xPosition += cellWidth;
+            });
+    
+            startY += rowHeight;
+        });
+    
+        pdf.save("estimacion_curso.pdf");
+        onClose();
+    };
+    
+    
 
 
     return (
@@ -160,7 +296,7 @@ function CourseReportModal({ isOpen, onClose, course }) {
                 </div>
                 <div className="flex justify-between mt-2 ">
                     <button
-                        // onClick={handleGeneratePDF}
+                        onClick={handleGenerateEstimationTablePDF}
                         className="dark:hover:bg-indigo-300 bg-indigo-500 px-4 py-2 text-white rounded-md"
                     >
                         {"Generar Tabla de Estimación (PDF)"}

@@ -17,6 +17,9 @@ const Schedule = sequelize.define(
       type: DataTypes.STRING(50),
       allowNull: false,
     },
+    description: {
+      type: DataTypes.TEXT,
+    },
     start_time: {
       type: DataTypes.TIME,  // Cambiar a tipo TIME para corresponder con la base de datos.
       allowNull: false,

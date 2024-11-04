@@ -32,6 +32,9 @@ function ParticipantForm({ onClose, participant }) {
         getCoursesDropdown();
 
         if (participant) {
+
+            console.log(participant);
+            
             setValue("name", participant.name);
             setValue("age", participant.age);
             setValue("cid", participant.cid);
@@ -83,7 +86,13 @@ function ParticipantForm({ onClose, participant }) {
         const urlInput = document.getElementById("file_url_input");
         if (urlInput) {
             navigator.clipboard.writeText(urlInput.value);
-            Swal.fire("URL copiada al portapapeles");
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "URL copiada al portapapeles",
+                showConfirmButton: false,
+                timer: 1500
+              });
         }
     };
 
@@ -142,7 +151,7 @@ function ParticipantForm({ onClose, participant }) {
                     className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
                 />
                 <select
-                    {...register("participant_type_id")}
+                    // {...register("participant_type_id")}
                     className="w-fu ll bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
                     value={selectedParticipantType}
                     onChange={(e) => {
@@ -158,7 +167,7 @@ function ParticipantForm({ onClose, participant }) {
                     ))}
                 </select>
                 <select
-                    {...register("course_id")}
+                    // {...register("course_id")} 
                     className="w-fu ll bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
                     value={selectedCourse}
                     onChange={(e) => {

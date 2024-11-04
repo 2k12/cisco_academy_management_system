@@ -2,11 +2,13 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { useModality } from "../../context/ModalityContext";
 
+
 function ModalityForm({ onClose, modality }) {
     const { register, handleSubmit, setValue } = useForm();
     const { createModality, updateModality } = useModality();
 
     useEffect(() => {
+
         if (modality) {
             setValue("name", modality.name);
             setValue("description", modality.description);

@@ -74,7 +74,7 @@ function DetailPage() {
                             <th scope="col" className="px-6 py-3">Instructor</th>
                             <th scope="col" className="px-6 py-3">Descripción</th>
                             <th scope="col" className="px-6 py-3">Horas Totales</th>
-                            <th scope="col" className="px-6 py-3">Costo</th>
+                            {/* <th scope="col" className="px-6 py-3">Costo</th> */}
                             <th scope="col" className="px-6 py-3">N. Registrados</th>
                             <th scope="col" className="px-6 py-3">N. Matriculados</th>
                             <th scope="col" className="px-6 py-3">N. Reprobados</th>
@@ -92,7 +92,7 @@ function DetailPage() {
                                 <td className="px-6 py-4">{detail.Instructor?.name ?? ""}</td>
                                 <td className="px-6 py-4">{detail.course_description ?? ""}</td>
                                 <td className="px-6 py-4">{detail.total_hours ?? ""}</td>
-                                <td className="px-6 py-4">{detail.cost ?? ""}</td>
+                                {/* <td className="px-6 py-4">{detail.cost ?? ""}</td> */}
                                 <td className="px-6 py-4">{detail.num_registered ?? ""}</td>
                                 <td className="px-6 py-4">{detail.num_enrolled ?? ""}</td>
                                 <td className="px-6 py-4">{detail.num_failed ?? ""}</td>

@@ -83,7 +83,7 @@ function Navbar() {
                     )}
                     <Link to={'/'}>
                         {/* <h1 className="text-2xl font-bold ml-2">UTN Cisco Academy Management System</h1> */}
-                        <h1 className="text-2xl font-semibold ml-2"> UTN CMS <span className="text-sm">v 0.0.3</span> </h1>
+                        <h1 className="text-2xl font-semibold ml-2"> UTN CMS <span className="text-sm">v 0.0.4</span> </h1>
                     </Link>
                 </div>
                 <ul className="flex gap-x-4">
@@ -148,8 +148,8 @@ function Navbar() {
                         {expandedSections.cursos && (
                             <ul className="pl-4">
                                 <li><Link to="/courses" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faDiagramProject} className="mr-2" />Cursos</Link></li>
-                                <li><Link to="/chapters" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faBookOpen} className="mr-2" />Capítulos</Link></li>
                                 <li><Link to="/details" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faSwatchbook} className="mr-2" />Detalle</Link></li>
+                                <li><Link to="/chapters" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faBookOpen} className="mr-2" />Capítulos</Link></li>
                                 <li><Link to="/participants" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faUser} className="mr-2" />Participante</Link></li>
                                 <li><Link to="/participant-types" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faPerson} className="mr-2" />Tipos de Participante</Link></li>
                                 <li><Link to="/infos_utn" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faInfo} className="mr-2" />Info UTN</Link></li>

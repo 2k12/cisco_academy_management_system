@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useInstructor } from "../../context/InstructorContext";
-import RegisterPermissionModal from "../RegisterPermissionModal";
+import RegisterInstructorModal from "./RegisterInstructorModal";
 import ReportsInstructorsModal from "../Reports/ReportsInstructorsModal";
 
 function PermissionPage() {
@@ -10,6 +10,8 @@ function PermissionPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [isReportsModalOpen, setIsReportsModalOpen] = useState(false);
+  const [selectedInstructor, setSelectedInstructor] = useState(null);
+
 
   useEffect(() => {
     getInstructors({ search: searchTerm, page: currentPage });
@@ -25,6 +27,14 @@ function PermissionPage() {
       setCurrentPage(newPage);
     }
   };
+
+  const handleEdit = (instructor) => {
+    setSelectedInstructor(instructor);
+    setIsRegisterModalOpen(true);
+  };
+  console.log("--------")
+  console.log(instructors);
+  console.log("--------")
 
 
   return (
@@ -66,6 +76,7 @@ function PermissionPage() {
               <th scope="col" className="px-6 py-3">Email</th>
               <th scope="col" className="px-6 py-3">RUC</th>
               <th scope="col" className="px-6 py-3">Certificado Bancario Url</th>
+              {/* <th scope="col" className="px-6 py-3 text-red-500">DETAIL TEST</th> */}
               <th scope="col" className="px-6 py-3">Acciones</th>
 
             </tr>
@@ -82,11 +93,9 @@ function PermissionPage() {
                 <td className="px-6 py-4">{instructor.email}</td>
                 <td className="px-6 py-4">{instructor.ruc_number}</td>
                 <td className="px-6 py-4">{instructor.banck_certificate_url}</td>
+                {/* <td className="px-6 py-4">{instructor.Details[0]?.detail_id}</td> */}
                 <td className="px-6 py-4 flex space-x-2">
-                  <button className="text-blue-500 hover:text-blue-700 mr-2 ">
-                    <FontAwesomeIcon icon={faEye} />
-                  </button>
-                  <button className="text-yellow-500 hover:text-yellow-700 mr-2 ml-2">
+                  <button className="text-yellow-500 hover:text-yellow-700" onClick={() => handleEdit(instructor)}>
                     <FontAwesomeIcon icon={faEdit} />
                   </button>
                   <button className="text-red-500 hover:text-red-700 mr-2 ml-2">
@@ -119,7 +128,7 @@ function PermissionPage() {
       </div>
 
       {/* Modales */}
-      <RegisterPermissionModal isOpen={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)} />
+      <RegisterInstructorModal isOpen={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)} instructor={selectedInstructor} />
       <ReportsInstructorsModal isOpen={isReportsModalOpen} onClose={() => setIsReportsModalOpen(false)} />
     </div>
   );

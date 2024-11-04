@@ -1,11 +1,12 @@
 import { createContext, useContext, useState } from "react";
+import Swal from "sweetalert2"; // Importa SweetAlert
 import {
   getInstructorsDropdownRequest,
   getAllInstructorsRequest,
   createInstructorsRequest,
   getInstructorsRequest,
-//   deleteInstructorsRequest,
-//   updateInstructorsRequest
+  //   deleteInstructorsRequest,
+  updateInstructorsRequest
 } from "../api/instructor";
 
 const InstructorContext = createContext();
@@ -28,15 +29,50 @@ export function InstructorProvider({ children }) {
   const [currentPage, setCurrentPage] = useState(1);
 
   const createInstructor = async (instructor) => {
-    const res = await createInstructorsRequest(instructor);
-    console.log(res);
+    try {
+      const res = await createInstructorsRequest(instructor);
+      Swal.fire({
+        icon: 'success',
+        title: 'Éxito',
+        text: res.data.message,
+      });
+      console.log(res);
+      getInstructors({ page: currentPage });
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.response?.data?.message || 'Ha ocurrido un error',
+      });
+      console.log(error);
+    }
+  };
+
+  const updateInstructor = async (instructor) => {
+    try {
+      const res = await updateInstructorsRequest(instructor);
+      Swal.fire({
+        icon: 'success',
+        title: 'Éxito',
+        text: res.data.message,
+      });
+      console.log(res);
+      getInstructors({ page: currentPage });
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.response?.data?.message || 'Ha ocurrido un error',
+      });
+      console.log(error);
+    }
   };
 
   const getInstructors = async ({ search = '', page = 1, limit = 15 }) => {
     try {
       const res = await getInstructorsRequest({ search, page, limit });
       setInstructors(res.data.instructors);
-    //   console.log(res.data.instructors);
+      //   console.log(res.data.instructors);
       setTotalPages(res.data.totalPages);
     } catch (error) {
       console.log(error);
@@ -47,7 +83,7 @@ export function InstructorProvider({ children }) {
     try {
       const res = await getAllInstructorsRequest({ search, page, limit });
       setAllInstructorsForReport(res.data.instructors);
-    //   setTotalPages(res.data.totalPages);
+      //   setTotalPages(res.data.totalPages);
     } catch (error) {
       console.log(error);
     }
@@ -69,6 +105,7 @@ export function InstructorProvider({ children }) {
       value={{
         instructors,
         createInstructor,
+        updateInstructor,
         getInstructors,
         getAllInstructors,
         allinstructorsforreport,

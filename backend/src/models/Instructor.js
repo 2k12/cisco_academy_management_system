@@ -30,6 +30,11 @@ const Instructor = sequelize.define(
     ruc_number: {
         type: DataTypes.STRING(15),
     },
+    cost_per_hour: {
+      type: DataTypes.DECIMAL(10, 2), 
+      allowNull: true,
+      field: "cost_per_hour",
+    },
     banck_certificate_url: {
         type: DataTypes.STRING(255),
     },

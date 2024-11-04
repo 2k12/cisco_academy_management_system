@@ -9,10 +9,10 @@ export const addPayment = async (req, res) => {
   try {
     const { description, amount, payment_type_id, participant_id } = req.body;
 
-    const paymentTypeExists = await PaymentType.findOne({ where: { name } });
-    if (paymentTypeExists) {
-      return res.status(400).json({ message: notifications.tipo_pago.tp1 });
-    }
+    // const paymentTypeExists = await PaymentType.findOne({ where: { name } });
+    // if (paymentTypeExists) {
+    //   return res.status(400).json({ message: notifications.tipo_pago.tp1 });
+    // }
 
     const newPayment = await Payment.create({
       description,
@@ -138,7 +138,9 @@ export const deletePayment = async (req, res) => {
 export const updatePayment = async (req, res) => {
   try {
     const { id } = req.params;
-    const { participant_id, payment_type_id } = req.body;
+    const { participant_id } = req.body;
+
+    console.log(req.body);
 
     const payment = await Payment.findByPk(id);
 
@@ -165,23 +167,30 @@ export const updatePayment = async (req, res) => {
     }
 
     // Actualizar la relación en ParticipantPayment si se proporcionan `participant_id` y `payment_type_id`
-    if (participant_id && payment_type_id) {
-      const existingRelation = await ParticipantPayment.findOne({
-        where: {
-          participant_id: participant_id,
-          payment_type_id: payment_type_id,
-        },
-      });
-
-      if (existingRelation) {
-        // Actualiza la relación existente
-        await existingRelation.update({ participant_id, payment_type_id });
-      } else {
-        // Crea una nueva relación si no existe
-        await ParticipantPayment.create({
-          participant_id: participant_id,
-          payment_type_id: payment_type_id,
+    // Actualizar la relación en ParticipantPayment si se proporcionan `participant_id` y `payment_type_id`
+    if (participant_id) {
+      try {
+        const existingRelation = await ParticipantPayment.findOne({
+          where: { participant_id: participant_id },
         });
+
+        if (existingRelation) {
+          // Actualiza la relación existente
+          await existingRelation.update({ participant_id });
+        } else {
+          // Crea una nueva relación si no existe
+          await ParticipantPayment.create({
+            participant_id: participant_id,
+          });
+        }
+      } catch (error) {
+        console.error(
+          "Error al buscar o actualizar ParticipantPayment:",
+          error
+        );
+        return res
+          .status(500)
+          .json({ message: notifications.principal.p1, error });
       }
     }
 

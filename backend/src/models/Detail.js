@@ -29,9 +29,15 @@ const Detail = sequelize.define(
     total_hours: {
       type: DataTypes.INTEGER,
     },
-    cost: {
+    instructor_hours: {
       type: DataTypes.INTEGER,
     },
+    activities_hours: {
+      type: DataTypes.INTEGER,
+    },
+    // cost: {
+    //   type: DataTypes.INTEGER,
+    // },
     num_registered: {
       type: DataTypes.INTEGER,
     },

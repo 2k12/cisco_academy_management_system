@@ -1,4 +1,5 @@
 import Course from "../../models/Course.js";
+import Cost from "../../models/Cost.js";
 import Chapter from "../../models/Chapter.js";
 
 import Participant from "../../models/Participant.js";
@@ -77,6 +78,10 @@ export const getAllCourses = async (req, res) => {
               model: Schedule,
               through: { attributes: [] }, // Excluye los campos de la tabla intermedia
             },
+            {
+              model: Cost,
+              through: { attributes: [] }, // Excluye los campos de la tabla intermedia
+            },
           ],
         },
       ],
@@ -107,11 +112,10 @@ export const addCourse = async (req, res) => {
       enrollment_date,
       start_date,
       end_date,
+      status,
     } = req.body;
 
-    const status = "Pendiente";
-
-    const courseExists = await User.findOne({ where: { course_name } });
+    const courseExists = await Course.findOne({ where: { course_name } });
 
     if (courseExists) {
       return res.status(400).json({ message: notifications.cursos.c1 });
@@ -193,6 +197,10 @@ export const getCourseById = async (req, res) => {
               model: Schedule,
               through: { attributes: [] }, // Excluye los campos de la tabla intermedia
             },
+            {
+              model: Cost,
+              through: { attributes: [] }, // Excluye los campos de la tabla intermedia
+            },
           ],
         },
       ],
@@ -232,54 +240,7 @@ export const inactiveCourse = async (req, res) => {
 export const updateCourse = async (req, res) => {
   try {
     const { id } = req.params;
-    const course = await Course.findByPk({
-      id,
-      include: [
-        {
-          model: Chapter,
-          through: { attributes: [] },
-        },
-        {
-          model: Participant,
-          include: [
-            { model: ParticipantType },
-            { model: InfoUtn, through: { attributes: [] } },
-            {
-              model: Payment,
-              through: { attributes: [] }, // Excluye los campos de la tabla intermedia
-              include: [
-                {
-                  model: PaymentType,
-                },
-              ],
-            },
-          ],
-        },
-        {
-          model: Detail,
-          include: [
-            { model: DetailValues },
-            {
-              model: Instructor,
-              include: [
-                {
-                  model: Certificate,
-                  through: { attributes: [] },
-                },
-              ],
-            },
-            {
-              model: Modality,
-              through: { attributes: [] }, // Excluye los campos de la tabla intermedia
-            },
-            {
-              model: Schedule,
-              through: { attributes: [] }, // Excluye los campos de la tabla intermedia
-            },
-          ],
-        },
-      ],
-    });
+    const course = await Course.findByPk(id);
 
     if (!course) {
       return res.status(404).json({ message: notifications.cursos.c5 });
@@ -303,7 +264,7 @@ export const updateCourse = async (req, res) => {
 
     await course.update(updatedFields);
 
-    return res.status(200).json({ message: notifications.cursos.c4 });
+    return res.status(200).json({ message: notifications.cursos.c4, course });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: notifications.principal.p1, error });
