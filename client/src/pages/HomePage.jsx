@@ -8,7 +8,7 @@ function HomePage() {
         <div className="bg-black bg-opacity-60 p-8 rounded-lg text-center max-w-xl">
           <h2 className="text-4xl font-extrabold text-white mb-4">Bienvenidos a la Plataforma de Gestión de Cursos Cisco</h2>
           <p className="text-gray-300 mb-6">
-            Diseñada especialmente para la gestión de los Cursos dictados por la Academia de la Facultad de Ingeniería en Ciencias Aplicadas de la UTN.
+            Diseñada especialmente para la gestión de los Cursos dictados por la Academia de la Facultad de Ingeniería en Ciencias Aplicadas.
           </p>
           <Link to={"/login"}  className="px-6 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition mr-4">Iniciar Sesión</Link>
         </div>

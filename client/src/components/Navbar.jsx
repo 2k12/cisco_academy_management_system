@@ -26,7 +26,7 @@ import {
     faInfo
 } from '@fortawesome/free-solid-svg-icons';
 
-import profilePicture from '../assets/user_n.webp';
+import profilePicture from '../assets/usuario.webp';
 
 function Navbar() {
     const { logout, isAuthenticated, user } = useAuth();
@@ -83,7 +83,7 @@ function Navbar() {
                     )}
                     <Link to={'/'}>
                         {/* <h1 className="text-2xl font-bold ml-2">UTN Cisco Academy Management System</h1> */}
-                        <h1 className="text-2xl font-semibold ml-2"> UTN CMS <span className="text-sm">v 0.0.4</span> </h1>
+                        <h1 className="text-2xl font-semibold ml-2"> UTN CMS <span className="text-sm">v 0.0.5</span> </h1>
                     </Link>
                 </div>
                 <ul className="flex gap-x-4">

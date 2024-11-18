@@ -12,8 +12,10 @@ import Modality from "../../models/Modality.js";
 import Schedule from "../../models/Schedule.js";
 import Course from "../../models/Course.js";
 
+import { mainEcuadorianCid } from "../../middlewares/validateCid.js";
 import notifications from "../../notifications.json" assert { type: "json" };
 import { Op } from "sequelize";
+import XLSX from "xlsx";
 
 export const addParticipant = async (req, res) => {
   try {
@@ -34,7 +36,7 @@ export const addParticipant = async (req, res) => {
       course_id,
     } = req.body;
 
-    if (validateCid(cid) == 1) {
+    if (mainEcuadorianCid(cid)) {
       const participantExists = await Participant.findOne({ where: { cid } });
       if (participantExists) {
         return res.status(400).json({ message: notifications.participante.p1 });
@@ -121,6 +123,120 @@ export const addParticipant = async (req, res) => {
   }
 };
 
+export const addParticipantIntern = async ({
+  name,
+  age,
+  cid,
+  phone,
+  address,
+  institution,
+  participant_type_id,
+  certificate_required,
+  file_url,
+  registered,
+  enrolled,
+  approval,
+  total_payment,
+  course_id,
+}) => {
+  try {
+    if (mainEcuadorianCid(cid)) {
+      const participantExists = await Participant.findOne({ where: { cid } });
+      if (participantExists) {
+        // console.log(participantExists);
+        return {
+          success: false,
+          message: notifications.principal.p4,
+          // error: error.message,
+        };
+
+        // return res.status(400).json({ message: notifications.participante.p1 });
+      }
+
+      const newParticipant = await Participant.create({
+        name,
+        // age,
+        cid,
+        phone,
+        address,
+        institution,
+        participant_type_id,
+        certificate_required,
+        file_url,
+        registered,
+        enrolled,
+        approval,
+        total_payment,
+        active: 1,
+      });
+
+      const courseExist = await Course.findOne({
+        where: { course_id },
+        include: [
+          {
+            model: Detail,
+            include: [
+              { model: DetailValues },
+              {
+                model: Instructor,
+                include: [
+                  {
+                    model: Certificate,
+                    through: { attributes: [] },
+                  },
+                ],
+              },
+              { model: Modality, through: { attributes: [] } },
+              { model: Schedule, through: { attributes: [] } },
+            ],
+          },
+        ],
+      });
+
+      if (courseExist) {
+        console.log("Curso encontrado");
+        const detailToUpdate = courseExist.Detail;
+
+        if (enrolled) {
+          console.log("Matriculado");
+          await detailToUpdate.update({
+            num_enrolled: updateAttribute(detailToUpdate.num_enrolled, 1),
+          });
+        }
+
+        if (registered) {
+          console.log("Registrado");
+          await detailToUpdate.update({
+            num_registered: updateAttribute(detailToUpdate.num_registered, 1),
+          });
+        }
+      }
+
+      await CourseParticipant.create({
+        course_id,
+        participant_id: newParticipant.participant_id,
+      });
+
+      return {
+        success: true,
+        message: notifications.participante.p4,
+        participant: newParticipant,
+      };
+    } else {
+      return {
+        success: false,
+        message: notifications.principal.p5,
+      };
+    }
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    return {
+      success: false,
+      message: notifications.principal.p1,
+    };
+  }
+};
+
 export const updateParticipant = async (req, res) => {
   try {
     const { id } = req.params;
@@ -157,10 +273,13 @@ export const updateParticipant = async (req, res) => {
       });
 
       if (existingRelation) {
-        await existingRelation.update({
-          course_id,
-          participant_id: participant.participant_id,
-        });
+        // await existingRelation.update({
+        //   course_id,
+        //   participant_id: participant.participant_id,
+        // });
+        return res
+          .status(400)
+          .json({ message: "Ya existe un registro en el Curso Seleccionado" });
       } else {
         await CourseParticipant.create({
           course_id,
@@ -287,53 +406,59 @@ function updateAttribute(attribute, operation) {
   return operation === 0 ? attribute - 1 : attribute + 1;
 }
 
-export const getParticipants = async (req, res) => {
-  try {
-    const { search = "", limit = 10, page = 1 } = req.body; // Recibiendo search, limit y page
-    const offset = (page - 1) * limit; // Cálculo de offset para paginación
+// export const getParticipants = async (req, res) => {
+//   try {
+//     const { search = "", limit = 10, page = 1 } = req.body; // Recibiendo search, limit y page
+//     const offset = (page - 1) * limit; // Cálculo de offset para paginación
 
-    const participants = await Participant.findAndCountAll({
-      where: {
-        [Op.or]: [
-          { name: { [Op.like]: `%${search}%` } },
-          { age: { [Op.like]: `%${search}%` } },
-          { cid: { [Op.like]: `%${search}%` } },
-          { phone: { [Op.like]: `%${search}%` } },
-          { address: { [Op.like]: `%${search}%` } },
-          { total_payment: { [Op.like]: `%${search}%` } },
-        ],
-      },
-      include: [
-        {
-          model: Course,
-          through: { attributes: [] },
-        },
-        { model: ParticipantType },
-        { model: InfoUtn, through: { attributes: [] } },
-        {
-          model: Payment,
-          through: { attributes: [] }, // Excluye los campos de la tabla intermedia
-          include: [
-            {
-              model: PaymentType,
-            },
-          ],
-        },
-      ],
-      limit: limit, // Tamaño de la página
-      offset: offset, // Desplazamiento para la paginación
-    });
+//     const participants = await Participant.findAndCountAll({
+//       where: {
+//         [Op.or]: [
+//           { name: { [Op.like]: `%${search}%` } },
+//           { age: { [Op.like]: `%${search}%` } },
+//           { cid: { [Op.like]: `%${search}%` } },
+//           { phone: { [Op.like]: `%${search}%` } },
+//           { address: { [Op.like]: `%${search}%` } },
+//           { total_payment: { [Op.like]: `%${search}%` } },
+//         ],
+//       },
+//       include: [
+//         {
+//           model: Course,
+//           through: { attributes: [] },
+//           // where: { course_name: { [Op.like]: `%${search}%` } },
+//         },
+//         // {
+//         //   model: Course,
+//         //   through: { attributes: [] },
+//         //   where: search ? { course_name: { [Op.like]: `%${search}%` } } : undefined,
+//         // },
+//         { model: ParticipantType },
+//         { model: InfoUtn, through: { attributes: [] } },
+//         {
+//           model: Payment,
+//           through: { attributes: [] }, // Excluye los campos de la tabla intermedia
+//           include: [
+//             {
+//               model: PaymentType,
+//             },
+//           ],
+//         },
+//       ],
+//       limit: limit, // Tamaño de la página
+//       offset: offset, // Desplazamiento para la paginación
+//     });
 
-    return res.status(200).json({
-      total: participants.count, // Total de resultados
-      totalPages: Math.ceil(participants.count / limit), // Total de páginas
-      participants: participants.rows, // Resultados de permisos
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: notifications.principal.p1, error });
-  }
-};
+//     return res.status(200).json({
+//       total: participants.count, // Total de resultados
+//       totalPages: Math.ceil(participants.count / limit), // Total de páginas
+//       participants: participants.rows, // Resultados de permisos
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ message: notifications.principal.p1, error });
+//   }
+// };
 
 // export const getPaymentById = async (req, res) => {
 //   try {
@@ -367,6 +492,68 @@ export const getParticipants = async (req, res) => {
 //   }
 // };
 
+export const getParticipants = async (req, res) => {
+  try {
+    const { search = "", limit = 10, page = 1, courseName } = req.body; // Agregado el parámetro `courseName`
+    const offset = (page - 1) * limit; // Cálculo de offset para paginación
+
+    // Se construye la condición WHERE para los participantes
+
+    console.log(courseName);
+    console.log(req.body);
+
+    const whereConditions = {
+      [Op.or]: [
+        { name: { [Op.like]: `%${search}%` } },
+        // { age: { [Op.like]: `%${search}%` } },
+        { cid: { [Op.like]: `%${search}%` } },
+        { phone: { [Op.like]: `%${search}%` } },
+        { address: { [Op.like]: `%${search}%` } },
+        { total_payment: { [Op.like]: `%${search}%` } },
+      ],
+    };
+
+    // Condición para filtrar el curso por nombre
+    const courseCondition = courseName
+      ? { course_name: { [Op.like]: `%${courseName}%` } } // Buscar cursos que coincidan con `courseName`
+      : {};
+
+    const participants = await Participant.findAndCountAll({
+      where: whereConditions,
+      include: [
+        {
+          model: Course,
+          through: { attributes: [] },
+          where: courseCondition, // Aplicamos el filtro para el nombre del curso
+          required: true, // Aseguramos que solo se devuelvan participantes que tengan un curso
+        },
+        { model: ParticipantType },
+        { model: InfoUtn, through: { attributes: [] } },
+        {
+          model: Payment,
+          through: { attributes: [] }, // Excluye los campos de la tabla intermedia
+          include: [
+            {
+              model: PaymentType,
+            },
+          ],
+        },
+      ],
+      limit: limit, // Tamaño de la página
+      offset: offset, // Desplazamiento para la paginación
+    });
+
+    return res.status(200).json({
+      total: participants.count, // Total de resultados
+      totalPages: Math.ceil(participants.count / limit), // Total de páginas
+      participants: participants.rows, // Resultados de permisos
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: notifications.principal.p1, error });
+  }
+};
+
 export const getParticipantsDropdown = async (req, res) => {
   try {
     const participants = await Participant.findAll({
@@ -375,6 +562,71 @@ export const getParticipantsDropdown = async (req, res) => {
     res.json({ participants: participants });
   } catch (error) {
     res.status(500).json({ message: notifications.principal.p1 });
+  }
+};
+
+export const addfromExcel = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ error: "No se ha proporcionado un archivo" });
+    }
+
+    const workbook = XLSX.read(req.file.buffer, { type: "buffer" });
+    const sheetName = workbook.SheetNames[0];
+    const sheet = workbook.Sheets[sheetName];
+
+    const data = XLSX.utils.sheet_to_json(sheet);
+
+    let results = [];
+    for (const row of data) {
+      try {
+        const participantData = {
+          name: row.Nombre,
+          // age: row.Edad,
+          cid: row.CI,
+          phone: row.Teléfono,
+          address: row.Dirección,
+          institution: row.Institución,
+          participant_type_id: row.TipoID,
+          certificate_required: row.Certificado === "Sí" ? true : false,
+          file_url: null,
+          registered: row.Registrado === "Sí" ? 1 : 0,
+          enrolled: row.Matriculado === "Sí" ? 1 : 0,
+          approval: row.Aprobado === "Sí" ? 1 : 0,
+          total_payment: row.PagoTotal || 0,
+          course_id: row.CursoID,
+        };
+
+        let result = await addParticipantIntern(participantData);
+        if (result.success) {
+          results.push({ cid: row.CI, success: true, message: result.message });
+        } else {
+          results = [];
+        }
+      } catch (error) {
+        // return res.status(200).json({
+        //   message: `Error registrando participante con CI ${row.CI}:`,
+        // });
+        results = [];
+        // results.push({ cid: row.CI, success: false, message: error.message });
+      }
+    }
+    console.log(results);
+    if (results.length == 0) {
+      return res.status(400).json({
+        message: "Error en la carga de los Nuevos Participantes!",
+        participants: results,
+      });
+    }
+    return res.status(200).json({
+      message: "Archivo procesado correctamente",
+      participants: results,
+    });
+  } catch (error) {
+    console.error("Error procesando el archivo:", error);
+    return res.status(500).json({ error: "Error procesando el archivo" });
   }
 };
 
@@ -445,3 +697,5 @@ function validateCid(cid) {
     return 3;
   }
 }
+
+// ! ______________________________________________

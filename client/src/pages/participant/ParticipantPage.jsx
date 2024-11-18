@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useParticipant } from "../../context/ParticipantContext";
 import RegisterParticipantModal from "../participant/RegisterParticipantModal";
-import ReportsModalityModal from "../Reports/ReportsModalityModal";
+import ParticipantReportsModal from "./ParticipantReportModal";
+import UploadExcelModal from "./UploadExcelModal";
 
 function ParticipantPage() {
 
@@ -12,9 +13,13 @@ function ParticipantPage() {
     const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
     const [isReportsModalOpen, setIsReportsModalOpen] = useState(false);
     const [selectedParticipant, setSelectedParticipant] = useState(null);
+    const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
     useEffect(() => {
         getParticipants({ search: searchTerm, page: currentPage });
+
+        console.log(participants);
+
     }, [searchTerm, currentPage]);
 
 
@@ -48,6 +53,7 @@ function ParticipantPage() {
                     value={searchTerm}
                     onChange={handleSearchChange}
                     className="w-full md:w-1/3 p-2 rounded-lg border border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+
                 />
                 <div className="flex space-x-4">
                     <button
@@ -65,6 +71,12 @@ function ParticipantPage() {
                     >
                         Reportes
                     </button>
+                    <button
+                        onClick={() => setIsUploadModalOpen(true)}
+                        className="px-4 py-2 rounded-lg text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                    >
+                        Cargar Excel
+                    </button>
                 </div>
             </div>
 
@@ -74,7 +86,8 @@ function ParticipantPage() {
                         <tr>
                             <th scope="col" className="px-6 py-3">ID</th>
                             <th scope="col" className="px-6 py-3">Nombre</th>
-                            <th scope="col" className="px-6 py-3">Edad</th>
+                            <th scope="col" className="px-6 py-3">Curso Actual</th>
+                            {/* <th scope="col" className="px-6 py-3">Edad</th> */}
                             <th scope="col" className="px-6 py-3">CI</th>
                             <th scope="col" className="px-6 py-3">Teléfono</th>
                             <th scope="col" className="px-6 py-3">Dirección</th>
@@ -93,7 +106,8 @@ function ParticipantPage() {
                                     {participant.participant_id}
                                 </th>
                                 <td className="px-6 py-4">{participant.name}</td>
-                                <td className="px-6 py-4">{participant.age}</td>
+                                <td className="px-6 py-4">{participant.Courses[0].course_name}</td>
+                                {/* <td className="px-6 py-4">{participant.age}</td> */}
                                 <td className="px-6 py-4">{participant.cid}</td>
                                 <td className="px-6 py-4">{participant.phone}</td>
                                 <td className="px-6 py-4">{participant.address}</td>
@@ -145,7 +159,9 @@ function ParticipantPage() {
             </div>
 
             <RegisterParticipantModal isOpen={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)} participant={selectedParticipant} />
-            <ReportsModalityModal isOpen={isReportsModalOpen} onClose={() => setIsReportsModalOpen(false)} />
+            <ParticipantReportsModal isOpen={isReportsModalOpen} onClose={() => setIsReportsModalOpen(false)} />
+            <UploadExcelModal isOpen={isUploadModalOpen} onClose={() => setIsUploadModalOpen(false)} />
+
         </div >
     );
 }

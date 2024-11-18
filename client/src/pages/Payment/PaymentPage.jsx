@@ -14,7 +14,9 @@ function ParticipantTypePage() {
     const [selectedPayment, setSelectedPayment] = useState(null);
 
     useEffect(() => {
+
         getPayments({ search: searchTerm, page: currentPage });
+        console.log(payments);
     }, [searchTerm, currentPage]);
 
     const handleSearchChange = (e) => {
@@ -71,6 +73,7 @@ function ParticipantTypePage() {
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 sticky top-0">
                         <tr>
                             <th scope="col" className="px-6 py-3">ID</th>
+                            <th scope="col" className="px-6 py-3">Participante</th>
                             <th scope="col" className="px-6 py-3">Descripción</th>
                             <th scope="col" className="px-6 py-3">Monto</th>
                             <th scope="col" className="px-6 py-3">Acciones</th>
@@ -82,6 +85,7 @@ function ParticipantTypePage() {
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {payment.payment_id}
                                 </th>
+                                <td className="px-6 py-4">{payment.Participants[0].name}</td>
                                 <td className="px-6 py-4">{payment.description}</td>
                                 <td className="px-6 py-4">{payment.amount}</td>
                                 <td className="px-6 py-4 flex space-x-4"> {/* Cambié space-x-2 por space-x-4 */}

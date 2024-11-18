@@ -1,10 +1,11 @@
 import DetailValues from "../../models/DetailValues.js";
+import Course from "../../models/Course.js";
 import notifications from "../../notifications.json" assert { type: "json" };
 import { Op } from "sequelize";
 
 export const addDetailValues = async (req, res) => {
   try {
-    const { total_amount, instructor_payment, balance } = req.body;
+    const { total_amount, instructor_payment, balance, course_id } = req.body;
 
     const newDetailValues = await DetailValues.create({
       total_amount,
@@ -12,9 +13,24 @@ export const addDetailValues = async (req, res) => {
       balance,
     });
 
+    const courseExist = await Course.findOne({
+      where: { course_id: course_id },
+      include: [
+        {
+          model: Detail,
+          include: [{ model: DetailValues }],
+        },
+      ],
+    });
+
+    const detailofCourseToUpdate = courseExist.Detail;
+    await detailofCourseToUpdate.update({
+      detail_value_id: newDetailValues.id,
+    });
+
     return res.status(201).json({
       message: notifications.detalle_valores.dv4,
-      detail_values: newDetailValues,
+      detail_value: newDetailValues,
     });
   } catch (error) {
     return res.status(500).json({ message: notifications.principal.p1, error });
@@ -71,16 +87,16 @@ export const deleteDetailValues = async (req, res) => {
 
     const detail_value = await DetailValues.findByPk(id);
     if (!detail_value) {
-      return res.status(404).json({ message: notifications.detalle_valores.dv5 });
+      return res
+        .status(404)
+        .json({ message: notifications.detalle_valores.dv5 });
     }
 
     await detail_value.destroy();
 
     return res.status(200).json({ message: notifications.detalle_valores.dv3 });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: notifications.principal.p1 , error });
+    return res.status(500).json({ message: notifications.principal.p1, error });
   }
 };
 
@@ -88,7 +104,6 @@ export const updateDetailValues = async (req, res) => {
   try {
     const { id } = req.params;
     const detail_values = await DetailValues.findByPk(id);
-  
 
     if (!detail_values) {
       return res

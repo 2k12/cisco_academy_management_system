@@ -120,12 +120,12 @@ function ParticipantForm({ onClose, participant }) {
                     className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
                     autoFocus
                 />
-                <input
+                {/* <input
                     type="number"
                     placeholder="Edad"
                     {...register("age")}
                     className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
-                />
+                /> */}
                 <input
                     type="text"
                     placeholder="Número de Cédula"

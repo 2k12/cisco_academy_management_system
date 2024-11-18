@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useChapter } from "../../context/ChapterContext";
 import RegisterChapterModal from "../Chapter/RegisterChapterModal";
-import ReportsModalityModal from "../Reports/ReportsModalityModal";
+import ChapterReportsModal from "./ChapterReportModal";
 
 function ChapterPage() {
     const { getChapters, chapters, totalPages, currentPage, setCurrentPage, deleteChapter } = useChapter();
@@ -144,7 +144,7 @@ function ChapterPage() {
             </div>
 
             <RegisterChapterModal isOpen={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)} chapter={selectedChapter} />
-            <ReportsModalityModal isOpen={isReportsModalOpen} onClose={() => setIsReportsModalOpen(false)} />
+            <ChapterReportsModal isOpen={isReportsModalOpen} onClose={() => setIsReportsModalOpen(false)} />
         </div >
     );
 }

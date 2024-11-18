@@ -53,21 +53,23 @@ export function ParticipantProvider({ children }) {
                 text: res.data.message,
             });
             console.log(res);
-            getParticipants({ page: currentPage }); 
+            getParticipants({ page: currentPage });
         } catch (error) {
             console.log(error);
         }
     };
 
-    //   const getAllInstructors = async ({ search = '', page = 1, limit = 1000 }) => {
-    //     try {
-    //       const res = await getAllInstructorsRequest({ search, page, limit });
-    //       setAllInstructorsForReport(res.data.instructors);
-    //     //   setTotalPages(res.data.totalPages);
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-    //   };
+    const getAllParticipants = async ({ search = '', page = 1, limit = 1000 }) => {
+        try {
+            console.log({ search, page, limit });
+            const res = await getParticipantsRequest({ search, page, limit });
+            setParticipants(res.data.participants);
+            //   console.log(res.data.instructors);
+            setTotalPages(res.data.totalPages);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const getParticipantsDropdown = async () => {
         try {
@@ -88,7 +90,7 @@ export function ParticipantProvider({ children }) {
                 createParticipant,
                 updateParticipant,
                 // createInstructor,
-                // getAllInstructors,
+                getAllParticipants,
                 // allinstructorsforreport,
                 totalPages,
                 currentPage,

@@ -18,9 +18,9 @@ const Participant = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    age: {
-      type: DataTypes.INTEGER,
-    },
+    // age: {
+    //   type: DataTypes.INTEGER,
+    // },
     cid: {
       type: DataTypes.INTEGER,
     },

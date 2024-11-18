@@ -44,7 +44,7 @@ function ModalityPage() {
       <div className="flex justify-between mb-6">
         <input
           type="text"
-          placeholder="Buscar permisos..."
+          placeholder="Buscar modalidades..."
           value={searchTerm}
           onChange={handleSearchChange}
           className="w-full md:w-1/3 p-2 rounded-lg border border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"

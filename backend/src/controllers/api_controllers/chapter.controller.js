@@ -22,7 +22,7 @@ export const addChapter = async (req, res) => {
 
     await CourseChapter.create({
       chapter_id: newChapter.chapter_id,
-      course_id
+      course_id,
     });
 
     return res
@@ -35,8 +35,12 @@ export const addChapter = async (req, res) => {
 
 export const getChapters = async (req, res) => {
   try {
-    const { search = "", limit = 10, page = 1 } = req.body; // Recibiendo search, limit y page
+    const { search = "", limit = 10, page = 1, courseName } = req.body; // Recibiendo search, limit y page
     const offset = (page - 1) * limit; // Cálculo de offset para paginación
+
+    const courseCondition = courseName
+      ? { course_name: { [Op.like]: `%${courseName}%` } } // Buscar cursos que coincidan con `courseName`
+      : {};
 
     const chapters = await Chapter.findAndCountAll({
       where: {
@@ -50,6 +54,8 @@ export const getChapters = async (req, res) => {
           model: Course, // Incluye el modelo Course
           // attributes: ['course_name'], // Obtén el nombre del curso, puedes agregar más atributos si los necesitas
           through: { attributes: [] }, // Excluye los atributos de la tabla intermedia si no los necesitas
+          where: courseCondition, // Aplicamos el filtro para el nombre del curso
+          required: true,
         },
       ],
       limit: limit, // Tamaño de la página
@@ -132,7 +138,6 @@ export const deleteChapter = async (req, res) => {
 //     return res.status(500).json({ message: notifications.principal.p1, error });
 //   }
 // };
-
 
 export const updateChapter = async (req, res) => {
   try {

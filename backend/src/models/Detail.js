@@ -26,6 +26,11 @@ const Detail = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    cost_per_hour: {
+      type: DataTypes.DECIMAL(10, 2), 
+      allowNull: true,
+      field: "cost_per_hour",
+    },
     total_hours: {
       type: DataTypes.INTEGER,
     },
