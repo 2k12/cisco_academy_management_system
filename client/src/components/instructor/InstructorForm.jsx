@@ -22,7 +22,7 @@ function InstructorForm({ onClose, instructor }) {
             setValue("email", instructor.email);
             setValue("ruc_number", instructor.ruc_number);
             setValue("banck_certificate_url", instructor.banck_certificate_url);
-            setValue("cost_per_hour", instructor.cost_per_hour);
+            // setValue("cost_per_hour", instructor.cost_per_hour);
 
             if (instructor.Details && instructor.Details.length > 0) {
                 setSelectedCourse(instructor.Details[0].Courses[0].course_id);
@@ -49,7 +49,7 @@ function InstructorForm({ onClose, instructor }) {
 
     return (
         <div className="bg-zinc-800 max-w-md w-full p-10 rounded-md">
-            <h2 className="text-center text-2xl text-white">Detalle</h2>
+            <h2 className="text-center text-2xl text-white">Instructor</h2>
             <form onSubmit={onSubmit}>
                 <select
                     {...register("course_id")}
@@ -100,12 +100,12 @@ function InstructorForm({ onClose, instructor }) {
                     {...register("email", { required: true })}
                     className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
                 />
-                <input
+                {/* <input
                     type="number"
                     placeholder="Costo por Hora"
                     {...register("cost_per_hour", { required: true })}
                     className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
-                />
+                /> */}
                 <input
                     type="text"
                     placeholder="Certificado Bancario"

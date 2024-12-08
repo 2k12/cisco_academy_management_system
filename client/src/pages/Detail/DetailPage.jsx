@@ -79,6 +79,9 @@ function DetailPage() {
                             <th scope="col" className="px-6 py-3">N. Matriculados</th>
                             <th scope="col" className="px-6 py-3">N. Reprobados</th>
                             <th scope="col" className="px-6 py-3">Requerimiento Participantes</th>
+                            <th scope="col" className="px-6 py-3">Horas Instructor</th>
+                            <th scope="col" className="px-6 py-3">Horas Actividades</th>
+                            <th scope="col" className="px-6 py-3">Costo por Hora</th>
                             <th scope="col" className="px-6 py-3">Acciones</th>
                         </tr>
                     </thead>
@@ -97,6 +100,9 @@ function DetailPage() {
                                 <td className="px-6 py-4">{detail.num_enrolled ?? ""}</td>
                                 <td className="px-6 py-4">{detail.num_failed ?? ""}</td>
                                 <td className="px-6 py-4">{detail.participant_requeriment ?? ""}</td>
+                                <td className="px-6 py-4">{detail.instructor_hours ?? ""}</td>
+                                <td className="px-6 py-4">{detail.activities_hours ?? ""}</td>
+                                <td className="px-6 py-4">{detail.cost_per_hour ?? ""}</td>
                                 <td className="px-6 py-4 flex space-x-4">
                                     <button className="text-blue-500 hover:text-blue-700">
                                         <FontAwesomeIcon icon={faEye} />

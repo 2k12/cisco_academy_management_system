@@ -26,7 +26,7 @@ function InfoUtnForm({ onClose, info_utn }) {
 
     return (
         <div className="bg-zinc-800 max-w-md w-full p-10 rounded-md">
-            <h2 className="text-center text-2xl text-white">Capítulo</h2>
+            <h2 className="text-center text-2xl text-white">Información UTN</h2>
             <form onSubmit={onSubmit}>
                 <input
                     type="text"

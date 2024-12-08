@@ -33,21 +33,22 @@ function DetailForm({ onClose, detail }) {
             setValue("num_enrolled", detail.num_enrolled);
             setValue("num_failed", detail.num_failed);
             setValue("participant_requeriment", detail.participant_requeriment);
-        
+            setValue("cost_per_hour", detail.cost_per_hour);
+
             // Verifica si detail.Courses existe y tiene al menos un elemento
             if (detail.Courses && detail.Courses.length > 0) {
                 setSelectedCourse(detail.Courses[0].course_id);
             } else {
                 setSelectedCourse(""); // O asigna un valor predeterminado si no hay relación
             }
-        
+
             // Verifica si detail.Instructor existe antes de asignar su ID
             if (detail.Instructor) {
                 setSelectedInstructor(detail.Instructor.instructor_id);
             } else {
                 setSelectedInstructor(""); // O asigna un valor predeterminado si no hay relación
             }
-        
+
             // Verifica si detail.Modalities existe y tiene al menos un elemento
             if (detail.Modalities && detail.Modalities.length > 0) {
                 setSelectedModality(detail.Modalities[0].modality_id);
@@ -55,7 +56,7 @@ function DetailForm({ onClose, detail }) {
                 setSelectedModality(""); // O asigna un valor predeterminado si no hay relación
             }
         }
-        
+
         //        // Verificar si existen los IDs en las listas
         //        setSelectedCourse(courses.some(course => course.course_id === detail.Courses[0]?.course_id) ? detail.Courses[0]?.course_id : "");
         //        setSelectedInstructor(instructors.some(inst => inst.instructor_id === detail.Instructor?.instructor_id) ? detail.Instructor?.instructor_id : "");
@@ -172,6 +173,12 @@ function DetailForm({ onClose, detail }) {
                     {...register("cost")}
                     className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
                 /> */}
+                <input
+                    type="text"
+                    placeholder="Costo por Hora"
+                    {...register("cost_per_hour", { required: true })}
+                    className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
+                />
                 <input
                     type="number"
                     placeholder="Numero Registrados"

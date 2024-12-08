@@ -108,8 +108,10 @@ export const addCourse = async (req, res) => {
   try {
     const {
       course_name,
-      registration_date,
-      enrollment_date,
+      start_registration_date,
+      end_registration_date,
+      start_enrollment_date,
+      end_enrollment_date,
       start_date,
       end_date,
       status,
@@ -123,8 +125,10 @@ export const addCourse = async (req, res) => {
 
     const newCourse = await Course.create({
       course_name,
-      registration_date,
-      enrollment_date,
+      start_registration_date,
+      end_registration_date,
+      start_enrollment_date,
+      end_enrollment_date,
       start_date,
       end_date,
       status,

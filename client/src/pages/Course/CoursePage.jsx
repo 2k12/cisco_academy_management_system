@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEdit, faTrash , faCertificate} from "@fortawesome/free-solid-svg-icons";
 import { useCourse } from "../../context/CourseContext";
 import RegisterCourseModal from "../Course/RegisterCourseModal";
 import ReportsModalityModal from "../Reports/ReportsModalityModal";
@@ -45,7 +45,7 @@ function CoursePage() {
 
     return (
         <div className="p-6 bg-zinc-750 min-h-screen text-white overflow-hidden">
-            <div className="flex justify-between mb-6">
+            <div className="flex justify-start mb-6">
                 <input
                     type="text"
                     placeholder="Buscar cursos..."
@@ -53,7 +53,7 @@ function CoursePage() {
                     onChange={handleSearchChange}
                     className="w-full md:w-1/3 p-2 rounded-lg border border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
-                <div className="flex space-x-4">
+                <div className="flex space-x-4 ml-2">
                     <button
                         onClick={() => {
                             setSelectedCourse(null);
@@ -63,12 +63,12 @@ function CoursePage() {
                     >
                         Registrar Curso
                     </button>
-                    <button
+                    {/* <button
                         onClick={() => setIsReportsModalOpen(true)}
                         className="px-4 py-2 rounded-lg text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
                     >
                         Reportes
-                    </button>
+                    </button> */}
                 </div>
             </div>
 
@@ -109,6 +109,9 @@ function CoursePage() {
                                     </button>
                                     <button className="text-yellow-500 hover:text-yellow-700" onClick={() => handleEdit(course)}>
                                         <FontAwesomeIcon icon={faEdit} />
+                                    </button>
+                                    <button className="text-purple-500 hover:text-purple-700">
+                                        <FontAwesomeIcon icon={faCertificate} />
                                     </button>
                                     <button className="text-red-500 hover:text-red-700" onClick={() => handleDelete(course.course_id)}>
                                         <FontAwesomeIcon icon={faTrash} />

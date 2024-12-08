@@ -18,7 +18,9 @@ function ParticipantPage() {
     useEffect(() => {
         getParticipants({ search: searchTerm, page: currentPage });
 
+        console.log("-------------");
         console.log(participants);
+        console.log("-------------");
 
     }, [searchTerm, currentPage]);
 
@@ -75,7 +77,7 @@ function ParticipantPage() {
                         onClick={() => setIsUploadModalOpen(true)}
                         className="px-4 py-2 rounded-lg text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
                     >
-                        Cargar Excel
+                        Cargar desde Excel
                     </button>
                 </div>
             </div>
@@ -106,7 +108,7 @@ function ParticipantPage() {
                                     {participant.participant_id}
                                 </th>
                                 <td className="px-6 py-4">{participant.name}</td>
-                                <td className="px-6 py-4">{participant.Courses[0].course_name}</td>
+                                <td className="px-6 py-4">{participant.Courses[0]?.course_name ?? "Sin Registros"}</td>
                                 {/* <td className="px-6 py-4">{participant.age}</td> */}
                                 <td className="px-6 py-4">{participant.cid}</td>
                                 <td className="px-6 py-4">{participant.phone}</td>

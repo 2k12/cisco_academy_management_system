@@ -173,7 +173,7 @@ function Navbar() {
                                 <li><Link to="/payments" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faMoneyBill} className="mr-2" />Pagos </Link></li>
                                 <li><Link to="/payment-types" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faMoneyCheck} className="mr-2" />Tipo de Pagos </Link></li>
 
-                                <li><Link to="/certificates" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faCertificate} className="mr-2" />Certificados</Link></li>
+                                <li><Link to="/certificates" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faCertificate} className="mr-2" />Certificados Inst.</Link></li>
                                 <li><Link to="/schedules" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faHourglass} className="mr-2" />Horarios</Link></li>
                                 <li><Link to="/modalities" className="block py-1 text-gray-500 dark:hover:text-white" onClick={() => setIsDrawerOpen(false)}><FontAwesomeIcon icon={faCogs} className="mr-2" />Modalidades</Link></li>
 
