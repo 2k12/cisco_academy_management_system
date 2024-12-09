@@ -7,7 +7,7 @@ import ReportsModalityModal from "../Reports/ReportsModalityModal";
 import CoursePreviewModal from "./CoursePreviewModal";
 
 function CoursePage() {
-    const { getCourses, courses, totalPages, currentPage, setCurrentPage, deleteCourses } = useCourse();
+    const { getCourses, courses, totalPages, currentPage, setCurrentPage, deleteCourses, downloadCertificates } = useCourse();
     const [searchTerm, setSearchTerm] = useState('');
     const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
     const [isReportsModalOpen, setIsReportsModalOpen] = useState(false);
@@ -42,6 +42,10 @@ function CoursePage() {
         setSelectedCourse(course); // Selecciona el curso
         setIsDetailsModalOpen(true); // Abre el modal de detalles
     };
+
+    const handleDownloadCertificate = (courseId) =>{
+        downloadCertificates(courseId);
+    }
 
     return (
         <div className="p-6 bg-zinc-750 min-h-screen text-white overflow-hidden">
@@ -110,7 +114,8 @@ function CoursePage() {
                                     <button className="text-yellow-500 hover:text-yellow-700" onClick={() => handleEdit(course)}>
                                         <FontAwesomeIcon icon={faEdit} />
                                     </button>
-                                    <button className="text-purple-500 hover:text-purple-700">
+                                    {/* <button className="text-purple-500 hover:text-purple-700" onClick={() => handleDownloadCertificate(course.id)}> */}
+                                    <button className="text-purple-500 hover:text-purple-700" onClick={() => handleDownloadCertificate(1)}>
                                         <FontAwesomeIcon icon={faCertificate} />
                                     </button>
                                     <button className="text-red-500 hover:text-red-700" onClick={() => handleDelete(course.course_id)}>

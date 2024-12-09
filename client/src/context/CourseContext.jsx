@@ -6,8 +6,12 @@ import {
   deleteCourseRequest,
   getAllCoursesRequest,
   getCoursesRequest,
-  updateCourseRequest
+  updateCourseRequest,
+  // getCertificatesRequest
 } from "../api/course";
+import axios from "../api/axios.js";
+
+
 
 const CourseContext = createContext();
 
@@ -95,7 +99,29 @@ export function CourseProvider({ children }) {
     }
   };
 
+  const downloadCertificates = async (id) => {
+    try {
+      const response = await axios.get(`/courses-certificate/${id}`, {
+        responseType: 'blob', // Necesario para manejar el PDF como un archivo binario
+      });
+      // const response = await getCertificatesRequest(id);
+      // getCourses({ page: currentPage }); // Vuelve a obtener la lista actualizada
+      // Crear un enlace para descargar el archivo
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `certificado-curso-${id}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
 
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  // downloadCertificates
 
   return (
     <CourseContext.Provider
@@ -106,6 +132,7 @@ export function CourseProvider({ children }) {
         getCourses,
         getAllCourses,
         deleteCourses,
+        downloadCertificates,
         allcoursesforreport,
         totalPages,
         currentPage,

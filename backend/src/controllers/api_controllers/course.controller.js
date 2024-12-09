@@ -11,6 +11,10 @@ import InfoUtn from "../../models/InfoUtn.js";
 import notifications from "../../notifications.json" assert { type: "json" };
 
 import { Op } from "sequelize";
+import PDFDocument from 'pdfkit';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 import Detail from "../../models/Detail.js";
 import DetailValues from "../../models/DetailValues.js";
 import Instructor from "../../models/Instructor.js";
@@ -282,6 +286,125 @@ export const getCoursesDropdown = async (req, res) => {
     });
     res.json({ courses: courses });
   } catch (error) {
+    res.status(500).json({ message: notifications.principal.p1 });
+  }
+};
+
+
+
+
+export const getCertificates = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Buscar el curso y los participantes
+    const course = await Course.findOne({
+      where: { course_id: id },
+      include: [
+        {
+          model: Participant,
+          include: [
+            { model: ParticipantType },
+            { model: InfoUtn, through: { attributes: [] } },
+            {
+              model: Payment,
+              through: { attributes: [] },
+              include: [
+                {
+                  model: PaymentType,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    if (!course) {
+      return res.status(404).json({ message: notifications.cursos.c5 });
+    }
+
+    // Configurar respuesta para PDF
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader(
+      'Content-Disposition',
+      `inline; filename="certificado-curso-${id}.pdf"`
+    );
+
+    // Obtener la ruta del directorio actual (es el directorio donde está este archivo)
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+
+    // Ruta del logo (ajustar a la ruta relativa desde el archivo donde está ejecutándose el código)
+    const logoPath = path.resolve(__dirname, '../../assets/cisco_logo.png');  // Asegúrate de que esta ruta esté bien configurada
+
+    // Crear el PDF con orientación horizontal (landscape)
+    const doc = new PDFDocument({ size: 'A4', layout: 'landscape', margin: 50 });
+
+    // Pipe del PDF a la respuesta HTTP
+    doc.pipe(res);
+
+    // Obtener la altura de la página A4 (para centrar el contenido)
+    const pageHeight = doc.page.height;
+    const pageWidth = doc.page.width;
+
+    // Márgenes de la página
+    const topMargin = 400;  // Margen superior
+    const bottomMargin = 100;  // Margen inferior
+
+    // Calcular el espacio disponible para centrar el contenido
+    const contentHeight = pageHeight - topMargin - bottomMargin;
+    const totalTextHeight = 250;  // Aproximadamente la altura del contenido (ajustar según sea necesario)
+    const verticalCenter = topMargin + (contentHeight - totalTextHeight) / 2;
+
+    // Generar una página por participante
+    course.Participants.forEach((participant) => {
+      doc.addPage();
+
+      doc.moveDown(8);  // Esto agrega un espaciado de 3 líneas (puedes ajustar el número)
+
+      // Insertar el logo en la parte superior izquierda
+      doc.image(logoPath, 20, 20, { width: 100 });  // Logo más cercano a la esquina superior izquierda
+
+      // Título del certificado (centrado horizontalmente)
+      doc
+        .fontSize(20)
+        .text("Cisco Networking Academy UTN", { align: "center", continued: false })
+        .moveDown();
+
+      doc
+        .fontSize(16)
+        .text("CONFIERE EL PRESENTE CERTIFICADO A", { align: "center" })
+        .moveDown(2);
+
+      // Nombre del participante (centrado horizontalmente)
+      doc
+        .fontSize(24)
+        .font("Times-Bold")
+        .text(`${participant.name}`, { align: "center" })
+        .moveDown(2);
+
+      // Contenido del certificado (centrado horizontalmente y ajustado verticalmente)
+      doc
+        .fontSize(12)
+        .font("Times-Roman")
+        .text(
+          `Por haber asistido y aprobado el curso "${course.name}", .` +
+          // Se puede ajustar con más texto si es necesario
+          "",
+          { align: "center", indent: 40, lineGap: 8 }
+        )
+        .moveDown(2);
+
+      // Firma y detalles (centrado horizontalmente)
+      doc.text("__________________________", { align: "center" });
+      doc.text("Coordinador Académico", { align: "center" });
+    });
+
+    // Finalizar el PDF
+    doc.end();
+  } catch (error) {
+    console.log(error);
     res.status(500).json({ message: notifications.principal.p1 });
   }
 };
