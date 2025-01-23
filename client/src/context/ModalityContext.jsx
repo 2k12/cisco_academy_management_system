@@ -25,7 +25,7 @@ export function ModalityProvider({ children }) {
   const [allmodalitiesforreport, setAllModalitiesForReport] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  
+
   const getModalitiesDropdown = async () => {
     try {
       const res = await getModalitiesDropdownRequest();
@@ -36,23 +36,37 @@ export function ModalityProvider({ children }) {
   };
 
   const createModality = async (modalities) => {
-    const res = await createModalitiesRequest(modalities);
-    console.log(res);
-    // Aquí puedes actualizar el estado si lo deseas
-    getModalities({ page: currentPage }); // Obtener la lista actualizada
+    try {
+      const res = await createModalitiesRequest(modalities);
+      Swal.fire({ 
+        icon: 'success',
+        title: 'Éxito',
+        text: res.data.message,
+      });
+      getModalities({ page: currentPage }); 
+    } catch (error) {
+
+      Swal.fire({ 
+        icon: 'success',
+        title: 'Éxito',
+        text: error
+        .response.data.message,
+      });
+      console.log(error);
+    }
+
   };
 
   const updateModality = async (modality) => {
     try {
       const res = await updateModalitiesRequest(modality);
-      Swal.fire({ // Muestra el mensaje de éxito
+      Swal.fire({ 
         icon: 'success',
         title: 'Éxito',
         text: res.data.message,
       });
       console.log(res);
-      // Aquí puedes actualizar el estado si lo deseas
-      getModalities({ page: currentPage }); // Obtener la lista actualizada
+      getModalities({ page: currentPage }); 
     } catch (error) {
       console.log(error);
     }
@@ -62,7 +76,6 @@ export function ModalityProvider({ children }) {
     try {
       const res = await getModalitiesRequest({ search, page, limit });
       setModalities(res.data.modalities);
-      // console.log(res.data.permissions);
       setTotalPages(res.data.totalPages);
     } catch (error) {
       console.log(error);
@@ -80,9 +93,19 @@ export function ModalityProvider({ children }) {
 
   const deleteModality = async (id) => {
     try {
-      await deleteModalitiesRequest(id);
-      getModalities({ page: currentPage }); // Vuelve a obtener la lista actualizada
+      const res = await deleteModalitiesRequest(id);
+      Swal.fire({ 
+        icon: 'success',
+        title: 'Éxito',
+        text: res.data.message,
+      });
+      getModalities({ page: currentPage }); 
     } catch (error) {
+      Swal.fire({ 
+        icon: 'error',
+        title: 'Error',
+        text: error.response.data.message,
+      });
       console.log(error);
     }
   };

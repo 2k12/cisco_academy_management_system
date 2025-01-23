@@ -69,9 +69,19 @@ export function CertificateProvider({ children }) {
 
   const deleteCertificates = async (id) => {
     try {
-      await deleteCertificatesRequest(id);
+      const res = await deleteCertificatesRequest(id);
+      Swal.fire({ // Muestra el mensaje de éxito
+        icon: 'success',
+        title: 'Éxito',
+        text: res.data.message,
+      });
       getCertificates({ page: currentPage }); // Vuelve a obtener la lista actualizada
     } catch (error) {
+      Swal.fire({ // Muestra el mensaje de éxito
+        icon: 'error',
+        title: 'Error',
+        text: error.response.data.message,
+      });
       console.log(error);
     }
   };

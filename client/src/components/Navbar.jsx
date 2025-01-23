@@ -68,7 +68,7 @@ function Navbar() {
 
     return (
         <>
-            <nav className="bg-white dark:bg-gray-800 flex justify-between items-center py-5 px-10">
+            <nav className="bg-red-700 dark:bg-gray-800 flex justify-between items-center py-5 px-10">
                 <div className="flex items-center">
                     {isAuthenticated && (
                         <button
@@ -90,18 +90,18 @@ function Navbar() {
                     {isAuthenticated ? (
                         <>
                             <li className="pt-1">
-                                <button type="button" className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
+                                <button type="button" className="flex text-sm bg-transparent rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
                                     <img className="w-6 h-6 rounded-full " src={profilePicture} alt="Profile Image" />
                                     <span className="pl-3">{user.userExists.name}</span>
                                 </button>
                             </li>
                             <li>
-                                <button onClick={handleLogout} className="px-4 text-red-500 font-semibold">Cerrar Sesión</button>
+                                <button onClick={handleLogout} className="px-4 text-white font-semibold">Cerrar Sesión</button>
                             </li>
                         </>
                     ) : (
                         <li>
-                            <Link to={"/login"} className="px-4 py-1 text-indigo-500 font-semibold">Iniciar Sesión</Link>
+                            <Link to={"/login"} className="px-4 py-1 text-white dark:text-white font-semibold">Iniciar Sesión</Link>
                         </li>
                     )}
                 </ul>

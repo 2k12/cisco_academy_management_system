@@ -12,7 +12,7 @@ const PreviewCoursePage = () => {
     const [isReportsModalOpen, setIsReportsModalOpen] = useState(false);
 
 
-    console.log(course);
+    // console.log(course);
 
     // Si no hay curso, puedes manejar el caso adecuadamente
     if (!course) {
@@ -70,16 +70,13 @@ const PreviewCoursePage = () => {
     };
 
     return (
-        <div className='p-10'>
-
-
-
-            <div className="container mx-auto mt-10 px-4">
+        <div className='p-10 bg-gray-100 '>
+            <div className="container mx-auto mt-10 px-4 ">
                 <div className="flex justify-between items-center mb-4">
                     {/* Botón de regresar */}
                     <button
                         onClick={() => window.history.back()}
-                        className="flex items-center px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition duration-200"
+                        className="flex items-center px-4 py-2 bg-transparent text-gray-700 dark:text-white rounded-lg "
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -122,13 +119,13 @@ const PreviewCoursePage = () => {
                     </button>
                 </div>
 
-                <div className="flex justify-between items-center ">
+                <div className="flex justify-between items-center text-gray-700 dark:text-white">
                     <h2 className="text-4xl ">{course.course_name}</h2>
                     <span className={`ml-2 px-3 bg-gray-800 rounded-full ${getStatusStyles(course.status)}`}>
                         {course.status}
                     </span>
                 </div>
-                <div className="flex justify-between items-center mb-5">
+                <div className="flex justify-between items-center mb-5 text-gray-700 dark:text-white">
                     <h2>{formatDateForInput(course.createdAt)}</h2>
                 </div>
                 <div className="grid grid-cols-3 gap-10 mb-5">
@@ -147,7 +144,7 @@ const PreviewCoursePage = () => {
                 </div>
 
                 {/* Fechas del curso */}
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8 text-gray-700 dark:text-white">
                     <h3 className='uppercase text-xl mb-4'>Fechas Importantes</h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -177,7 +174,7 @@ const PreviewCoursePage = () => {
                 </div>
 
                 {/* Descripción del curso */}
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 text-gray-700 dark:text-white">
                     <h3 className='uppercase text-xl mb-4'>Descripción del Curso</h3>
                     {course.Detail ? (
                         <div className="space-y-6">
@@ -236,7 +233,7 @@ const PreviewCoursePage = () => {
                     )}
                 </div>
 
-                <div className='mt-10'>
+                <div className='mt-10 text-gray-700 dark:text-white'>
                     <h3 className='uppercase text-xl mb-4'>Horarios</h3>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         {course.Detail && course.Detail != [] ? (
@@ -277,7 +274,7 @@ const PreviewCoursePage = () => {
 
 
                 {/* Sección de Capítulos */}
-                <div className='mt-5 p-2 border-b border-gray-200 dark:border-gray-600'>
+                <div className='mt-5 p-2 border-b border-gray-200 dark:border-gray-600 text-gray-700 dark:text-white'>
                     <h3
                         className='uppercase flex items-center cursor-pointer text-xl'
                         onClick={toggleChapters}
@@ -287,7 +284,7 @@ const PreviewCoursePage = () => {
                         <span className={`ml-2 transition-transform ${isChaptersOpen ? 'rotate-180' : 'rotate-0'}`}>▼</span>
                     </h3>
                     {isChaptersOpen && (
-                        <div className='mt-2 p-4 border border-gray-800 bg-gray-800 rounded-lg'>
+                        <div className='mt-2 p-4 border border-gray-800 bg-gray-300 rounded-lg text-gray-700 dark:text-white'>
                             {course?.Chapters?.length > 0 ? (
                                 course.Chapters.map((chapter) => (
                                     <div key={chapter.chapter_id} className="p-2">
@@ -303,9 +300,9 @@ const PreviewCoursePage = () => {
                 </div>
 
                 {/* Sección de Participantes */}
-                <div className='mt-5'>
+                <div className='mt-5 '>
                     <h3
-                        className='uppercase flex items-center cursor-pointer p-2 text-white text-xl'
+                        className='uppercase flex items-center cursor-pointer p-2 text-gray-700 dark:text-white text-xl'
                         onClick={toggleParticipants}
                         aria-expanded={isParticipantsOpen}
                     >

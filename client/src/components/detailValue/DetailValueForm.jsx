@@ -15,9 +15,12 @@ function DetailValueForm({ onClose, detail_value }) {
         getCoursesDropdown();
 
         if (detail_value) {
+            console.log(detail_value);
             setValue("total_amount", detail_value.total_amount);
             setValue("instructor_payment", detail_value.instructor_payment);
             setValue("balance", detail_value.balance);
+            // setSelectedCourse(chapter.Courses[0]?.course_id);
+
         }
     }, [detail_value, setValue]);
 

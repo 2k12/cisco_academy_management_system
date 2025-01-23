@@ -30,18 +30,18 @@ function CourseDetailsModal({ isOpen, onClose, course }) {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg shadow-lg p-6 w-full max-w-3xl">
+            <div className="bg-gray-200 dark:bg-gray-700 rounded-lg shadow-lg p-6 w-full max-w-3xl">
                 <div className="flex justify-between items-center">
-                    <h2 className="text-4xl ">{course.course_name || "No asignado"}</h2>
-                    <span className={`ml-2 px-3 bg-gray-800 rounded-full ${getStatusStyles(course.status)}`}>
+                    <h2 className="text-4xl text-gray-700 dark:text-white">{course.course_name || "No asignado"}</h2>
+                    <span className={`ml-2 px-3 bg-gray-400 rounded-full ${getStatusStyles(course.status)}`}>
                         {course.status || "No asignado"}
                     </span>
                 </div>
-                <div className="flex justify-between items-center mb-5">
+                <div className="flex justify-between items-center mb-5 text-gray-700 dark:text-white">
                     <h2>{formatDateForInput(course.createdAt)}</h2>
                 </div>
 
-                <h3 className="uppercase">Participantes</h3> <br />
+                <h3 className="uppercase text-gray-700 dark:text-white">Participantes</h3> <br />
                 <div className="grid grid-cols-3 gap-4 mb-5">
                     <div className="flex flex-col items-center bg-gray-800 rounded-lg p-2">
                         <span className="text-2xl font-bold">{course.Detail?.num_enrolled || "..."}</span>
@@ -58,8 +58,8 @@ function CourseDetailsModal({ isOpen, onClose, course }) {
                 </div>
 
                 <div>
-                    <h3 className="uppercase">Fechas</h3>
-                    <div className="p-2 border-b border-gray-200 dark:border-gray-600">
+                    <h3 className="uppercase text-gray-700 dark:text-white">Fechas</h3>
+                    <div className="p-2 border-b border-gray-200 dark:border-gray-600 text-gray-700 dark:text-white">
                         <p><strong>Fecha Inscripciones: </strong>{course.start_registration_date ? new Date(course.start_registration_date).toLocaleDateString() : "No asignado"} - {course.end_registration_date ? new Date(course.end_registration_date).toLocaleDateString() : "No asignado"}</p>
                         <p><strong>Fecha Inicio Matrículas: </strong>{course.start_enrollment_date ? new Date(course.start_enrollment_date).toLocaleDateString() : "No asignado"} - {course.end_enrollment_date ? new Date(course.end_enrollment_date).toLocaleDateString() : "No asignado"}</p>
                         <p><strong>Fecha Inicio Curso: </strong>{course.start_date ? new Date(course.start_date).toLocaleDateString() : "No asignado"}</p>
@@ -67,7 +67,7 @@ function CourseDetailsModal({ isOpen, onClose, course }) {
                     </div>
                 </div>
 
-                <div className="mt-5">
+                <div className="mt-5 text-gray-700 dark:text-white">
                     <h3 className="uppercase">Descripción</h3>
                     {course.Detail ? (
                         <div className="p-2 border-b border-gray-200 dark:border-gray-600">
