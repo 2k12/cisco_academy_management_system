@@ -3,9 +3,10 @@ import { Sequelize } from "sequelize";
 const sequelize = new Sequelize(
   'utn_cms',
   'root',
-  'admin',
+  '123ADMINFICA123',
   {
     host: 'localhost',
+    port: 3307,
     dialect: 'mysql',
     logging: false,
   }

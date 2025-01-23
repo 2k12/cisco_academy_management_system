@@ -13,7 +13,12 @@ import Schedule from "../../models/Schedule.js";
 import Course from "../../models/Course.js";
 
 import { mainEcuadorianCid } from "../../middlewares/validateCid.js";
-import notifications from "../../notifications.json" assert { type: "json" };
+// import notifications from "../../notifications.json" assert { type: "json" };
+import fs from "fs";
+import path from "path";
+
+const jsonPath = path.resolve("./src/notifications.json");
+const notifications = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
 import { Op } from "sequelize";
 import XLSX from "xlsx";
 
@@ -23,7 +28,7 @@ export const addParticipant = async (req, res) => {
       name,
       age,
       cid,
-      phone,
+      // phone,
       address,
       institution,
       participant_type_id,
@@ -36,7 +41,7 @@ export const addParticipant = async (req, res) => {
       course_id,
     } = req.body;
 
-    if (mainEcuadorianCid(cid)) {
+    // if (mainEcuadorianCid(cid)) {
       const participantExists = await Participant.findOne({ where: { cid } });
       if (participantExists) {
         return res.status(400).json({ message: notifications.participante.p1 });
@@ -45,7 +50,7 @@ export const addParticipant = async (req, res) => {
         name,
         age,
         cid,
-        phone,
+        // phone,
         address,
         institution,
         participant_type_id,
@@ -114,12 +119,13 @@ export const addParticipant = async (req, res) => {
         message: notifications.participante.p4,
         participant: newParticipant,
       });
-    } else {
-      return res.status(400).json({ message: notifications.participante.p5 });
-    }
+    // } else {
+    //   return res.status(400).json({ message: notifications.participante.p5 });
+    // }
   } catch (error) {
     console.log(`error ${error}`);
-    return res.status(500).json({ message: notifications.principal.p1, error });
+    // return res.status(500).json({ message: notifications.principal.p1, error });
+    return res.status(500).json({ message: error });
   }
 };
 
@@ -494,12 +500,13 @@ function updateAttribute(attribute, operation) {
 
 export const getParticipants = async (req, res) => {
   try {
-    const { search = "", limit = 10, page = 1, courseName } = req.body; // Agregado el parámetro `courseName`
+    // const { search = "", limit = 10, page = 1, courseName } = req.body; // Agregado el parámetro `courseName`
+    const { search = "", limit = 10, page = 1 } = req.body; // Agregado el parámetro `courseName`
     const offset = (page - 1) * limit; // Cálculo de offset para paginación
 
     // Se construye la condición WHERE para los participantes
 
-    console.log(courseName);
+    // console.log(courseName);
     console.log(req.body);
 
     const whereConditions = {
@@ -513,10 +520,10 @@ export const getParticipants = async (req, res) => {
       ],
     };
 
-    // Condición para filtrar el curso por nombre
-    const courseCondition = courseName
-      ? { course_name: { [Op.like]: `%${courseName}%` } } // Buscar cursos que coincidan con `courseName`
-      : {};
+    // // Condición para filtrar el curso por nombre
+    // const courseCondition = courseName
+    //   ? { course_name: { [Op.like]: `%${courseName}%` } } // Buscar cursos que coincidan con `courseName`
+    //   : {};
 
     const participants = await Participant.findAndCountAll({
       where: whereConditions,
@@ -524,8 +531,8 @@ export const getParticipants = async (req, res) => {
         {
           model: Course,
           through: { attributes: [] },
-          where: courseCondition, // Aplicamos el filtro para el nombre del curso
-          required: true, // Aseguramos que solo se devuelvan participantes que tengan un curso
+          // where: courseCondition, // Aplicamos el filtro para el nombre del curso
+          // required: true, // Aseguramos que solo se devuelvan participantes que tengan un curso
         },
         { model: ParticipantType },
         { model: InfoUtn, through: { attributes: [] } },
@@ -543,6 +550,7 @@ export const getParticipants = async (req, res) => {
       offset: offset, // Desplazamiento para la paginación
     });
 
+    console.log(participants);
     return res.status(200).json({
       total: participants.count, // Total de resultados
       totalPages: Math.ceil(participants.count / limit), // Total de páginas

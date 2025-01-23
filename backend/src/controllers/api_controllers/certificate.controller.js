@@ -3,7 +3,12 @@ import Instructor from "../../models/Instructor.js";
 import InstructorCertificate from "../../models/InstructorCertificate.js";
 
 import { Op } from "sequelize";
-import notifications from "../../notifications.json" assert { type: "json" };
+// import notifications from "../../notifications.json" assert { type: "json" };
+import fs from "fs";
+import path from "path";
+
+const jsonPath = path.resolve("./src/notifications.json");
+const notifications = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
 
 export const addCertificate = async (req, res) => {
   try {

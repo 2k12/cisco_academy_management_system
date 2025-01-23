@@ -1,7 +1,12 @@
 import Chapter from "../../models/Chapter.js";
 import CourseChapter from "../../models/CourseChapter.js";
 import Course from "../../models/Course.js";
-import notifications from "../../notifications.json" assert { type: "json" };
+// import notifications from "../../notifications.json" assert { type: "json" };
+import fs from "fs";
+import path from "path";
+
+const jsonPath = path.resolve("./src/notifications.json");
+const notifications = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
 import { Op } from "sequelize";
 
 export const addChapter = async (req, res) => {

@@ -1,7 +1,12 @@
 import Payment from "../../models/Payment.js";
 import Participant from "../../models/Participant.js";
 import ParticipantPayment from "../../models/ParticipantPayment.js";
-import notifications from "../../notifications.json" assert { type: "json" };
+// import notifications from "../../notifications.json" assert { type: "json" };
+import fs from "fs";
+import path from "path";
+
+const jsonPath = path.resolve("./src/notifications.json");
+const notifications = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
 import { Op } from "sequelize";
 import PaymentType from "../../models/PaymentType.js";
 

@@ -8,14 +8,19 @@ import Course from "../../models/Course.js";
 import Cost from "../../models/Cost.js";
 import DetailModality from "../../models/DetailModality.js";
 
-import notifications from "../../notifications.json" assert { type: "json" };
+// import notifications from "../../notifications.json" assert { type: "json" };
+import fs from "fs";
+import path from "path";
+
+const jsonPath = path.resolve("./src/notifications.json");
+const notifications = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
 import { Op } from "sequelize";
 
 export const addDetail = async (req, res) => {
   try {
     const {
       course_id,
-      instructor_id,
+      // instructor_id,
       course_description,
       total_hours,
       instructor_hours,
@@ -38,7 +43,7 @@ export const addDetail = async (req, res) => {
     }
 
     const newDetail = await Detail.create({
-      instructor_id,
+      // instructor_id,
       course_description,
       total_hours,
       instructor_hours,

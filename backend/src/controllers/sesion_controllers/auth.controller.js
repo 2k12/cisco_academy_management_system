@@ -1,7 +1,12 @@
 import User from "../../models/User.js";
 import Role from "../../models/Role.js";
 import Permission from "../../models/Permission.js";
-import notifications from "../../notifications.json" assert { type: "json" };
+// import notifications from "../../notifications.json" assert { type: "json" };
+import fs from "fs";
+import path from "path";
+
+const jsonPath = path.resolve("./src/notifications.json");
+const notifications = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
 import bcrypt from "bcryptjs";
 import { createAccessToken } from "../../libs/jwt.js";
 import jwt from "jsonwebtoken";

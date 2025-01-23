@@ -1,7 +1,12 @@
 import Instructor from "../../models/Instructor.js";
 import Detail from "../../models/Detail.js";
 import Course from "../../models/Course.js";
-import notifications from "../../notifications.json" assert { type: "json" };
+// import notifications from "../../notifications.json" assert { type: "json" };
+import fs from "fs";
+import path from "path";
+
+const jsonPath = path.resolve("./src/notifications.json");
+const notifications = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
 import { Op } from "sequelize";
 
 // export const addInstructor = async (req, res) => {
@@ -66,11 +71,12 @@ export const addInstructor = async (req, res) => {
           .status(400)
           .json({ message: "El curso Ya tiene registrado un Instructor !" });
       }
-    } else {
-      return res.status(404).json({
-        message: "No se encontró un detalle para el curso proporcionado.",
-      });
-    }
+    } 
+    // else {
+    //   return res.status(404).json({
+    //     message: "No se encontró un detalle para el curso proporcionado.",
+    //   });
+    // }
     // Crear el nuevo instructor
     const newInstructor = await Instructor.create({
       name,

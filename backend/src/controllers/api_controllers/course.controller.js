@@ -8,11 +8,16 @@ import Payment from "../../models/Payment.js";
 import PaymentType from "../../models/PaymentType.js";
 import InfoUtn from "../../models/InfoUtn.js";
 
-import notifications from "../../notifications.json" assert { type: "json" };
+// import notifications from "../../notifications.json" assert { type: "json" };
+import fs from "fs";
+import path from "path";
+
+const jsonPath = path.resolve("./src/notifications.json");
+const notifications = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
 
 import { Op } from "sequelize";
 import PDFDocument from 'pdfkit';
-import path from 'path';
+// import path from 'path';
 import { fileURLToPath } from 'url';
 
 import Detail from "../../models/Detail.js";
