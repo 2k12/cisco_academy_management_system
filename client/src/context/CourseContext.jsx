@@ -58,7 +58,7 @@ export function CourseProvider({ children }) {
         title: 'Éxito',
         text: res.data.message,
       });
-      console.log(res);
+      // console.log(res);
       getCourses({ page: currentPage }); // Obtener la lista actualizada
     } catch (error) {
       console.log(error);
@@ -116,7 +116,12 @@ export function CourseProvider({ children }) {
       link.remove();
 
     } catch (error) {
-      console.log(error);
+      // console.log(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.response?.data?.message || 'El estado del curso debe ser "Finalizado"',
+      });
     }
   };
 

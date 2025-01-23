@@ -11,9 +11,9 @@ import InfoUtn from "../../models/InfoUtn.js";
 import notifications from "../../notifications.json" assert { type: "json" };
 
 import { Op } from "sequelize";
-import PDFDocument from 'pdfkit';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import PDFDocument from "pdfkit";
+import path from "path";
+import { fileURLToPath } from "url";
 
 import Detail from "../../models/Detail.js";
 import DetailValues from "../../models/DetailValues.js";
@@ -25,7 +25,7 @@ import Schedule from "../../models/Schedule.js";
 export const getAllCourses = async (req, res) => {
   try {
     const { search = "", limit = 10, page = 1 } = req.body;
-    const offset = (page - 1) * limit; // Cálculo del desplazamiento para paginación
+    const offset = (page - 1) * limit; 
 
     const courses = await Course.findAndCountAll({
       where: {
@@ -52,7 +52,7 @@ export const getAllCourses = async (req, res) => {
             { model: InfoUtn, through: { attributes: [] } },
             {
               model: Payment,
-              through: { attributes: [] }, // Excluye los campos de la tabla intermedia
+              through: { attributes: [] }, 
               include: [
                 {
                   model: PaymentType,
@@ -80,24 +80,24 @@ export const getAllCourses = async (req, res) => {
             },
             {
               model: Schedule,
-              through: { attributes: [] }, // Excluye los campos de la tabla intermedia
+              through: { attributes: [] }, 
             },
             {
               model: Cost,
-              through: { attributes: [] }, // Excluye los campos de la tabla intermedia
+              through: { attributes: [] }, 
             },
           ],
         },
       ],
-      limit, // Tamaño de página
-      offset, // Desplazamiento para la paginación
-      distinct: true, // Asegura que no se cuenten filas duplicadas
+      limit, 
+      offset, 
+      distinct: true, 
     });
 
     return res.status(200).json({
-      total: courses.count, // Total de resultados
-      totalPages: Math.ceil(courses.count / limit), // Total de páginas
-      courses: courses.rows, // Resultados de los cursos
+      total: courses.count, 
+      totalPages: Math.ceil(courses.count / limit),
+      courses: courses.rows, 
     });
   } catch (error) {
     console.log(error.message);
@@ -175,7 +175,7 @@ export const getCourseById = async (req, res) => {
             { model: InfoUtn, through: { attributes: [] } },
             {
               model: Payment,
-              through: { attributes: [] }, // Excluye los campos de la tabla intermedia
+              through: { attributes: [] }, 
               include: [
                 {
                   model: PaymentType,
@@ -203,11 +203,11 @@ export const getCourseById = async (req, res) => {
             },
             {
               model: Schedule,
-              through: { attributes: [] }, // Excluye los campos de la tabla intermedia
+              through: { attributes: [] }, 
             },
             {
               model: Cost,
-              through: { attributes: [] }, // Excluye los campos de la tabla intermedia
+              through: { attributes: [] }, 
             },
           ],
         },
@@ -290,14 +290,10 @@ export const getCoursesDropdown = async (req, res) => {
   }
 };
 
-
-
-
 export const getCertificates = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Buscar el curso y los participantes
     const course = await Course.findOne({
       where: { course_id: id },
       include: [
@@ -317,91 +313,183 @@ export const getCertificates = async (req, res) => {
             },
           ],
         },
+        {
+          model: Detail,
+          include: [
+            { model: DetailValues },
+            {
+              model: Modality,
+              through: { attributes: [] }, 
+            },
+          ],
+        },
       ],
     });
+    
+    if(course.status != "Finalizado"){
+      return res.status(400).json({ message: "El estado del curso debe ser FINALIZADO para poder generar los certificados," });
+    }
 
     if (!course) {
       return res.status(404).json({ message: notifications.cursos.c5 });
     }
 
-    // Configurar respuesta para PDF
-    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader("Content-Type", "application/pdf");
     res.setHeader(
-      'Content-Disposition',
+      "Content-Disposition",
       `inline; filename="certificado-curso-${id}.pdf"`
     );
 
-    // Obtener la ruta del directorio actual (es el directorio donde está este archivo)
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
 
-    // Ruta del logo (ajustar a la ruta relativa desde el archivo donde está ejecutándose el código)
-    const logoPath = path.resolve(__dirname, '../../assets/cisco_logo.png');  // Asegúrate de que esta ruta esté bien configurada
+    const logoPath = path.resolve(__dirname, "../../assets/cisco_logo.png");
+    const logoUtnPath = path.resolve(__dirname, "../../assets/logo_utn.png");
 
-    // Crear el PDF con orientación horizontal (landscape)
-    const doc = new PDFDocument({ size: 'A4', layout: 'landscape', margin: 50 });
+    const doc = new PDFDocument({
+      size: "A4",
+      layout: "landscape",
+      margin: 50,
+    });
 
-    // Pipe del PDF a la respuesta HTTP
     doc.pipe(res);
 
-    // Obtener la altura de la página A4 (para centrar el contenido)
-    const pageHeight = doc.page.height;
-    const pageWidth = doc.page.width;
+    const primaryColor = "#b3d9ff"; 
+    const utnColor = "#f4040c";
+    const textColor = "#333333"; 
+    const borderWidth = 2;
 
-    // Márgenes de la página
-    const topMargin = 400;  // Margen superior
-    const bottomMargin = 100;  // Margen inferior
-
-    // Calcular el espacio disponible para centrar el contenido
-    const contentHeight = pageHeight - topMargin - bottomMargin;
-    const totalTextHeight = 250;  // Aproximadamente la altura del contenido (ajustar según sea necesario)
-    const verticalCenter = topMargin + (contentHeight - totalTextHeight) / 2;
-
-    // Generar una página por participante
     course.Participants.forEach((participant) => {
       doc.addPage();
 
-      doc.moveDown(8);  // Esto agrega un espaciado de 3 líneas (puedes ajustar el número)
+      doc
+        .rect(
+          borderWidth,
+          borderWidth,
+          doc.page.width - borderWidth * 2,
+          doc.page.height - borderWidth * 2
+        )
+        .lineWidth(borderWidth)
+        .stroke(utnColor);
 
-      // Insertar el logo en la parte superior izquierda
-      doc.image(logoPath, 20, 20, { width: 100 });  // Logo más cercano a la esquina superior izquierda
+      // Fondo claro
+      // doc
+      //   .rect(
+      //     borderWidth + 5,
+      //     borderWidth + 5,
+      //     doc.page.width - (borderWidth + 5) * 2,
+      //     doc.page.height - (borderWidth + 5) * 2
+      //   )
+      // .fillOpacity(0.5)
+      // .fill(primaryColor);
 
-      // Título del certificado (centrado horizontalmente)
+      doc.image(logoUtnPath, 40, 25, { width: 100 });
+      doc.image(logoPath, doc.page.width - 150, 40, { width: 100 });
+
+      doc
+        .fillColor(textColor)
+        .font("Helvetica-Bold")
+        .fontSize(24)
+        .text("UNIVERSIDAD TÉCNICA DEL NORTE", { align: "center" })
+        .moveDown(0.5)
+        .fontSize(18)
+        .text("FACULTAD DE INGENIERÍA EN CIENCIAS APLICADAS", {
+          align: "center",
+        })
+        .moveDown(0.5)
+        .text("ACADEMIA CISCO", { align: "center" });
+
+      doc.moveDown(2);
+
       doc
         .fontSize(20)
-        .text("Cisco Networking Academy UTN", { align: "center", continued: false })
-        .moveDown();
-
-      doc
+        .text("CERTIFICADO", { align: "center" })
+        .moveDown(1.5)
+        .font("Helvetica")
         .fontSize(16)
-        .text("CONFIERE EL PRESENTE CERTIFICADO A", { align: "center" })
-        .moveDown(2);
+        .text("Se otorga el presente certificado a:", { align: "center" })
+        .moveDown(1.5);
 
-      // Nombre del participante (centrado horizontalmente)
       doc
-        .fontSize(24)
-        .font("Times-Bold")
-        .text(`${participant.name}`, { align: "center" })
-        .moveDown(2);
+        .font("Helvetica-Bold")
+        .fontSize(28)
+        .text(participant.name.toUpperCase(), { align: "center" })
+        .moveDown(1);
 
-      // Contenido del certificado (centrado horizontalmente y ajustado verticalmente)
+      const modality =
+        course.Detail.Modalities && course.Detail.Modalities.length > 0
+          ? course.Detail.Modalities[0].name
+          : "Modalidad no especificada";
+
+      const startDate = new Date(course.start_date).toLocaleDateString(
+        "es-ES",
+        {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }
+      );
+      const endDate = new Date(course.end_date).toLocaleDateString("es-ES", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+
+      const totalHours = course.Detail ? course.Detail.total_hours : "N/A";
+
       doc
-        .fontSize(12)
-        .font("Times-Roman")
+        .font("Helvetica")
+        .fontSize(14)
         .text(
-          `Por haber asistido y aprobado el curso "${course.name}", .` +
-          // Se puede ajustar con más texto si es necesario
-          "",
-          { align: "center", indent: 40, lineGap: 8 }
+          `Por haber asistido y aprobado el curso "${course.course_name}", desarrollado en modalidad ${modality} del ${startDate} al ${endDate}, con una duración total de ${totalHours} horas.`,
+          { align: "center", lineGap: 6 }
+        );
+      // .moveDown(1);
+
+      const today = new Date().toLocaleDateString("es-ES");
+
+      doc.moveDown(1);
+
+      doc
+      .fontSize(11)
+      .text(`Fecha Emisión: ${today}`, {
+        align: "right",
+      });
+
+      const signatureY = doc.page.height - 120;
+      const signatureMargin = 50;
+
+      doc.moveDown(2);
+
+      doc
+        .font("Helvetica")
+        .fontSize(11)
+        .text("______________________", signatureMargin + 200, signatureY, {
+          align: "left",
+        })
+        .text(
+          "Coordinador/a Academia Cisco",
+          signatureMargin + 190,
+          signatureY + 20,
+          { align: "left" }
         )
         .moveDown(2);
 
-      // Firma y detalles (centrado horizontalmente)
-      doc.text("__________________________", { align: "center" });
-      doc.text("Coordinador Académico", { align: "center" });
+      doc
+        .text(
+          "______________________",
+          doc.page.width - signatureMargin - 350,
+          signatureY,
+          { align: "left" }
+        )
+        .text(
+          "Decano/a FICA",
+          doc.page.width - signatureMargin - 320,
+          signatureY + 20,
+          { align: "left" }
+        );
     });
 
-    // Finalizar el PDF
     doc.end();
   } catch (error) {
     console.log(error);

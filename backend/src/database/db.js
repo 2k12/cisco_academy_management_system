@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 
 const sequelize = new Sequelize(
-  'utn_cms',
+  'utn_cisco_managment',
   'root',
   'admin',
   {

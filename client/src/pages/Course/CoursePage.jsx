@@ -17,7 +17,8 @@ function CoursePage() {
         getCourses({ search: searchTerm, page: currentPage });
     }, [searchTerm, currentPage]);
 
-
+    console.log(courses);
+    
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
         setCurrentPage(1);
@@ -48,14 +49,15 @@ function CoursePage() {
     }
 
     return (
-        <div className="p-6 bg-zinc-750 min-h-screen text-white overflow-hidden">
+        // <div className="p-6 bg-zinc-750 min-h-screen text-white overflow-hidden">
+        <div className="p-6 bg-gray-100 min-h-screen text-white overflow-hidden">
             <div className="flex justify-start mb-6">
                 <input
                     type="text"
                     placeholder="Buscar cursos..."
                     value={searchTerm}
                     onChange={handleSearchChange}
-                    className="w-full md:w-1/3 p-2 rounded-lg border border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full md:w-1/3 p-2 rounded-lg border border-gray-300 bg-gray-300 text-gray-700 placeholder-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 <div className="flex space-x-4 ml-2">
                     <button
@@ -63,7 +65,7 @@ function CoursePage() {
                             setSelectedCourse(null);
                             setIsRegisterModalOpen(true);
                         }}
-                        className="px-4 py-2 rounded-lg text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                        className="px-4 py-2 rounded-lg text-gray-700 bg-gray-300 dark:bg-gray-700 dark:text-gray-400"
                     >
                         Registrar Curso
                     </button>
@@ -76,9 +78,9 @@ function CoursePage() {
                 </div>
             </div>
 
-            <div className="scroll-hidden dark:bg-gray-800 relative overflow-x-auto shadow-md sm:rounded-lg max-h-[600px] min-h-[600px]">
+            <div className="scroll-hidden bg-white dark:bg-gray-800 relative overflow-x-auto shadow-md sm:rounded-lg max-h-[600px] min-h-[600px]">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 sticky top-0">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400 sticky top-0">
                         <tr>
                             <th scope="col" className="px-6 py-3">ID</th>
                             <th scope="col" className="px-6 py-3">Nombre</th>
@@ -94,7 +96,7 @@ function CoursePage() {
                     </thead>
                     <tbody>
                         {courses.map((course) => (
-                            <tr key={course.course_id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700">
+                            <tr key={course.course_id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-300">
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {course.course_id}
                                 </th>
@@ -115,7 +117,7 @@ function CoursePage() {
                                         <FontAwesomeIcon icon={faEdit} />
                                     </button>
                                     {/* <button className="text-purple-500 hover:text-purple-700" onClick={() => handleDownloadCertificate(course.id)}> */}
-                                    <button className="text-purple-500 hover:text-purple-700" onClick={() => handleDownloadCertificate(1)}>
+                                    <button className="text-purple-500 hover:text-purple-700" onClick={() => handleDownloadCertificate(course.course_id)}>
                                         <FontAwesomeIcon icon={faCertificate} />
                                     </button>
                                     <button className="text-red-500 hover:text-red-700" onClick={() => handleDelete(course.course_id)}>
@@ -137,7 +139,7 @@ function CoursePage() {
                 >
                     Anterior
                 </button>
-                <span className="text-lg">Página {currentPage} de {totalPages}</span>
+                <span className="text-lg text-gray-400 dark:text-white">Página {currentPage} de {totalPages}</span>
                 <button
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}

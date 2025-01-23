@@ -33,13 +33,14 @@ function ScheduleForm({ onClose, schedule }) {
             setValue("start_time", schedule.start_time);
             setValue("end_time", schedule.end_time);
             setValue("days", formatDaysForInput(schedule.days)); // Convertimos los días a un array de números
+            console.log(formatDaysForInput(schedule.days));
         }
     }, [schedule, setValue]);
 
     const onSubmit = handleSubmit((data) => {
         const formattedData = {
             ...data,
-            days: formatDaysForStorage(data.days), // Convertimos el array de días a la cadena "1-2-3"
+            days: formatDaysForStorage(data.days), 
         };
         if (schedule) {
             updateSchedule({ ...formattedData, id: schedule.schedule_id });
