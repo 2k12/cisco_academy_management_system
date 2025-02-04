@@ -70,7 +70,7 @@ const PreviewCoursePage = () => {
     };
 
     return (
-        <div className='p-10 bg-gray-100 '>
+        <div className='p-10 bg-gray-700 '>
             <div className="container mx-auto mt-10 px-4 ">
                 <div className="flex justify-between items-center mb-4">
                     {/* Botón de regresar */}

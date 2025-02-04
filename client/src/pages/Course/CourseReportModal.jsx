@@ -12,26 +12,29 @@ function CourseReportModal({ isOpen, onClose, course }) {
 
     const [previewData, setPreviewData] = useState([]);
 
-
-    // Mover la condición aquí evita el problema
     if (!isOpen) {
         return null;
     }
 
+    // console.log(course);
+    // console.log(course.Detail.DetailValue.instructor_payment);
+    // console.log(course.Detail.Costs[0].amount);
+    
+    let principalCost = course.Detail.Costs[0].amount;
+
     const calculateEstimation = () => {
-        const instructorValue = 624;
-        // course.Detail.Costs[0].amount,624
-        // const instructorValue = instructorValueParam;
+        // const instructorValue = course.Detail.DetailValue.instructor_payment;
         const rows = [
-            { participants: participantCounts.participants10, cost: Number(course.Detail.Costs[0].amount) },
-                { participants: participantCounts.participants15, cost: Number(course.Detail.Costs[0].amount) },
-                { participants: participantCounts.participants20, cost: Number(course.Detail.Costs[0].amount) },
+            { participants: participantCounts.participants10, cost: principalCost},
+            { participants: participantCounts.participants15, cost: principalCost},
+            { participants: participantCounts.participants20, cost: principalCost},
         ];
 
-
+        
         rows.forEach(row => {
-
-            const auxValue = (row.cost * row.participants) - instructorValue;
+            
+            let valueforConceptTotal = (row.cost * row.participants);
+            let auxValue =  valueforConceptTotal- (course.Detail.instructor_hours * parseFloat(course.Detail.cost_per_hour));
 
 
             row.totalRevenue = auxValue;
@@ -49,7 +52,6 @@ function CourseReportModal({ isOpen, onClose, course }) {
         const pdf = new jsPDF();
 
 
-        console.log(course);
 
         pdf.setFont("helvetica", "normal");
         pdf.setFontSize(8);
@@ -197,27 +199,28 @@ function CourseReportModal({ isOpen, onClose, course }) {
         pdf.setFont("helvetica", "normal");
         pdf.setFontSize(8);
 
-        let instructorValue = 624;
         const rows = [
-            { participants: participantCounts.participants10, cost: 60 },
-            { participants: participantCounts.participants15, cost: 60 },
-            { participants: participantCounts.participants20, cost: 60 }
+            { participants: participantCounts.participants10, cost: principalCost },
+            { participants: participantCounts.participants15, cost: principalCost },
+            { participants: participantCounts.participants20, cost: principalCost }
         ];
 
 
         rows.forEach(row => {
 
             let valueforConceptTotal = (row.cost * row.participants);
-            const auxValue =  valueforConceptTotal- instructorValue;
-
+            let auxValue =  valueforConceptTotal- (course.Detail.instructor_hours * parseFloat(course.Detail.cost_per_hour));
+            
             row.valueforConceptTotal = valueforConceptTotal;
             row.totalRevenue = auxValue;
+            
             row.remainingBalance = row.totalRevenue < 0 ? 0 : row.totalRevenue ;
             row.operationalCost = row.remainingBalance * 0.10;
             row.universityBalance = row.operationalCost;
             row.ciscoPayment = row.remainingBalance - row.operationalCost;
 
         });
+
 
         setPreviewData(rows);
 
@@ -236,11 +239,13 @@ function CourseReportModal({ isOpen, onClose, course }) {
                 `${participantCounts.participants10}`,
                 `${participantCounts.participants15}`,
                 `${participantCounts.participants20}`],
-            ["Costo Mínimo del Curso", `$${rows[0].cost.toFixed(2)}`, `$${rows[1].cost.toFixed(2)}`, `$${rows[2].cost.toFixed(2)}`],
+            ["Costo Mínimo del Curso", `$${rows[0].cost}`, `$${rows[1].cost}`, `$${rows[2].cost}`],
             ["Total Ingresos", `$${rows[0].valueforConceptTotal.toFixed(2)}`, `$${rows[1].valueforConceptTotal.toFixed(2)}`, `$${rows[2].valueforConceptTotal.toFixed(2)}`],
             ["Número Horas Instructor", `${course.Detail.instructor_hours}`, `${course.Detail.instructor_hours}`, `${course.Detail.instructor_hours}`],
             ["Costo Hora Instructor", `$${course.Detail.cost_per_hour}`, `$${course.Detail.cost_per_hour}`, `${course.Detail.cost_per_hour}`],
+            // ! -------------------------
             ["Total Instructor", `$${(course.Detail.instructor_hours * parseFloat(course.Detail.cost_per_hour))}`,`$${(course.Detail.instructor_hours * parseFloat(course.Detail.cost_per_hour))}`, `$${(course.Detail.instructor_hours * parseFloat(course.Detail.cost_per_hour))}`],
+            // ! -------------------------
             ["Coordinación Académica", "$0.00", "$0.00", "$0.00"],
             ["Computadoras lab. FICA", "$0.00", "$0.00", "$0.00"],
             ["Internet Lab. FICA", "$0.00", "$0.00", "$0.00"],

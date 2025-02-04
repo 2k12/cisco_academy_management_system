@@ -17,8 +17,8 @@ function LoginPage() {
 
 
     return (
-        <div className="flex bg-gray-200  h-[calc(100vh-100px)] items-center justify-center ">
-            <div className="max-w-md w-full bg-gray-300 p-10 rounded-md">
+        <div className="flex bg-gray-700  h-[calc(100vh-100px)] items-center justify-center ">
+            <div className="max-w-md w-full bg-gray-800 p-10 rounded-md">
                 <h1 className="text-2xl font-semibold text-center ">Inicio de Sesión</h1>
                 <form onSubmit={onSubmit}>
                     <input type="email" {...register("email", { required: true })}
