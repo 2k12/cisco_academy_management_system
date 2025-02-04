@@ -20,10 +20,12 @@ function CourseReportModal({ isOpen, onClose, course }) {
 
     const calculateEstimation = () => {
         const instructorValue = 624;
+        // course.Detail.Costs[0].amount,624
+        // const instructorValue = instructorValueParam;
         const rows = [
-            { participants: participantCounts.participants10, cost: 60 },
-            { participants: participantCounts.participants15, cost: 60 },
-            { participants: participantCounts.participants20, cost: 60 },
+            { participants: participantCounts.participants10, cost: Number(course.Detail.Costs[0].amount) },
+                { participants: participantCounts.participants15, cost: Number(course.Detail.Costs[0].amount) },
+                { participants: participantCounts.participants20, cost: Number(course.Detail.Costs[0].amount) },
         ];
 
 
