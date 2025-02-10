@@ -96,7 +96,7 @@ function CoursePage() {
                     </thead>
                     <tbody>
                         {courses.map((course) => (
-                            <tr key={course.course_id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-300">
+                            <tr key={course.course_id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 hover:bg-gray-300">
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {course.course_id}
                                 </th>
@@ -139,7 +139,7 @@ function CoursePage() {
                 >
                     Anterior
                 </button>
-                <span className="text-lg text-gray-400 dark:text-white">Página {currentPage} de {totalPages}</span>
+                <span className="text-lg text-gray-400 dark:text-gray-700">Página {currentPage} de {totalPages}</span>
                 <button
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}

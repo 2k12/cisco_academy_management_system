@@ -38,20 +38,20 @@ function CourseDetailsModal({ isOpen, onClose, course }) {
                     </span>
                 </div>
                 <div className="flex justify-between items-center mb-5 text-gray-700 dark:text-white">
-                    <h2>{formatDateForInput(course.createdAt)}</h2>
+                    <h2>{new Date(course.createdAt).toLocaleDateString()}</h2>
                 </div>
 
                 <h3 className="uppercase text-gray-700 dark:text-white">Participantes</h3> <br />
                 <div className="grid grid-cols-3 gap-4 mb-5">
-                    <div className="flex flex-col items-center bg-gray-800 rounded-lg p-2">
+                    <div className="flex flex-col items-center bg-red-700 dark:bg-gray-600 rounded-lg p-2">
                         <span className="text-2xl font-bold">{course.Detail?.num_enrolled || "..."}</span>
                         <span className="text-sm uppercase">Inscritos</span>
                     </div>
-                    <div className="flex flex-col items-center bg-gray-800 rounded-lg p-2">
+                    <div className="flex flex-col items-center bg-red-700 dark:bg-gray-600 rounded-lg p-2">
                         <span className="text-2xl font-bold">{course.Detail?.num_registered || "..."}</span>
                         <span className="text-sm uppercase">Matriculados</span>
                     </div>
-                    <div className="flex flex-col items-center bg-gray-800 rounded-lg p-2">
+                    <div className="flex flex-col items-center bg-red-700 dark:bg-gray-600 rounded-lg p-2">
                         <span className="text-2xl font-bold">{course.Detail?.num_failed || "..."}</span>
                         <span className="text-sm uppercase">Reprobados</span>
                     </div>
@@ -81,8 +81,8 @@ function CourseDetailsModal({ isOpen, onClose, course }) {
                                         {course.Detail.Costs.map((cost) => (
                                             <div key={cost.cost_id} className="p-2 mb-2 bg-gray-100 dark:bg-gray-800 rounded-lg">
                                                 {/* <p><strong>ID:</strong> {cost.cost_id}</p> */}
-                                                <p><strong>Amount:</strong> ${cost.amount}</p>
-                                                <p><strong>Description:</strong> {cost.description}</p>
+                                                <p><strong>Monto:</strong> ${cost.amount}</p>
+                                                <p><strong>Descripción:</strong> {cost.description}</p>
                                                 {/* <p><strong>Fecha de Creación:</strong> {new Date(cost.createdAt).toLocaleDateString()}</p> */}
                                                 {/* <p><strong>Fecha de Actualización:</strong> {new Date(cost.updatedAt).toLocaleDateString()}</p> */}
                                             </div>

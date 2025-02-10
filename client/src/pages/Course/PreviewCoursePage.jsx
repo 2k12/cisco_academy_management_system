@@ -70,13 +70,13 @@ const PreviewCoursePage = () => {
     };
 
     return (
-        <div className='p-10 bg-gray-700 '>
+        <div className='p-10 bg-gray-300 dark:bg-gray-600'>
             <div className="container mx-auto mt-10 px-4 ">
                 <div className="flex justify-between items-center mb-4">
                     {/* Botón de regresar */}
                     <button
                         onClick={() => window.history.back()}
-                        className="flex items-center px-4 py-2 bg-transparent text-gray-700 dark:text-white rounded-lg "
+                        className="flex items-center px-4 py-2 bg-transparent text-white dark:text-white rounded-lg "
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -120,24 +120,24 @@ const PreviewCoursePage = () => {
                 </div>
 
                 <div className="flex justify-between items-center text-gray-700 dark:text-white">
-                    <h2 className="text-4xl ">{course.course_name}</h2>
-                    <span className={`ml-2 px-3 bg-gray-800 rounded-full ${getStatusStyles(course.status)}`}>
+                    <h2 className="text-4xl text-white">{course.course_name}</h2>
+                    <span className={`ml-2 px-3 bg-gray-400 rounded-full ${getStatusStyles(course.status)}`}>
                         {course.status}
                     </span>
                 </div>
-                <div className="flex justify-between items-center mb-5 text-gray-700 dark:text-white">
-                    <h2>{formatDateForInput(course.createdAt)}</h2>
+                <div className="flex justify-between items-center mb-5 text-white dark:text-white">
+                    <h2>{new Date (course.createdAt).toLocaleDateString()}</h2>
                 </div>
                 <div className="grid grid-cols-3 gap-10 mb-5">
-                    <div className="flex flex-col items-center bg-gray-800 rounded-lg p-5">
+                    <div className="flex flex-col items-center bg-red-700 dark:bg-gray-800 rounded-lg p-5">
                         <span className="text-5xl font-bold">{course.Detail?.num_enrolled ?? "..."}</span>
                         <span className="text-sm uppercase mt-2">Inscritos</span>
                     </div>
-                    <div className="flex flex-col items-center bg-gray-800 rounded-lg p-5">
+                    <div className="flex flex-col items-center bg-red-700 dark:bg-gray-800 rounded-lg p-5">
                         <span className="text-5xl font-bold">{course.Detail?.num_registered ?? "..."}</span>
                         <span className="text-sm uppercase mt-2">Matriculados</span>
                     </div>
-                    <div className="flex flex-col items-center bg-gray-800 rounded-lg p-5">
+                    <div className="flex flex-col items-center bg-red-700 dark:bg-gray-800 rounded-lg p-5">
                         <span className="text-5xl font-bold">{course.Detail?.num_failed ?? "..."}</span>
                         <span className="text-sm uppercase mt-2">Reprobados</span>
                     </div>
@@ -191,8 +191,8 @@ const PreviewCoursePage = () => {
                                             <div className="p-2 border-b border-gray-200 dark:border-gray-600">
                                                 {course.Detail.Costs.map((cost) => (
                                                     <div key={cost.cost_id} className="p-2 mb-2 bg-gray-100 dark:bg-gray-800 rounded-lg">
-                                                        <p><strong>Amount:</strong> ${cost.amount}</p>
-                                                        <p><strong>Description:</strong> {cost.description}</p>
+                                                        <p><strong>Monto:</strong> ${cost.amount}</p>
+                                                        <p><strong>Descripción:</strong> {cost.description}</p>
                                                     </div>
                                                 ))}
                                             </div>
@@ -284,7 +284,7 @@ const PreviewCoursePage = () => {
                         <span className={`ml-2 transition-transform ${isChaptersOpen ? 'rotate-180' : 'rotate-0'}`}>▼</span>
                     </h3>
                     {isChaptersOpen && (
-                        <div className='mt-2 p-4 border border-gray-800 bg-gray-300 rounded-lg text-gray-700 dark:text-white'>
+                        <div className='mt-2 p-4 border  bg-gray-300 rounded-lg text-gray-700 dark:text-white'>
                             {course?.Chapters?.length > 0 ? (
                                 course.Chapters.map((chapter) => (
                                     <div key={chapter.chapter_id} className="p-2">
