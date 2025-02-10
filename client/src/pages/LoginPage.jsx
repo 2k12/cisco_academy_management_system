@@ -17,19 +17,19 @@ function LoginPage() {
 
 
     return (
-        <div className="flex bg-gray-700  h-[calc(100vh-100px)] items-center justify-center ">
-            <div className="max-w-md w-full bg-gray-800 p-10 rounded-md">
+        <div className="flex dark:bg-gray-700  bg-gray-200  h-[calc(100vh-100px)] items-center justify-center ">
+            <div className="max-w-md w-full bg-red-700 dark:bg-gray-800 p-10 rounded-md">
                 <h1 className="text-2xl font-semibold text-center ">Inicio de Sesión</h1>
                 <form onSubmit={onSubmit}>
                     <input type="email" {...register("email", { required: true })}
-                        className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
+                        className="w-full bg-gray-200 dark:bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
                         placeholder="email"
                     />
                     {
                         errors.email && <p className="text-red-500">Email requerido</p>
                     }
                     <input type="password" {...register("password", { required: true })}
-                        className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
+                        className="w-full bg-gray-200 dark:bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
                         placeholder="contraseña"
                     />
                     {
@@ -38,7 +38,7 @@ function LoginPage() {
 
                     <button
                         type="submit"
-                        className="w-full bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-md my-2 transition-colors"
+                        className="w-full bg-gray-800 dark:bg-blue-600 hover:bg-gray-600 dark:hover:bg-blue-500 text-white px-4 py-2 rounded-md my-2 transition-colors"
                     >
                         Ingresar
                     </button>

@@ -70,7 +70,7 @@ const PreviewCoursePage = () => {
     };
 
     return (
-        <div className='p-10 bg-gray-300 '>
+        <div className='p-10 bg-gray-300 dark:bg-gray-600'>
             <div className="container mx-auto mt-10 px-4 ">
                 <div className="flex justify-between items-center mb-4">
                     {/* Botón de regresar */}
@@ -129,15 +129,15 @@ const PreviewCoursePage = () => {
                     <h2>{new Date (course.createdAt).toLocaleDateString()}</h2>
                 </div>
                 <div className="grid grid-cols-3 gap-10 mb-5">
-                    <div className="flex flex-col items-center bg-red-700 rounded-lg p-5">
+                    <div className="flex flex-col items-center bg-red-700 dark:bg-gray-800 rounded-lg p-5">
                         <span className="text-5xl font-bold">{course.Detail?.num_enrolled ?? "..."}</span>
                         <span className="text-sm uppercase mt-2">Inscritos</span>
                     </div>
-                    <div className="flex flex-col items-center bg-red-700 rounded-lg p-5">
+                    <div className="flex flex-col items-center bg-red-700 dark:bg-gray-800 rounded-lg p-5">
                         <span className="text-5xl font-bold">{course.Detail?.num_registered ?? "..."}</span>
                         <span className="text-sm uppercase mt-2">Matriculados</span>
                     </div>
-                    <div className="flex flex-col items-center bg-red-700 rounded-lg p-5">
+                    <div className="flex flex-col items-center bg-red-700 dark:bg-gray-800 rounded-lg p-5">
                         <span className="text-5xl font-bold">{course.Detail?.num_failed ?? "..."}</span>
                         <span className="text-sm uppercase mt-2">Reprobados</span>
                     </div>
@@ -284,7 +284,7 @@ const PreviewCoursePage = () => {
                         <span className={`ml-2 transition-transform ${isChaptersOpen ? 'rotate-180' : 'rotate-0'}`}>▼</span>
                     </h3>
                     {isChaptersOpen && (
-                        <div className='mt-2 p-4 border bg-white bg-gray-300 rounded-lg text-gray-700 dark:text-white'>
+                        <div className='mt-2 p-4 border  bg-gray-300 rounded-lg text-gray-700 dark:text-white'>
                             {course?.Chapters?.length > 0 ? (
                                 course.Chapters.map((chapter) => (
                                     <div key={chapter.chapter_id} className="p-2">
