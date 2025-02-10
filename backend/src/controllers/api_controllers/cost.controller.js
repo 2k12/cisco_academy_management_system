@@ -2,8 +2,12 @@ import Detail from "../../models/Detail.js";
 import DetailCost from "../../models/DetailCost.js";
 import Cost from "../../models/Cost.js";
 import Course from "../../models/Course.js";
+import fs from "fs";
+import path from "path";
 // import Course from "../../models/Course.js";
-import notifications from "../../notifications.json" assert { type: "json" };
+// import notifications from "../../notifications.json" assert { type: "json" };
+const jsonPath = path.resolve("./src/notifications.json");
+const notifications = JSON.parse(fs.readFileSync(jsonPath, "utf-8"));
 import { Op } from "sequelize";
 
 // ! basic methods for cost
