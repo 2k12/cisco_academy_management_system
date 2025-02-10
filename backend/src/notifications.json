@@ -6,7 +6,6 @@
     "p4": "Cédula Ingresada, Incorrecta.",
     "p5": "Error! Datos Ya Asignados",
     "p6": "Error! Actualizacion de Relacion Fallida"
-
   },
   "login": {
     "l1": "Usuario incorrecto",
@@ -132,5 +131,12 @@
     "tp3": "Tipo de Participante eliminado satisfactoriamente",
     "tp4": "Tipo de Participante creado satisfactoriamente",
     "tp5": "Tipo de Participante no encontrado"
+  },
+  "costo": {
+    "ct1": "Error! No se pudo registrar el Costo",
+    "ct2": "Costo actualizado satisfactoriamente",
+    "ct3": "Costo eliminado satisfactoriamente",
+    "ct4": "Costo creado satisfactoriamente",
+    "ct5": "Costo no encontrado"
   }
 }

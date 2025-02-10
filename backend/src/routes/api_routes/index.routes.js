@@ -14,6 +14,7 @@ import paymentTypeRoutes from "./paymentType.routes.js";
 import paymentRoutes from "./payment.routes.js";
 import participantRoutes from "./participant.routes.js";
 import detailRoutes from "./detail.routes.js";
+import costRoutes from "./cost.routes.js";
 
 export default [
   userRoutes,
@@ -31,5 +32,6 @@ export default [
   paymentTypeRoutes,
   paymentRoutes,
   participantRoutes,
-  detailRoutes
+  detailRoutes,
+  costRoutes
 ];

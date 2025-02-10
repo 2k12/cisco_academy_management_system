@@ -22,6 +22,7 @@ import PaymentTypePage from "./pages/Payment_Type/PaymentTypePage";
 import PaymentPage from "./pages/Payment/PaymentPage";
 import ParticipantPage from "./pages/participant/ParticipantPage";
 import DetailPage from "./pages/Detail/DetailPage";
+import CostPage from "./pages/Cost/CostPage";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./ProtectedRoute";
@@ -55,6 +56,7 @@ function App() {
             <Route path="/payments" element={<PaymentPage />} />
             <Route path="/participants" element={<ParticipantPage />} />
             <Route path="/details" element={<DetailPage />} />
+            <Route path="/costs" element={<CostPage />} />
           </Route>
         </Routes>
         <Footer />

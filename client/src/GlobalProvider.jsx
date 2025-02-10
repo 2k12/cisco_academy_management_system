@@ -14,6 +14,7 @@ import { PaymentTypeProvider } from "./context/PaymentTypeContext";
 import { PaymentProvider } from "./context/PaymentContext";
 import { ParticipantProvider } from "./context/ParticipantContext";
 import { DetailProvider } from "./context/DetailContext"; // Ensure path and casing are correct
+import { CostProvider } from "./context/CostContext"; // Ensure path and casing are correct
 
 const GlobalProvider = ({ children }) => (
   <AuthProvider>
@@ -31,7 +32,9 @@ const GlobalProvider = ({ children }) => (
                           <PaymentTypeProvider>
                             <PaymentProvider>
                               <ParticipantProvider>
-                                <DetailProvider>{children}</DetailProvider>
+                                <CostProvider>
+                                  <DetailProvider>{children}</DetailProvider>
+                                </CostProvider>
                               </ParticipantProvider>
                             </PaymentProvider>
                           </PaymentTypeProvider>

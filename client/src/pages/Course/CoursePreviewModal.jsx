@@ -43,15 +43,15 @@ function CourseDetailsModal({ isOpen, onClose, course }) {
 
                 <h3 className="uppercase text-gray-700 dark:text-white">Participantes</h3> <br />
                 <div className="grid grid-cols-3 gap-4 mb-5">
-                    <div className="flex flex-col items-center bg-gray-800 rounded-lg p-2">
+                    <div className="flex flex-col items-center bg-red-700 rounded-lg p-2">
                         <span className="text-2xl font-bold">{course.Detail?.num_enrolled || "..."}</span>
                         <span className="text-sm uppercase">Inscritos</span>
                     </div>
-                    <div className="flex flex-col items-center bg-gray-800 rounded-lg p-2">
+                    <div className="flex flex-col items-center bg-red-700 rounded-lg p-2">
                         <span className="text-2xl font-bold">{course.Detail?.num_registered || "..."}</span>
                         <span className="text-sm uppercase">Matriculados</span>
                     </div>
-                    <div className="flex flex-col items-center bg-gray-800 rounded-lg p-2">
+                    <div className="flex flex-col items-center bg-red-700 rounded-lg p-2">
                         <span className="text-2xl font-bold">{course.Detail?.num_failed || "..."}</span>
                         <span className="text-sm uppercase">Reprobados</span>
                     </div>
