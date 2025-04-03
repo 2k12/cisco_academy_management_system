@@ -1,7 +1,7 @@
 import User from "../../models/User.js";
 import Role from "../../models/Role.js";
 import Permission from "../../models/Permission.js";
-import notifications from "../../notifications.json" assert { type: "json" };
+import notifications from "../../notifications.json" with { type: "json" };
 import bcrypt from "bcryptjs";
 import { createAccessToken } from "../../libs/jwt.js";
 import jwt from "jsonwebtoken";

@@ -1,7 +1,7 @@
 import Instructor from "../../models/Instructor.js";
 import Detail from "../../models/Detail.js";
 import Course from "../../models/Course.js";
-import notifications from "../../notifications.json" assert { type: "json" };
+import notifications from "../../notifications.json" with { type: "json" };
 import { Op } from "sequelize";
 
 // export const addInstructor = async (req, res) => {

@@ -3,7 +3,7 @@ import Instructor from "../../models/Instructor.js";
 import InstructorCertificate from "../../models/InstructorCertificate.js";
 
 import { Op } from "sequelize";
-import notifications from "../../notifications.json" assert { type: "json" };
+import notifications from "../../notifications.json" with { type: "json" };
 
 export const addCertificate = async (req, res) => {
   try {

@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { TOKEN_SECRET } from "../config/config.js";
-import notifications from "../notifications.json" assert { type: "json" };
+import notifications from "../notifications.json" with { type: "json" };
 
 export const authRequired = (req, res, next) => {
   const { token } = req.cookies;

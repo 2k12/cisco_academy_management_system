@@ -8,7 +8,7 @@ import Payment from "../../models/Payment.js";
 import PaymentType from "../../models/PaymentType.js";
 import InfoUtn from "../../models/InfoUtn.js";
 
-import notifications from "../../notifications.json" assert { type: "json" };
+import notifications from "../../notifications.json" with { type: "json" };
 
 import { Op } from "sequelize";
 import PDFDocument from 'pdfkit';

@@ -1,5 +1,5 @@
 import InfoUtn from "../../models/InfoUtn.js";
-import notifications from "../../notifications.json" assert { type: "json" };
+import notifications from "../../notifications.json" with { type: "json" };
 import { Op } from "sequelize";
 
 export const addInfoUtn = async (req, res) => {

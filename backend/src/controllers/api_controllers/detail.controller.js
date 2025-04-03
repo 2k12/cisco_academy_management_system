@@ -8,7 +8,7 @@ import Course from "../../models/Course.js";
 import Cost from "../../models/Cost.js";
 import DetailModality from "../../models/DetailModality.js";
 
-import notifications from "../../notifications.json" assert { type: "json" };
+import notifications from "../../notifications.json" with { type: "json" };
 import { Op } from "sequelize";
 
 export const addDetail = async (req, res) => {

@@ -1,7 +1,7 @@
 import Payment from "../../models/Payment.js";
 import Participant from "../../models/Participant.js";
 import ParticipantPayment from "../../models/ParticipantPayment.js";
-import notifications from "../../notifications.json" assert { type: "json" };
+import notifications from "../../notifications.json" with { type: "json" };
 import { Op } from "sequelize";
 import PaymentType from "../../models/PaymentType.js";
 

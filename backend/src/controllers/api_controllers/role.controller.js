@@ -1,5 +1,5 @@
 import Role from "../../models/Role.js";
-import notifications from "../../notifications.json" assert { type: "json" };
+import notifications from "../../notifications.json" with { type: "json" };
 import { Op } from "sequelize";
 
 export const addRole = async (req, res) => {

@@ -3,7 +3,7 @@ import { Sequelize } from "sequelize";
 const sequelize = new Sequelize(
   'utn_cms',
   'root',
-  'admin',
+  'Rlms485017',
   {
     host: 'localhost',
     dialect: 'mysql',

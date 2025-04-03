@@ -1,7 +1,7 @@
 import Chapter from "../../models/Chapter.js";
 import CourseChapter from "../../models/CourseChapter.js";
 import Course from "../../models/Course.js";
-import notifications from "../../notifications.json" assert { type: "json" };
+import notifications from "../../notifications.json" with { type: "json" };
 import { Op } from "sequelize";
 
 export const addChapter = async (req, res) => {

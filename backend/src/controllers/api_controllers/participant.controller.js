@@ -13,7 +13,7 @@ import Schedule from "../../models/Schedule.js";
 import Course from "../../models/Course.js";
 
 import { mainEcuadorianCid } from "../../middlewares/validateCid.js";
-import notifications from "../../notifications.json" assert { type: "json" };
+import notifications from "../../notifications.json" with { type: "json" };
 import { Op } from "sequelize";
 import XLSX from "xlsx";
 
